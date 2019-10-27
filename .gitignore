@@ -1,4 +1,4 @@
 node_modules
-src/game/TestBase/Ressources
-src/game/TestImplementation/Ressources
-src/game/Unity/Ressources
+/src/game/TestBase/Ressources
+/src/game/TestImplemente/Ressources
+/src/game/Unity/Ressources
