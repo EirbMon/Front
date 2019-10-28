@@ -1,15 +1,17 @@
-import React from "react";
 import Unity, { UnityContent } from "react-unity-webgl";
 import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+
+import Layout from './utils/layout';
 
 const styles = theme => ({
-    tableWrapper: {
-      overflowX: 'auto',
-      padding: theme.spacing(3),
-      maxWidth: 1200,
-      margin: '50px auto 0 auto'
-    },
-  });
+  tableWrapper: {
+    overflowX: 'auto',
+    padding: theme.spacing(3),
+    maxWidth: 1200,
+    margin: '50px auto 0 auto'
+  },
+});
 
 class TestImplementation extends React.Component {
   constructor(props) {
@@ -18,8 +20,8 @@ class TestImplementation extends React.Component {
     this.state = { rotation: 0, unityShouldBeMounted: true };
 
     this.unityContent = new UnityContent(
-        "src/game/TestImplementation/BuildInfo/Build/BuildInfo.json",
-        "src/game/TestImplementation/BuildInfo/Build/UnityLoader.js"
+      "src/game/TestImplementation/BuildInfo/Build/BuildInfo.json",
+      "src/game/TestImplementation/BuildInfo/Build/UnityLoader.js"
     );
 
     this.unityContent.on("Say", message => {
@@ -58,25 +60,31 @@ class TestImplementation extends React.Component {
 
   render() {
     const classes = this.props.classes;
+
     return (
-      <div className={classes.tableWrapper}>
-        <h1>Exemple Avancé</h1>
-        <p>{"Rotation: " + this.state.rotation}deg</p>
-        <button onClick={this.onClickStart.bind(this)}>{"Start"}</button>
-        <button onClick={this.onClickStop.bind(this)}>{"Stop"}</button>
-        <button onClick={this.onClickUpdateSpeed.bind(this, 10)}>
-          {"Faster"}
-        </button>
-        <button onClick={this.onClickUpdateSpeed.bind(this, -10)}>
-          {"Slower"}
-        </button>
-        <button onClick={this.onClickUnount.bind(this)}>
-          {"Unmount (2019.1=>)"}
-        </button>
-        {this.state.unityShouldBeMounted === true && (
-          <Unity unityContent={this.unityContent} />
-        )}
+      <div className="App">
+        <Layout currentPage="TestImplementation" />
+        <div className={classes.tableWrapper}>
+          <h1>Exemple Avancé</h1>
+          <p>{"Rotation: " + this.state.rotation}deg</p>
+          <button onClick={this.onClickStart.bind(this)}>{"Start"}</button>
+          <button onClick={this.onClickStop.bind(this)}>{"Stop"}</button>
+          <button onClick={this.onClickUpdateSpeed.bind(this, 10)}>
+            {"Faster"}
+          </button>
+          <button onClick={this.onClickUpdateSpeed.bind(this, -10)}>
+            {"Slower"}
+          </button>
+          <button onClick={this.onClickUnount.bind(this)}>
+            {"Unmount (2019.1=>)"}
+          </button>
+          {this.state.unityShouldBeMounted === true && (
+            <Unity unityContent={this.unityContent} />
+          )}
+        </div>
       </div>
     );
   }
-} export default withStyles(styles)(TestImplementation);;
+}
+
+export default withStyles(styles)(TestImplementation);

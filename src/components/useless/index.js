@@ -7,9 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Typography, IconButton, Drawer, Toolbar, ListItemText, ListItemIcon, ListItem, List } from '@material-ui/core';
 import { AccountCircle, Menu } from '@material-ui/icons';
 
-import TestBase from './testBase';
-import TestImplementation from './testImplementation';
-import Game from './game';
+import TestBase from '../testBase';
+import TestImplementation from '../testImplementation';
+import Game from '../game';
 
 //////////////////////////////////////////////////// Class //////////////////////////////////////////////////
 const styles = theme => ({
@@ -99,10 +99,7 @@ class AppComponent extends React.Component {
           </Toolbar>
         </AppBar>
 
-        <Route path="/" exact={true} component={TestBase} />
-        <Route path="/testBase" exact={true} component={TestBase} />
-        <Route path="/testImplementation" exact={true} component={TestImplementation} />
-        <Route path="/unity" exact={true} component={Game} />
+
 
       </div>)
   }

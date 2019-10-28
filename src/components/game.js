@@ -1,8 +1,10 @@
-import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
+import React, { Fragment } from 'react';
 import Unity, { UnityContent } from "react-unity-webgl";
 
-const styles = theme => ({
+import Layout from './utils/layout';
+
+const styles = (theme) => ({
   tableWrapper: {
     overflowX: 'auto',
     padding: theme.spacing(3),
@@ -12,7 +14,6 @@ const styles = theme => ({
 });
 
 class Game extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,8 +27,7 @@ class Game extends React.Component {
 
     this.unityContent.on("Counter", score => {
 
-      // Now we can use the score to for example
-      // display it on our React app.
+      // Now we can use the score to for example display it on our React app.
 
       this.setState({
         score: score
@@ -37,12 +37,18 @@ class Game extends React.Component {
 
   render() {
     const classes = this.props.classes;
+
     return (
-      <div className={classes.tableWrapper}>
-          <h1> Eirbmon </h1>
-        <div>
-          <Unity unityContent={this.unityContent} />
+      <div className="App">
+        <Layout currentPage="Jeux" />
+        <div className={classes.tableWrapper}>
+          <h1>Eirbmon</h1>
+          <div>
+            <Unity unityContent={this.unityContent} />
+          </div>
         </div>
-      </div>)
+      </div>
+    )
   }
-} export default withStyles(styles)(Game);
+}
+export default withStyles(styles)(Game);
