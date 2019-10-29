@@ -7,8 +7,10 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import { lifecycle } from 'recompose';
 
 import Requetes from '../api/index';
-import { getJwt } from './functions/getJwt';
+import { checkAuthen } from './functions/checkAuthen';
 import Layout from './utils/layout';
+
+import Tab from './utils/tab';
 
 const styles = () => ({
     form: {
@@ -53,8 +55,7 @@ const Profil = ({ classes }) => {
     };
 
     return (
-        <div className="App">
-            <Layout currentPage="Profil" />
+        <Tab currentPage="Profil">
             <div className={classes.page}>
                 <div className={classes.container}>
                     <TextField
@@ -77,22 +78,11 @@ const Profil = ({ classes }) => {
                     />
                 </div>
             </div>
-        </div>
+        </Tab>
     );
 }
 
 export default flowRight([
     withRouter,
     withStyles(styles),
-    lifecycle({
-        componentWillMount() {
-            const jwt = getJwt();
-            const { history } = this.props;
-
-            if (!jwt) {
-                console.log('pas connecté');
-                //history.push('/signup');
-            }
-        },
-    }),
 ])(Profil);

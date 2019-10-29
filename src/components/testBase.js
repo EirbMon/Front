@@ -2,7 +2,7 @@ import { withStyles } from "@material-ui/core/styles";
 import React from 'react';
 import Unity, { UnityContent } from "react-unity-webgl";
 
-import Layout from './utils/layout';
+import Tab from './utils/tab';
 
 const styles = (theme) => ({
   tableWrapper: {
@@ -39,18 +39,15 @@ class TestBase extends React.Component {
     const classes = this.props.classes;
 
     return (
-      <div className="App">
-        <Layout currentPage="TestBase" />
-        <div className={classes.tableWrapper}>
-          <h1> Exemple Basique </h1>
-          <div>
-            compteur: {this.state.score}
-          </div>
-          <div>
-            <Unity unityContent={this.unityContent} />
-          </div>
+      <Tab currentPage="TestBase">
+        <h1> Exemple Basique </h1>
+        <div>
+          compteur: {this.state.score}
         </div>
-      </div>
+        <div>
+          <Unity unityContent={this.unityContent} />
+        </div>
+      </Tab>
     )
   }
 }

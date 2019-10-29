@@ -2,7 +2,7 @@ import Unity, { UnityContent } from "react-unity-webgl";
 import { withStyles } from "@material-ui/core/styles";
 import React from "react";
 
-import Layout from './utils/layout';
+import Tab from './utils/tab';
 
 const styles = theme => ({
   tableWrapper: {
@@ -62,27 +62,24 @@ class TestImplementation extends React.Component {
     const classes = this.props.classes;
 
     return (
-      <div className="App">
-        <Layout currentPage="TestImplementation" />
-        <div className={classes.tableWrapper}>
-          <h1>Exemple Avancé</h1>
-          <p>{"Rotation: " + this.state.rotation}deg</p>
-          <button onClick={this.onClickStart.bind(this)}>{"Start"}</button>
-          <button onClick={this.onClickStop.bind(this)}>{"Stop"}</button>
-          <button onClick={this.onClickUpdateSpeed.bind(this, 10)}>
-            {"Faster"}
-          </button>
-          <button onClick={this.onClickUpdateSpeed.bind(this, -10)}>
-            {"Slower"}
-          </button>
-          <button onClick={this.onClickUnount.bind(this)}>
-            {"Unmount (2019.1=>)"}
-          </button>
-          {this.state.unityShouldBeMounted === true && (
-            <Unity unityContent={this.unityContent} />
-          )}
-        </div>
-      </div>
+      <Tab currentPage="TestImplementation">
+        <h1>Exemple Avancé</h1>
+        <p>{"Rotation: " + this.state.rotation}deg</p>
+        <button onClick={this.onClickStart.bind(this)}>{"Start"}</button>
+        <button onClick={this.onClickStop.bind(this)}>{"Stop"}</button>
+        <button onClick={this.onClickUpdateSpeed.bind(this, 10)}>
+          {"Faster"}
+        </button>
+        <button onClick={this.onClickUpdateSpeed.bind(this, -10)}>
+          {"Slower"}
+        </button>
+        <button onClick={this.onClickUnount.bind(this)}>
+          {"Unmount (2019.1=>)"}
+        </button>
+        {this.state.unityShouldBeMounted === true && (
+          <Unity unityContent={this.unityContent} />
+        )}
+      </Tab>
     );
   }
 }
