@@ -16,11 +16,11 @@ class TestBase extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      score: 0,
+      score: "Compteur: 0",
     };
 
     this.unityContent = new UnityContent(
-      "src/game/TestBase/BuildInfo/Build/Build.json",
+      "src/game/TestBase/BuildInfo/Build/BuildInfo.json",
       "src/game/TestBase/BuildInfo/Build/UnityLoader.js"
     );
 
@@ -41,7 +41,7 @@ class TestBase extends React.Component {
       <div className={classes.tableWrapper}>
         <h1> Exemple Basique </h1>
         <div>
-          compteur: {this.state.score}
+          {this.state.score}
         </div>
 
         <div>
