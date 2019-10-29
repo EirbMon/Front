@@ -3,6 +3,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Unity, { UnityContent } from "react-unity-webgl";
 import Button from '@material-ui/core/Button';
 
+// import bcAccess from "../actions/index";
+// import generateGetEirbmonUrl from "../middleWare/generateGetEirbmonUrl";
+
 const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
@@ -61,6 +64,7 @@ class Game extends React.Component {
     ]
     }; 
     this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
+    //bcAccess.GetEirbmon(generateGetEirbmonUrl());
   }
   
   render() {

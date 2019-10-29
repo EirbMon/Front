@@ -1,11 +1,9 @@
 'use strict';
 
-import getCatalogItemRevision from './catalog/getCatalogItemRevision';
-import getSpecificSerialNumberHistory from './serial/getSpecificSerialNumberHistory';
-import GetAllCatalogueItem from "./getAllCatalogItem";
+import SaveEirbmon from './saveEirbmon';
+import GetEirbmon from './getEirbmon';
 
 export default {
-    getCatalogItemRevision,
-    getSpecificSerialNumberHistory,
-    GetAllCatalogueItem,
+    SaveEirbmon,
+    GetEirbmon,
 }
