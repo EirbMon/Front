@@ -23,16 +23,6 @@ class Game extends React.Component {
       "src/game/Unity/BuildInfo/Build/BuildInfo.json",
       "src/game/Unity/BuildInfo/Build/UnityLoader.js"
     );
-
-    this.unityContent.on("Counter", score => {
-
-      // Now we can use the score to for example
-      // display it on our React app.
-
-      this.setState({
-        score: score
-      });
-    });
   }
 
   render() {
