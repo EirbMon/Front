@@ -17,23 +17,21 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: "",
+      messageUnity: "",
     };
 
     this.unityContent = new UnityContent(
       "src/game/Unity/BuildInfo/Build/BuildInfo.json",
       "src/game/Unity/BuildInfo/Build/UnityLoader.js"
     );
+
+    this.unityContent.on("DoInteraction", message => {
+      this.setState({messageUnity: message});
+      console.log("Wow Unity said: " + this.state.messageUnity);
+    });
   }
 
   sendMsgToUnity(){
-
-            // onClickButton() {
-        //    string JSONString = "{\"Pokemons\":[{\"type\":\"Pikachu\",\"name\":\"PikaPika\",\"color\":\"yellow\",\"position_x\":\"-56.5\",\"position_y\":\"4.1\"},
-        //{\"type\":\"Carapuce\",\"name\":\"CaraCara\",\"color\":\"blue\",\"position_x\":\"-57.44\",\"position_y\":\"4.2\"},
-        //{\"type\":\"Salameche\",\"name\":\"SalaSala\",\"color\":\"red\",\"position_x\":\"-55.5\",\"position_y\":\"4.1\"}]}";
-        //    this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSONString);
-        //}
         
     let eirbmonInfo = {
       Pokemons: [{
@@ -78,7 +76,7 @@ class Game extends React.Component {
         <div>
           <Unity unityContent={this.unityContent} />
         </div>
-        Message from unity : {this.state.message}
+        Message from unity : {this.state.messageUnity}
       </div>)
   }
 } export default withStyles(styles)(Game);
