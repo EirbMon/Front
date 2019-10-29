@@ -1,4 +1,5 @@
 import React from 'react';
+import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { withRouter, Route } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -37,8 +38,35 @@ class AppComponent extends React.Component {
     this.state = {
       is_open: false,
       currentPage: "EirbMon",
+      errorHandler: {
+        timeStamp: new Date(),
+      },
+      successHandler: {
+        timeStamp: new Date(),
+      }
     };
   }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.errorHandler.error) {
+
+        if (props.errorHandler.timeStamp != state.errorHandler.timeStamp) {
+            props.enqueueSnackbar(props.errorHandler.errorMessage, { variant: 'error' });
+        }
+
+        state.errorHandler = props.errorHandler;
+    }
+
+    if (props.successHandler.success) {
+
+        if (props.successHandler.timeStamp != state.successHandler.timeStamp) {
+            props.enqueueSnackbar(props.successHandler.successMessage, { variant: 'success' });
+        }
+
+        state.successHandler = props.successHandler;
+    }
+    return state;
+}
 
   navigateTo(path, currentPage) {
     this.props.history.push(path);
@@ -109,7 +137,10 @@ class AppComponent extends React.Component {
 } 
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    errorHandler: state.errorHandler,
+    successHandler: state.successHandler,
+  };
 }
 
-export default withRouter(connect(mapStateToProps)(withStyles(styles)(AppComponent)));
+export default withRouter(connect(mapStateToProps)(withStyles(styles)(withSnackbar(AppComponent))));

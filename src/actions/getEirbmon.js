@@ -1,10 +1,10 @@
 'use strict';
 
-export default function saveEirbmon(link) {
-
+export default function getEirbmon(link) {
+    console.log("GetEirbmon: " + link);
     return (dispatch, getState, api) => {
 
-        return api.post(link)
+        return api.get(link)
             .then((res) => {
                 return dispatch({
                     type: "SUCCESS_OCCURS",
