@@ -8,10 +8,10 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   tableWrapper: {
-    overflowX: 'auto',
     padding: theme.spacing(3),
-    maxWidth: 1200,
-    margin: '50px auto 0 auto'
+    width: '60%',
+    height: '75%',
+    margin: '30px auto 0 auto'
   },
 });
 
@@ -42,7 +42,7 @@ class Game extends React.Component {
         name: "Gribouille",
         color: "Black",
         position_x: -56.5,
-        position_y: 4.1,
+        position_y: 3.6,
 
       },
       {
@@ -50,7 +50,7 @@ class Game extends React.Component {
         name: "Artpick",
         color: "Silver",
         position_x: -57.44,
-        position_y: 4.2,
+        position_y: 3.7,
 
       },
       {
@@ -58,7 +58,7 @@ class Game extends React.Component {
         name: "Loustick",
         color: "Purple",
         position_x: -55.5,
-        position_y: 4.1,
+        position_y: 3.6,
 
       }
     ]
@@ -77,7 +77,7 @@ class Game extends React.Component {
           Send Eirbmon to Unity
         </Button>
         </div>
-        <div>
+        <div id="unityContainer">
           <Unity unityContent={this.unityContent} />
         </div>
         Message from unity : {this.state.messageUnity}
