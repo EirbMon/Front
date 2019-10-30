@@ -6,10 +6,11 @@ export default function getEirbmon(link) {
 
         return api.get(link)
             .then((res) => {
-                return dispatch({
+                dispatch({
                     type: "SUCCESS_OCCURS",
                     payload: res
                 });
+                return res;
             })
             .catch((err) => {
 
@@ -17,6 +18,8 @@ export default function getEirbmon(link) {
                     type: "ERROR_OCCURS",
                     payload: err
                 });
+
+                return err;
             });
     }
 }
