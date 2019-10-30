@@ -38,34 +38,34 @@ class Game extends React.Component {
 
   sendMsgToUnity(){
         
-    let eirbmonInfo = {
-      Pokemons: [{
-        type: "Pikachu",
-        name: "Gribouille",
-        color: "Black",
-        position_x: -56.5,
-        position_y: 3.6,
+    // let eirbmonInfo = {
+    //   Pokemons: [{
+    //     type: "Pikachu",
+    //     name: "Gribouille",
+    //     color: "Black",
+    //     position_x: -56.5,
+    //     position_y: 3.6,
 
-      },
-      {
-        type: "Carapuce",
-        name: "Artpick",
-        color: "Silver",
-        position_x: -57.44,
-        position_y: 3.7,
+    //   },
+    //   {
+    //     type: "Carapuce",
+    //     name: "Artpick",
+    //     color: "Silver",
+    //     position_x: -57.44,
+    //     position_y: 3.7,
 
-      },
-      {
-        type: "Salameche",
-        name: "Loustick",
-        color: "Purple",
-        position_x: -55.5,
-        position_y: 3.6,
+    //   },
+    //   {
+    //     type: "Salameche",
+    //     name: "Loustick",
+    //     color: "Purple",
+    //     position_x: -55.5,
+    //     position_y: 3.6,
 
-      }
-    ]
-    }; 
-    this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
+    //   }
+    // ]
+    // }; 
+    // this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
     this.props.dispatch(bcAccess.GetEirbmon(generateGetEirbmonUrl()))
     .then( (initEirb) => {
       console.log("APIcResponse: " + initEirb);
