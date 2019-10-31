@@ -1,15 +1,16 @@
 'use strict';
 
-export default function saveEirbmon(link) {
-
+export default function getEirbmon(link) {
+    console.log("GetEirbmon: " + link);
     return (dispatch, getState, api) => {
 
-        return api.post(link)
+        return api.get(link)
             .then((res) => {
-                return dispatch({
+                dispatch({
                     type: "SUCCESS_OCCURS",
                     payload: res
                 });
+                return res;
             })
             .catch((err) => {
 
@@ -17,6 +18,8 @@ export default function saveEirbmon(link) {
                     type: "ERROR_OCCURS",
                     payload: err
                 });
+
+                return err;
             });
     }
 }

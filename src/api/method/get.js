@@ -5,7 +5,7 @@ const login = process.env.REACT_APP_LOGIN;
 const password = process.env.REACT_APP_PASSWORD;
 
 export default function get(url) {
-
+  console.log("GET");
   let headers = {
     'Accept': 'application/json, text/plain, */*',
     'Content-Type': 'application/json'

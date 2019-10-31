@@ -1,10 +1,12 @@
 import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
 import Unity, { UnityContent } from "react-unity-webgl";
+import {connect} from 'react-redux';
 import Button from '@material-ui/core/Button';
 
-// import bcAccess from "../actions/index";
-// import generateGetEirbmonUrl from "../middleWare/generateGetEirbmonUrl";
+
+import bcAccess from "../actions/index";
+import generateGetEirbmonUrl from "../middleWare/generateGetEirbmonUrl";
 
 const styles = theme => ({
   tableWrapper: {
@@ -36,35 +38,39 @@ class Game extends React.Component {
 
   sendMsgToUnity(){
         
-    let eirbmonInfo = {
-      Pokemons: [{
-        type: "Pikachu",
-        name: "Gribouille",
-        color: "Black",
-        position_x: -56.5,
-        position_y: 3.6,
+    // let eirbmonInfo = {
+    //   Pokemons: [{
+    //     type: "Pikachu",
+    //     name: "Gribouille",
+    //     color: "Black",
+    //     position_x: -56.5,
+    //     position_y: 3.6,
 
-      },
-      {
-        type: "Carapuce",
-        name: "Artpick",
-        color: "Silver",
-        position_x: -57.44,
-        position_y: 3.7,
+    //   },
+    //   {
+    //     type: "Carapuce",
+    //     name: "Artpick",
+    //     color: "Silver",
+    //     position_x: -57.44,
+    //     position_y: 3.7,
 
-      },
-      {
-        type: "Salameche",
-        name: "Loustick",
-        color: "Purple",
-        position_x: -55.5,
-        position_y: 3.6,
+    //   },
+    //   {
+    //     type: "Salameche",
+    //     name: "Loustick",
+    //     color: "Purple",
+    //     position_x: -55.5,
+    //     position_y: 3.6,
 
-      }
-    ]
-    }; 
-    this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
-    //bcAccess.GetEirbmon(generateGetEirbmonUrl());
+    //   }
+    // ]
+    // }; 
+    // this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
+    this.props.dispatch(bcAccess.GetEirbmon(generateGetEirbmonUrl()))
+    .then( (initEirb) => {
+      console.log("APIcResponse: " + initEirb);
+      this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(initEirb));
+    });
   }
   
   render() {
@@ -83,4 +89,8 @@ class Game extends React.Component {
         Message from unity : {this.state.messageUnity}
       </div>)
   }
-} export default withStyles(styles)(Game);
+} function select(state){
+  return{};
+}
+
+export default connect(select)(withStyles(styles)(Game));
