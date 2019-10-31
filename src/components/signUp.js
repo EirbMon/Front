@@ -2,6 +2,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
+import { withRouter } from "react-router-dom";
 
 import Requetes from '../api/index';
 
@@ -35,19 +36,40 @@ const styles = () => ({
 });
 
 
-const SignUp = ({ classes }) => {
+const SignUp = ({ classes, history }) => {
     const [form, setValues] = useState({
         username: '',
         email: '',
         password: '',
     });
 
-    const { get } = Requetes;
+    const { get, post } = Requetes;
 
     const printValues = (e) => {
         e.preventDefault();
         console.log(form.username, form.password);
-        console.log(get("https://api.chucknorris.io/jokes/random").then((e) => console.log(e)));
+        post("https://localhost:8080/api/users", {
+            username: form.username,
+            password: form.password,
+            email: form.email
+        })
+            .then(json => {
+                post("https://localhost:8080/api/connexion", {
+                    username: json.username,
+                    password: json.password
+                })
+                    .then(jsonCo => {
+                        if (jsonCo.check_user === "false" || jsonCo.check_password === "false") {
+                            console.log('Cet utilisateur existe pas');
+                        }
+
+                        if (jsonCo.token) {
+                            localStorage.setItem("token", jsonCo.token);
+                            localStorage.setItem("username", form.username);
+                            history.push('/profil');
+                        }
+                    })
+            })
     };
 
     const updateField = (e) => {
@@ -102,4 +124,4 @@ const SignUp = ({ classes }) => {
     );
 }
 
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

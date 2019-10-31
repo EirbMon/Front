@@ -3,8 +3,10 @@ import { AppBar, Typography, IconButton, Drawer, Toolbar, ListItemText, ListItem
 import { AccountCircle, Menu } from '@material-ui/icons';
 import React, { useState, Fragment } from 'react';
 import { withRouter, Route } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import ItemLayout from './itemLayout';
+import { disconnect } from '../functions/disconnect';
 
 const styles = theme => ({
   root: {
@@ -20,6 +22,10 @@ const styles = theme => ({
   },
   appbar: {
     background: 'linear-gradient(to right, #0086C9, #4BC9EC);'
+  },
+  disconnectionButton: {
+    position: 'absolute',
+    right: '10px',
   },
 });
 
@@ -46,7 +52,10 @@ const Layout = ({ currentPage, classes, history }) => {
           {currentPage}
           <Typography variant="h6" color="inherit" className={classes.apptitle}>
             Eirbmon
-        </Typography>
+          </Typography>
+          <IconButton className={classes.disconnectionButton} color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Fragment>

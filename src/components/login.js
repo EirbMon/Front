@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
 import { withRouter, Route, Switch } from "react-router-dom";
+import { withSnackbar } from 'notistack';
 
 import Requetes from '../api/index';
 
@@ -42,12 +43,27 @@ const Login = ({ classes, history }) => {
         password: ''
     });
     
-    const { get } = Requetes;
+    const { get, post } = Requetes;
 
     const printValues = (e) => {
         e.preventDefault();
         console.log(form.username, form.password);
-        console.log(get("https://api.chucknorris.io/jokes/random").then((e) => console.log(e)));
+
+        post("https://localhost:8080/api/connexion", {
+            username: form.username,
+            password: form.password
+        })
+        .then(json => {
+            if(json.check_user === "false" || json.check_password === "false"){
+                console.log('Cet utilisateur existe pas');
+            }
+
+            if(json.token){
+                localStorage.setItem("token", json.token);
+                localStorage.setItem("username", form.username);
+                history.push('/profil');
+            }
+        })
     };
 
     const updateField = (e) => {

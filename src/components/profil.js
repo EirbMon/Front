@@ -35,8 +35,8 @@ const styles = () => ({
 
 const Profil = ({ classes }) => {
     const [form, setValues] = useState({
-        username: 'Sacha',
-        email: 'pokemon@free.fr',
+        username: localStorage.getItem("username"),
+        //email: 'pokemon@free.fr',
     });
 
     const { get } = Requetes;
@@ -45,13 +45,6 @@ const Profil = ({ classes }) => {
         e.preventDefault();
         console.log(form.username, form.password);
         console.log(get("https://api.chucknorris.io/jokes/random").then((e) => console.log(e)));
-    };
-
-    const updateField = (e) => {
-        setValues({
-            ...form,
-            [e.target.name]: e.target.value
-        });
     };
 
     return (
@@ -67,7 +60,7 @@ const Profil = ({ classes }) => {
                         disabled
                         fullWidth
                     />
-                    <TextField
+                    {/* <TextField
                         name="email"
                         label="Adresse mail"
                         value={form.email}
@@ -75,7 +68,7 @@ const Profil = ({ classes }) => {
                         variant="outlined"
                         disabled
                         fullWidth
-                    />
+                    /> */}
                 </div>
             </div>
         </Tab>

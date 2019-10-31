@@ -1,1 +1,1 @@
-export const getJwt = () => localStorage.getItem('cool-jwt');
+export const getJwt = () => localStorage.getItem('token');
