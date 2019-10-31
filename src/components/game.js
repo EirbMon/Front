@@ -1,14 +1,16 @@
-import React from 'react';
 import { withStyles } from "@material-ui/core/styles";
+import React, { Fragment } from 'react';
 import Unity, { UnityContent } from "react-unity-webgl";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
 
 import bcAccess from "../actions/index";
 import generateGetEirbmonUrl from "../middleWare/generateGetEirbmonUrl";
 
-const styles = theme => ({
+import Tab from './utils/tab';
+
+const styles = (theme) => ({
   tableWrapper: {
     padding: theme.spacing(3),
     width: '60%',
@@ -18,7 +20,6 @@ const styles = theme => ({
 });
 
 class Game extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -31,13 +32,13 @@ class Game extends React.Component {
     );
 
     this.unityContent.on("DoInteraction", message => {
-      this.setState({messageUnity: message});
+      this.setState({ messageUnity: message });
       console.log("Wow Unity said: " + this.state.messageUnity);
     });
   }
 
-  sendMsgToUnity(){
-        
+  sendMsgToUnity() {
+
     // let eirbmonInfo = {
     //   Pokemons: [{
     //     type: "Pikachu",
@@ -67,30 +68,29 @@ class Game extends React.Component {
     // }; 
     // this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
     this.props.dispatch(bcAccess.GetEirbmon(generateGetEirbmonUrl()))
-    .then( (initEirb) => {
-      console.log("APIcResponse: " + initEirb);
-      this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(initEirb));
-    });
+      .then((initEirb) => {
+        console.log("APIcResponse: " + initEirb);
+        this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(initEirb));
+      });
   }
-  
+
   render() {
     const classes = this.props.classes;
+
     return (
-      <div className={classes.tableWrapper}>
-        <h1> Eirbmon </h1>
+      <Tab currentPage="Jeux">
+        <h1>Eirbmon</h1>
         <div>
-        <Button variant="outlined" color="primary" onClick={()=>this.sendMsgToUnity()}>
-          Send Eirbmon to Unity
+          <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity()}>
+            Send Eirbmon to Unity
         </Button>
         </div>
         <div>
           <Unity unityContent={this.unityContent} />
         </div>
         Message from unity : {this.state.messageUnity}
-      </div>)
+      </Tab>
+    )
   }
-} function select(state){
-  return{};
 }
-
-export default connect(select)(withStyles(styles)(Game));
+export default withStyles(styles)(Game);
