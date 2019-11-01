@@ -6,7 +6,7 @@ import { withRouter, Route } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import ItemLayout from './itemLayout';
-import { disconnect } from '../functions/disconnect';
+import { disconnect } from '../../../functions/disconnect';
 
 const styles = theme => ({
   root: {

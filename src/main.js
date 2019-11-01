@@ -10,12 +10,12 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import thunk from 'redux-thunk';
 
 import API from './api';
-import TestBase from './components/testBase';
-import TestImplementation from './components/testImplementation';
-import Game from './components/game';
-import Login from './components/login';
-import SignUp from './components/signUp';
-import Profil from './components/profil';
+import TestBase from './components/pageApplication/testBase';
+import TestImplementation from './components/pageApplication/testImplementation';
+import Game from './components/pageApplication/game';
+import Login from './components/pageAuthentification/login';
+import SignUp from './components/pageAuthentification/signUp';
+import Profil from './components/pageApplication/profil';
 import reducers from './reducers';
 
 require('./scss/main.scss');

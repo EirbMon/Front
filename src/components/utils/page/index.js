@@ -6,8 +6,8 @@ import React, { useState, Fragment, Children } from 'react';
 import { withRouter, Route } from "react-router-dom";
 import { lifecycle } from 'recompose';
 
-import { checkAuthen } from '../functions/checkAuthen';
-import Layout from './layout';
+import { checkAuthen } from '../../../functions/checkAuthen';
+import Layout from '../layout';
 
 const styles = (theme) => ({
     tableWrapper: {

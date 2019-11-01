@@ -2,7 +2,7 @@ import Unity, { UnityContent } from "react-unity-webgl";
 import { withStyles } from "@material-ui/core/styles";
 import React from "react";
 
-import Tab from './utils/tab';
+import Page from '../../utils/page';
 
 const styles = theme => ({
   tableWrapper: {
@@ -62,7 +62,7 @@ class TestImplementation extends React.Component {
     const classes = this.props.classes;
 
     return (
-      <Tab currentPage="TestImplementation">
+      <Page currentPage="TestImplementation">
         <h1>Exemple Avancé</h1>
         <p>{"Rotation: " + this.state.rotation}deg</p>
         <button onClick={this.onClickStart.bind(this)}>{"Start"}</button>
@@ -79,7 +79,7 @@ class TestImplementation extends React.Component {
         {this.state.unityShouldBeMounted === true && (
           <Unity unityContent={this.unityContent} />
         )}
-      </Tab>
+      </Page>
     );
   }
 }

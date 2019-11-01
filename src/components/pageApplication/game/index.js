@@ -1,14 +1,12 @@
 import { withStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
 import React, { Fragment } from 'react';
 import Unity, { UnityContent } from "react-unity-webgl";
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 
-
-import bcAccess from "../actions/index";
-import generateGetEirbmonUrl from "../middleWare/generateGetEirbmonUrl";
-
-import Tab from './utils/tab';
+import bcAccess from "../../../actions/index";
+import generateGetEirbmonUrl from "../../../middleWare/generateGetEirbmonUrl";
+import Page from '../../utils/page';
 
 const styles = (theme) => ({
   tableWrapper: {
@@ -78,7 +76,7 @@ class Game extends React.Component {
     const classes = this.props.classes;
 
     return (
-      <Tab currentPage="Jeux">
+      <Page currentPage="Jeux">
         <h1>Eirbmon</h1>
         <div>
           <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity()}>
@@ -89,7 +87,7 @@ class Game extends React.Component {
           <Unity unityContent={this.unityContent} />
         </div>
         Message from unity : {this.state.messageUnity}
-      </Tab>
+      </Page>
     )
   }
 }

@@ -6,11 +6,10 @@ import React, { useState } from 'react';
 import { withRouter, Route, Switch } from "react-router-dom";
 import { lifecycle } from 'recompose';
 
-import Requetes from '../api/index';
-import { checkAuthen } from './functions/checkAuthen';
-import Layout from './utils/layout';
+import Requetes from '../../../api/index';
+import { checkAuthen } from '../../../functions/checkAuthen';
 
-import Tab from './utils/tab';
+import Page from '../../utils/page';
 
 const styles = () => ({
     form: {
@@ -48,7 +47,7 @@ const Profil = ({ classes }) => {
     };
 
     return (
-        <Tab currentPage="Profil">
+        <Page currentPage="Profil">
             <div className={classes.page}>
                 <div className={classes.container}>
                     <TextField
@@ -71,7 +70,7 @@ const Profil = ({ classes }) => {
                     /> */}
                 </div>
             </div>
-        </Tab>
+        </Page>
     );
 }
 
