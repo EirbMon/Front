@@ -86,7 +86,7 @@ class Game extends React.Component {
           Send Eirbmon to Unity
         </Button>
         </div>
-        <div>
+        <div id="unityContainer">
           <Unity unityContent={this.unityContent} />
         </div>
         Message from unity : {this.state.messageUnity}
