@@ -62,7 +62,7 @@ pipeline {
         branch "dev"
       }
       steps {
-        sh 'docker run -p 3000:3000 -d --name eirbmon-front-dev eirbmon/front-dev'
+        sh 'docker run -p 3300:3000 -d --name eirbmon-front-dev eirbmon/front-dev'
         echo 'Dev container ready !'
       }
     }
@@ -71,7 +71,7 @@ pipeline {
         branch "master"
       }
       steps {
-        sh 'docker run -p 3000:3300 -d --name eirbmon-front eirbmon/front'
+        sh 'docker run -p 3000:3000 -d --name eirbmon-front eirbmon/front'
         echo 'Prod container ready !'
       }
     }
