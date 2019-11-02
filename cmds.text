@@ -1,0 +1,2 @@
+docker build -t front .
+ docker run --name front -p 3000:3000 front 
