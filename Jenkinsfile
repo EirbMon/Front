@@ -76,7 +76,7 @@ pipeline {
       }
     }
   }
-  environment {
-    HOME = '.'
-  }
+  // environment {
+  //   HOME = '.'
+  // }
 }
