@@ -2,10 +2,10 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: {
-        main: "./src/main.js"
+        main: './src/main.js',
     },
     output: {
-        filename: "./dist/[name].js",
+        filename: './dist/[name].js',
         devtoolModuleFilenameTemplate: '[absolute-resource-path]',
         sourcePrefix: '', // removes tabs before multiline strings,
     },
@@ -13,6 +13,9 @@ module.exports = {
     plugins: [
         new Dotenv(),
     ],
+    resolve: {
+        extensions: ['.js', '.json', '.jsx'],
+    },
     module: { // Pour la transpilation
         rules: [
             {
@@ -32,13 +35,13 @@ module.exports = {
             {
                 test: /\.jsx?$/, // Fichier à compiler
                 exclude: /(node_module)/,
-                loader: "babel-loader", //Permet de transpiler  
+                loader: 'babel-loader', // Permet de transpiler
                 query: {
                     presets: ['@babel/preset-env', '@babel/preset-react'],
-                    plugins: ["@babel/plugin-proposal-class-properties"],
+                    plugins: ['@babel/plugin-proposal-class-properties'],
                     retainLines: true,
-                }
-            }]
+                },
+            }],
 
     },
     devServer: {
@@ -60,5 +63,5 @@ module.exports = {
             },
         },
 
-    }
-}
+    },
+};

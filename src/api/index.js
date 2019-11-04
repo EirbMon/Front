@@ -1,5 +1,3 @@
-'use strict';
-
 import 'isomorphic-fetch';
 
 import get from './method/get';
@@ -12,4 +10,4 @@ export default {
     post,
     put,
     patch,
-}
+};

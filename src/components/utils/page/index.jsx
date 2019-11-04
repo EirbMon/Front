@@ -1,12 +1,11 @@
+import { withStyles } from '@material-ui/core/styles';
 import { flowRight } from 'lodash/fp';
-import { withStyles } from "@material-ui/core/styles";
-import { AppBar, Typography, IconButton, Drawer, Toolbar, ListItemText, ListItemIcon, ListItem, List } from '@material-ui/core';
-import { AccountCircle, Menu } from '@material-ui/icons';
-import React, { useState, Fragment, Children } from 'react';
-import { withRouter, Route } from "react-router-dom";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
 
-import { checkAuthen } from '../../../functions/checkAuthen';
+import checkAuthen from '../../../functions/checkAuthen';
 import Layout from '../layout';
 
 const styles = (theme) => ({
@@ -14,18 +13,26 @@ const styles = (theme) => ({
         overflowX: 'auto',
         padding: theme.spacing(3),
         maxWidth: 1200,
-        margin: '50px auto 0 auto'
+        margin: '50px auto 0 auto',
     },
 });
 
-const Tab = ({ currentPage, classes, children }) => (
+const Page = ({ currentPage, classes, children }) => (
     <div className="App">
         <Layout currentPage={currentPage} />
         <div className={classes.tableWrapper}>
             {children}
         </div>
     </div>
-)
+);
+
+Page.propTypes = {
+    classes: PropTypes.shape({
+        tableWrapper: PropTypes.string,
+    }).isRequired,
+    children: PropTypes.node,
+    currentPage: PropTypes.string,
+};
 
 export default flowRight([
     withRouter,
@@ -35,4 +42,4 @@ export default flowRight([
             checkAuthen(this.props);
         },
     }),
-])(Tab);
+])(Page);
