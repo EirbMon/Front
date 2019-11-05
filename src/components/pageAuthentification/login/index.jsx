@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Requetes from '../../../api/index';
+import login from '../../../middleWare/login';
 
 const styles = () => ({
     form: {
@@ -42,28 +42,6 @@ const Login = ({ classes, history }) => {
         password: '',
     });
 
-    const { post } = Requetes;
-
-    const printValues = (e) => {
-        e.preventDefault();
-
-        post('https://localhost:8080/api/connexion', {
-            username: form.username,
-            password: form.password,
-        })
-            .then((json) => {
-                if ('false' === json.check_user || 'false' === json.check_password) {
-                    console.log('Cet utilisateur existe pas');
-                }
-
-                if (json.token) {
-                    localStorage.setItem('token', json.token);
-                    localStorage.setItem('username', form.username);
-                    history.push('/profil');
-                }
-            });
-    };
-
     const updateField = (e) => {
         setValues({
             ...form,
@@ -74,7 +52,7 @@ const Login = ({ classes, history }) => {
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={printValues} className={classes.form}>
+                <form onSubmit={(e) => login(e, form, history)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"

@@ -7,7 +7,7 @@ module.exports = {
     output: {
         filename: './dist/[name].js',
         devtoolModuleFilenameTemplate: '[absolute-resource-path]',
-        sourcePrefix: '', // removes tabs before multiline strings,
+        sourcePrefix: '', // removes tabs before multiline strings,
     },
     devtool: 'source-map',
     plugins: [

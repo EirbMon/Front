@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Requetes from '../../../api/index';
+import inscription from '../../../middleWare/login';
 
 const styles = () => ({
     form: {
@@ -43,35 +43,6 @@ const SignUp = ({ classes, history }) => {
         password: '',
     });
 
-    const { post } = Requetes;
-
-    const printValues = (e) => {
-        e.preventDefault();
-        console.log(form.username, form.password);
-        post('https://localhost:8080/api/users', {
-            username: form.username,
-            password: form.password,
-            email: form.email,
-        })
-            .then((json) => {
-                post('https://localhost:8080/api/connexion', {
-                    username: json.username,
-                    password: json.password,
-                })
-                    .then((jsonCo) => {
-                        if ('false' === jsonCo.check_user || 'false' === jsonCo.check_password) {
-                            console.log('Cet utilisateur existe pas');
-                        }
-
-                        if (jsonCo.token) {
-                            localStorage.setItem('token', jsonCo.token);
-                            localStorage.setItem('username', form.username);
-                            history.push('/profil');
-                        }
-                    });
-            });
-    };
-
     const updateField = (e) => {
         setValues({
             ...form,
@@ -82,7 +53,7 @@ const SignUp = ({ classes, history }) => {
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={printValues} className={classes.form}>
+                <form onSubmit={(e) => inscription(e, form, history)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
