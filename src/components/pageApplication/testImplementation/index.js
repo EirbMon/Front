@@ -2,7 +2,7 @@ import Unity, { UnityContent } from "react-unity-webgl";
 import { withStyles } from "@material-ui/core/styles";
 import React from "react";
 
-import Page from '../../utils/page';
+import Page from '../../utils/layout';
 
 const styles = theme => ({
   tableWrapper: {

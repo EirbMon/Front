@@ -1,15 +1,12 @@
 import { flowRight } from 'lodash/fp';
 import { withStyles } from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import React, { useState } from 'react';
-import { withRouter, Route, Switch } from "react-router-dom";
-import { lifecycle } from 'recompose';
+import { withRouter } from "react-router-dom";
 
 import Requetes from '../../../api/index';
-import { checkAuthen } from '../../../functions/checkAuthen';
 
-import Page from '../../utils/page';
+import Page from '../../utils/layout';
 
 const styles = () => ({
     form: {
@@ -59,15 +56,6 @@ const Profil = ({ classes }) => {
                         disabled
                         fullWidth
                     />
-                    {/* <TextField
-                        name="email"
-                        label="Adresse mail"
-                        value={form.email}
-                        margin="normal"
-                        variant="outlined"
-                        disabled
-                        fullWidth
-                    /> */}
                 </div>
             </div>
         </Page>

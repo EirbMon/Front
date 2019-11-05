@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import bcAccess from "../../../actions/index";
 import generateGetEirbmonUrl from "../../../middleWare/generateGetEirbmonUrl";
-import Page from '../../utils/page';
+import Page from '../../utils/layout';
 
 const styles = (theme) => ({
   tableWrapper: {
