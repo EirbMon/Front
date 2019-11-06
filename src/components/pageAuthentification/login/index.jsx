@@ -3,9 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import login from '../../../middleWare/login';
+import bcAccess from '../../../actions/index';
+import loginUrl from '../../../middleWare/loginUrl';
 
 const styles = () => ({
     form: {
@@ -36,7 +38,7 @@ const styles = () => ({
     },
 });
 
-const Login = ({ classes, history }) => {
+const Login = ({ classes, history, login }) => {
     const [form, setValues] = useState({
         username: '',
         password: '',
@@ -49,10 +51,18 @@ const Login = ({ classes, history }) => {
         });
     };
 
+    const loginFunction = (e, url, user) => {
+        e.preventDefault();
+        login(url, user)
+            .then(() => {
+                history.push('/profil');
+            });
+    };
+
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={(e) => login(e, form, history)} className={classes.form}>
+                <form onSubmit={(e) => loginFunction(e, loginUrl, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
@@ -102,6 +112,7 @@ Login.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
+    login: PropTypes.func,
 };
 
-export default withRouter(withStyles(styles)(Login));
+export default connect(null, { login: bcAccess.Login })(withRouter(withStyles(styles)(Login)));

@@ -3,9 +3,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 
-import inscription from '../../../middleWare/login';
+import bcAccess from '../../../actions/index';
+import signUpUrl from '../../../middleWare/signUpUrl';
+import loginUrl from '../../../middleWare/loginUrl';
 
 const styles = () => ({
     form: {
@@ -36,7 +40,7 @@ const styles = () => ({
     },
 });
 
-const SignUp = ({ classes, history }) => {
+const SignUp = ({ classes, history, signUp, login }) => {
     const [form, setValues] = useState({
         username: '',
         email: '',
@@ -48,12 +52,24 @@ const SignUp = ({ classes, history }) => {
             ...form,
             [e.target.name]: e.target.value,
         });
+
+        const passwordCrypted = CryptoJS.AES.encrypt(form.password, 'secret key 123');
+        console.log(passwordCrypted.toString());
+    };
+
+    const signUpFunction = (e, url, user) => {
+        e.preventDefault();
+        signUp(signUpUrl, { ...user })
+            .then(() => login(loginUrl, form))
+            .then(() => {
+                history.push('/profil');
+            });
     };
 
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={(e) => inscription(e, form, history)} className={classes.form}>
+                <form onSubmit={(e) => signUpFunction(e, signUpUrl, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
@@ -105,6 +121,8 @@ SignUp.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
+    signUp: PropTypes.func,
+    login: PropTypes.func,
 };
 
-export default withRouter(withStyles(styles)(SignUp));
+export default connect(null, { signUp: bcAccess.SignUp, login: bcAccess.Login })(withRouter(withStyles(styles)(SignUp)));
