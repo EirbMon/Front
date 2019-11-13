@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Page from '../../utils/page';
+import Page from '../../utils/layout/index';
 
 const styles = () => ({
     form: {

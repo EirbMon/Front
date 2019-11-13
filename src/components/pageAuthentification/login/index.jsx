@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import bcAccess from '../../../actions/index';
-import loginUrl from '../../../middleWare/loginUrl';
+import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
 const styles = () => ({
     form: {
@@ -51,9 +51,9 @@ const Login = ({ classes, history, login }) => {
         });
     };
 
-    const loginFunction = (e, url, user) => {
+    const loginFunction = (e, user) => {
         e.preventDefault();
-        login(url, user)
+        login(generateloginUrl(), user)
             .then(() => {
                 history.push('/profil');
             });
@@ -62,7 +62,7 @@ const Login = ({ classes, history, login }) => {
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={(e) => loginFunction(e, loginUrl, form)} className={classes.form}>
+                <form onSubmit={(e) => loginFunction(e, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"

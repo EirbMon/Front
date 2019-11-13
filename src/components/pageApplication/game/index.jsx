@@ -4,9 +4,10 @@ import React from 'react';
 import Unity, { UnityContent } from 'react-unity-webgl';
 import { connect } from 'react-redux';
 
-import bcAccess from '../../../actions/index';
+import mongoAccess from '../../../actions/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
-import Page from '../../utils/page';
+import generateGetOrphanEirbmonUrl from '../../../middleWare/generateGetOrphanEirbmonUrl';
+import Page from '../../utils/layout/index';
 
 class Game extends React.Component {
     constructor(props) {
@@ -29,11 +30,15 @@ class Game extends React.Component {
     sendMsgToUnity() {
         const { dispatch } = this.props;
 
-        dispatch(bcAccess.GetEirbmon(generateGetEirbmonUrl()))
-            .then((initEirb) => {
-                this.unityContent.send('GeneratePokemon', 'GenerateFirstPokemon', JSON.stringify(initEirb));
-            });
-
+        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl()))
+            .then(
+            (initEirb) => {
+                    console.log('Good');
+                    this.unityContent.send('GeneratePokemon', 'GenerateFirstPokemon', JSON.stringify(initEirb));
+                }),
+            (err) => {
+                console.error(err)
+            }
         // let eirbmonInfo = {
         //   Pokemons: [{
         //     type: "Pikachu",
@@ -64,6 +69,21 @@ class Game extends React.Component {
         // this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
     }
 
+    getOrphanEirbmon() {
+        const { dispatch } = this.props;
+        console.log('button');
+        dispatch(mongoAccess.GetOrphanEirbmon(generateGetOrphanEirbmonUrl()))
+            .then(
+                (orphanEirbmon) => {
+                    console.log(orphanEirbmon);
+                    this.unityContent.send('GeneratePokemon', 'GenerateFirstPokemon', JSON.stringify(orphanEirbmon));
+                },
+                (err) => {
+                    console.error(err)
+                }
+            );
+    }
+
     render() {
         const { messageUnity } = this.state;
 
@@ -71,23 +91,29 @@ class Game extends React.Component {
             <Page currentPage="Jeux">
                 <h1>Eirbmon</h1>
                 <div>
-                    <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity()}>
+                    <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity().bind(this)}>
                         Send Eirbmon to Unity
+                    </Button>
+                    <Button variant="outlined" color="primary" onClick={() => this.getOrphanEirbmon().bind(this)}>
+                        Get Orphan Eirbmon
                     </Button>
                 </div>
                 <div>
                     <Unity unityContent={this.unityContent} />
                 </div>
                 Message from unity :
-                {' '}
                 {messageUnity}
             </Page>
         );
     }
 }
 
+function select(state) {
+    return {};
+}
+
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect(null)(Game);
+export default connect(select)(Game);

@@ -55,7 +55,7 @@ module.exports = {
         },
         stats: 'errors-only',
         proxy: {
-            '/v1/api/**': {
+            '/v1**': {
                 logLevel: 'debug',
                 target: 'http://localhost:8080',
                 secure: false,

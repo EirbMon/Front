@@ -8,8 +8,8 @@ import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 
 import bcAccess from '../../../actions/index';
-import signUpUrl from '../../../middleWare/signUpUrl';
-import loginUrl from '../../../middleWare/loginUrl';
+import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
+import generateLoginUrl from '../../../middleWare/generateLoginUrl';
 
 const styles = () => ({
     form: {
@@ -57,10 +57,10 @@ const SignUp = ({ classes, history, signUp, login }) => {
         console.log(passwordCrypted.toString());
     };
 
-    const signUpFunction = (e, url, user) => {
+    const signUpFunction = (e, user) => {
         e.preventDefault();
-        signUp(signUpUrl, { ...user })
-            .then(() => login(loginUrl, form))
+        signUp(generateSignUpUrl(), { ...user })
+            .then(() => login(generateLoginUrl(), form))
             .then(() => {
                 history.push('/profil');
             });
@@ -69,7 +69,7 @@ const SignUp = ({ classes, history, signUp, login }) => {
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={(e) => signUpFunction(e, signUpUrl, form)} className={classes.form}>
+                <form onSubmit={(e) => signUpFunction(e, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
