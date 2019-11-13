@@ -1,9 +1,11 @@
-import { getJwt } from './getJwt';
+import getJwt from './getJwt';
 
-export const checkAuthen = ({ history }) => {
+const checkAuthen = ({ history }) => {
     const jwt = getJwt();
 
     if (!jwt) {
         history.push('/login');
     }
-}
+};
+
+export default checkAuthen;
