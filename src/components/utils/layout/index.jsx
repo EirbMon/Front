@@ -1,77 +1,45 @@
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Typography, IconButton, Drawer, Toolbar, List } from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
+import { flowRight } from 'lodash/fp';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { lifecycle } from 'recompose';
 
-import ItemLayout from './itemLayout';
-import disconnect from '../../../functions/disconnect';
+import checkAuthen from '../../../functions/checkAuthen';
+import Layout from './layout';
 
-const styles = () => ({
-    root: {
-        flexGrow: 1,
-    },
-    apptitle: {
-        flexGrow: 1,
-        textAlign: 'center',
-    },
-    menuButton: {
-        marginLeft: -18,
-        marginRight: 10,
-    },
-    appbar: {
-        background: 'linear-gradient(to right, #0086C9, #4BC9EC);',
-    },
-    disconnectionButton: {
-        position: 'absolute',
-        right: '10px',
+const styles = (theme) => ({
+    tableWrapper: {
+        overflowX: 'auto',
+        padding: theme.spacing(3),
+        maxWidth: 1200,
+        margin: '50px auto 0 auto',
     },
 });
 
-const Layout = ({ currentPage, classes, history }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-        <div>
-            <Drawer open={isOpen} onClose={() => setIsOpen(!isOpen)}>
-                <div tabIndex="0" role="button" onKeyPress={() => console.log('window')} onClick={() => setIsOpen(!isOpen)}>
-                    <List component="nav">
-                        <ItemLayout page="unity" primary="Jeux" secondary="Eirbmon" />
-                        <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
-                    </List>
-                </div>
-            </Drawer>
-            <AppBar position="fixed" className={classes.appbar}>
-                <Toolbar className={classes.root} variant="dense">
-                    <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={() => setIsOpen(!isOpen)}>
-                        <Menu />
-                    </IconButton>
-                    {currentPage}
-                    <Typography variant="h6" color="inherit" className={classes.apptitle}>
-                        Eirbmon
-                    </Typography>
-                    <IconButton className={classes.disconnectionButton} color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
-                        <ExitToAppIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
+const Page = ({ currentPage, classes, children }) => (
+    <div className="App">
+        <Layout currentPage={currentPage} />
+        <div className={classes.tableWrapper}>
+            {children}
         </div>
-    );
-};
+    </div>
+);
 
-Layout.propTypes = {
+Page.propTypes = {
     classes: PropTypes.shape({
-        menuButton: PropTypes.string,
-        disconnectionButton: PropTypes.string,
-        container: PropTypes.string,
-        apptitle: PropTypes.string,
-        appbar: PropTypes.string,
-        root: PropTypes.string,
+        tableWrapper: PropTypes.string,
     }).isRequired,
-    history: PropTypes.shape({}),
+    children: PropTypes.node,
     currentPage: PropTypes.string,
 };
 
-export default withRouter(withStyles(styles)(Layout));
+export default flowRight([
+    withRouter,
+    withStyles(styles),
+    // lifecycle({
+    //     componentWillMount() {
+    //         checkAuthen(this.props);
+    //     },
+    // }),
+])(Page);

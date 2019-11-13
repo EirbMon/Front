@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import bcAccess from '../../../actions/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
-import Page from '../../utils/page';
+import Page from '../../utils/layout/index';
 
 class Game extends React.Component {
     constructor(props) {
@@ -85,9 +85,12 @@ class Game extends React.Component {
         );
     }
 }
+function select(state){
+    return {}
+}
 
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect(null)(Game);
+export default connect(select)(Game);
