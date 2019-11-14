@@ -107,16 +107,12 @@ class Game extends React.Component {
         );
     }
 }
-function select(state){
-    return {}
-}
-
-function select(state) {
-    return {};
-}
+// function select(state){
+//     return {};
+// }
 
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect(select)(Game);
+export default connect()(Game);
