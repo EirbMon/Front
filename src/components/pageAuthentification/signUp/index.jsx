@@ -3,9 +3,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 
-import Requetes from '../../../api/index';
+import bcAccess from '../../../actions/index';
+import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
+import generateLoginUrl from '../../../middleWare/generateLoginUrl';
 
 const styles = () => ({
     form: {
@@ -36,53 +40,36 @@ const styles = () => ({
     },
 });
 
-const SignUp = ({ classes, history }) => {
+const SignUp = ({ classes, history, signUp, login }) => {
     const [form, setValues] = useState({
         username: '',
         email: '',
         password: '',
     });
 
-    const { post } = Requetes;
-
-    const printValues = (e) => {
-        e.preventDefault();
-        console.log(form.username, form.password);
-        post('https://localhost:8080/api/users', {
-            username: form.username,
-            password: form.password,
-            email: form.email,
-        })
-            .then((json) => {
-                post('https://localhost:8080/api/connexion', {
-                    username: json.username,
-                    password: json.password,
-                })
-                    .then((jsonCo) => {
-                        if ('false' === jsonCo.check_user || 'false' === jsonCo.check_password) {
-                            console.log('Cet utilisateur existe pas');
-                        }
-
-                        if (jsonCo.token) {
-                            localStorage.setItem('token', jsonCo.token);
-                            localStorage.setItem('username', form.username);
-                            history.push('/profil');
-                        }
-                    });
-            });
-    };
-
     const updateField = (e) => {
         setValues({
             ...form,
             [e.target.name]: e.target.value,
         });
+
+        const passwordCrypted = CryptoJS.AES.encrypt(form.password, 'secret key 123');
+        console.log(passwordCrypted.toString());
+    };
+
+    const signUpFunction = (e, user) => {
+        e.preventDefault();
+        signUp(generateSignUpUrl(), { ...user })
+            .then(() => login(generateLoginUrl(), form))
+            .then(() => {
+                history.push('/profil');
+            });
     };
 
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={printValues} className={classes.form}>
+                <form onSubmit={(e) => signUpFunction(e, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
@@ -134,6 +121,8 @@ SignUp.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
+    signUp: PropTypes.func,
+    login: PropTypes.func,
 };
 
-export default withRouter(withStyles(styles)(SignUp));
+export default connect(null, { signUp: bcAccess.SignUp, login: bcAccess.Login })(withRouter(withStyles(styles)(SignUp)));

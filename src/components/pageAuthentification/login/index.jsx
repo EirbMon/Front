@@ -3,9 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Requetes from '../../../api/index';
+import bcAccess from '../../../actions/index';
+import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
 const styles = () => ({
     form: {
@@ -36,33 +38,11 @@ const styles = () => ({
     },
 });
 
-const Login = ({ classes, history }) => {
+const Login = ({ classes, history, login }) => {
     const [form, setValues] = useState({
         username: '',
         password: '',
     });
-
-    const { post } = Requetes;
-
-    const printValues = (e) => {
-        e.preventDefault();
-
-        post('https://localhost:8080/api/connexion', {
-            username: form.username,
-            password: form.password,
-        })
-            .then((json) => {
-                if ('false' === json.check_user || 'false' === json.check_password) {
-                    console.log('Cet utilisateur existe pas');
-                }
-
-                if (json.token) {
-                    localStorage.setItem('token', json.token);
-                    localStorage.setItem('username', form.username);
-                    history.push('/profil');
-                }
-            });
-    };
 
     const updateField = (e) => {
         setValues({
@@ -71,10 +51,18 @@ const Login = ({ classes, history }) => {
         });
     };
 
+    const loginFunction = (e, user) => {
+        e.preventDefault();
+        login(generateloginUrl(), user)
+            .then(() => {
+                history.push('/profil');
+            });
+    };
+
     return (
         <div className={classes.page}>
             <div className={classes.container}>
-                <form onSubmit={printValues} className={classes.form}>
+                <form onSubmit={(e) => loginFunction(e, form)} className={classes.form}>
                     <TextField
                         name="username"
                         label="Nom utilisateur"
@@ -124,6 +112,7 @@ Login.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
+    login: PropTypes.func,
 };
 
-export default withRouter(withStyles(styles)(Login));
+export default connect(null, { login: bcAccess.Login })(withRouter(withStyles(styles)(Login)));

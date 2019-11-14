@@ -35,11 +35,11 @@ ReactDOM.render(
                 <SnackbarProvider>
                     <Snackbar>
                         <Switch>
-                            <Route path="/" exact component={Profil} />
-                            <Route path="/unity" exact component={Game} />
-                            <Route path="/login" exact component={Login} />
-                            <Route path="/signUp" exact component={SignUp} />
-                            <Route path="/profil" exact component={Profil} />
+                            <Route path="/" exact component={Login} />
+                            <Route path="/unity" component={Game} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/signUp" component={SignUp} />
+                            <Route path="/profil" component={Profil} />
                         </Switch>
                     </Snackbar>
                 </SnackbarProvider>

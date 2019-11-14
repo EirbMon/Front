@@ -12,6 +12,7 @@ const errorTab = {
     407: 'Invalid Data Form',
     502: 'Unable To Reach The Server',
     409: 'Unique Constraint Is Not Respected',
+    authID: 'Authentification failed',
 };
 
 export default function errorHandler(state, action) {

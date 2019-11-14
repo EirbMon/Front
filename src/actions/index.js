@@ -1,9 +1,13 @@
 import SaveEirbmon from './saveEirbmon';
 import GetEirbmon from './getEirbmon';
-import ErrorSnackbar from './errorSnackbar';
+import GetOrphanEirbmon from './getOrphanEirbmon';
+import Login from './login';
+import SignUp from './singUp';
 
 export default {
     SaveEirbmon,
     GetEirbmon,
-    ErrorSnackbar,
+    GetOrphanEirbmon,
+    Login,
+    SignUp,
 };
