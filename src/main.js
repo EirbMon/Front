@@ -11,11 +11,13 @@ import thunk from 'redux-thunk';
 
 import Game from './components/pageApplication/game';
 import Login from './components/pageAuthentification/login';
+import Connect from './components/pageAuthentification/connectBlockchain';
 import SignUp from './components/pageAuthentification/signUp';
 import Profil from './components/pageApplication/profil';
 import Snackbar from './components/utils/snackbar';
 import reducers from './reducers';
 import API from './api';
+import Web3Provider from 'react-web3-provider';
 
 require('./scss/main.scss');
 
@@ -29,7 +31,9 @@ const store = createStore(reducers(history),
 window.__redux__ = store;
 
 ReactDOM.render(
+    
     <Provider store={store}>
+        
         <ConnectedRouter history={history}>
             <MuiThemeProvider theme={myTheme}>
                 <SnackbarProvider>
@@ -38,6 +42,7 @@ ReactDOM.render(
                             <Route path="/" exact component={Login} />
                             <Route path="/unity" component={Game} />
                             <Route path="/login" component={Login} />
+                            <Route path="/connect" component={Connect} />
                             <Route path="/signUp" component={SignUp} />
                             <Route path="/profil" component={Profil} />
                         </Switch>
