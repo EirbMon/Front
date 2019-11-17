@@ -37,9 +37,9 @@ Page.propTypes = {
 export default flowRight([
     withRouter,
     withStyles(styles),
-    // lifecycle({
-    //     componentWillMount() {
-    //         checkAuthen(this.props);
-    //     },
-    // }),
+    lifecycle({
+        componentWillMount() {
+            //checkAuthen(this.props);
+        },
+    }),
 ])(Page);

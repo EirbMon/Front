@@ -35,7 +35,25 @@ const Profil = ({ classes }) => (
                 <TextField
                     name="username"
                     label="Nom utilisateur"
-                    value={localStorage.getItem('username')}
+                    value={localStorage.getItem('name') || 'Unknown'}
+                    margin="normal"
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                />
+                <TextField
+                    name="username"
+                    label="Email de l'utilisateur"
+                    value={localStorage.getItem('email') || 'Unknown'}
+                    margin="normal"
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                />
+                <TextField
+                    name="username"
+                    label="Numéro de compte"
+                    value={localStorage.getItem('compteNumber') || 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled
