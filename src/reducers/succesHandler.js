@@ -1,3 +1,5 @@
+import {SUCCESS_OCCURS} from '../constants/action-types';
+
 const initObj = {
     timeStamp: undefined,
     success: undefined,
@@ -11,7 +13,7 @@ const successTab = {
 
 export default function successHandler(state, action) {
     switch (action.type) {
-        case 'SUCCESS_OCCURS': {
+        case SUCCESS_OCCURS: {
             return { ...state,
                 ...initObj,
                 timeStamp: new Date(),

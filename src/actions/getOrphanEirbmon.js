@@ -1,8 +1,11 @@
+import {SUCCESS_OCCURS} from '../constants/action-types';
+import {ERROR_OCCURS} from '../constants/action-types';
+
 export default function getOrphanEirbmon(link) {
     return (dispatch, getState, api) => api.get(link)
         .then((res) => {
             dispatch({
-                type: 'SUCCESS_OCCURS',
+                type: SUCCESS_OCCURS,
                 payload: res,
             });
 
@@ -10,7 +13,7 @@ export default function getOrphanEirbmon(link) {
         })
         .catch((err) => {
             dispatch({
-                type: 'ERROR_OCCURS',
+                type: ERROR_OCCURS,
                 payload: err,
             });
 

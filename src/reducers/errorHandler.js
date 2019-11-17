@@ -1,3 +1,5 @@
+import {ERROR_OCCURS} from '../constants/action-types';
+
 const initObj = {
     timeStamp: undefined,
     error: undefined,
@@ -17,7 +19,7 @@ const errorTab = {
 
 export default function errorHandler(state, action) {
     switch (action.type) {
-        case 'ERROR_OCCURS': {
+        case ERROR_OCCURS: {
             return { ...state,
                 ...initObj,
                 timeStamp: new Date(),

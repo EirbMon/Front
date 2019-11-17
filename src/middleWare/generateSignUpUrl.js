@@ -1,3 +1,4 @@
-const signUpUrl = 'https://localhost:8080/api/users';
+const apiUrl = process.env.REACT_APP_APIURL;
+const signUpUrl = `${apiUrl}/api/users`;
 
 export default signUpUrl;

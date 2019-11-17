@@ -1,3 +1,5 @@
+import {ERROR_OCCURS} from '../constants/action-types';
+
 export default function login(link, user) {
     return (dispatch, getState, api) => api.post(link, user)
         .then((res) => {
@@ -12,7 +14,7 @@ export default function login(link, user) {
         })
         .catch((err) => {
             dispatch({
-                type: 'ERROR_OCCURS',
+                type: ERROR_OCCURS,
                 payload: 404,
             });
 

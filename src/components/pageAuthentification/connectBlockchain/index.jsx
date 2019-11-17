@@ -79,11 +79,8 @@ class Connect extends React.Component {
             <Page currentPage="Jeux">
                 <h1>Eirbmon</h1>
                 <div>
-                    <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity().bind(this)}>
-                        Send Eirbmon to Unity
-                    </Button>
                     <Button variant="outlined" color="primary" onClick={() => this.getAccounts().bind(this)}>
-                        Get Orphan Eirbmon
+                        Get Account
                     </Button>
                 </div>
                 
@@ -91,9 +88,6 @@ class Connect extends React.Component {
         );
     }
 }
-// function select(state){
-//     return {};
-// }
 
 Connect.propTypes = {
     dispatch: PropTypes.func,

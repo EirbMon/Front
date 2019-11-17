@@ -1,0 +1,2 @@
+export const ERROR_OCCURS = "ERROR_OCCURS";
+export const SUCCESS_OCCURS = "SUCCESS_OCCURS";
