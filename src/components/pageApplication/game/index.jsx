@@ -23,7 +23,6 @@ class Game extends React.Component {
 
         this.unityContent.on('DoInteraction', (message) => {
             this.setState({ messageUnity: message });
-            // console.log(`Wow Unity said: ${this.state.messageUnity}`);
         });
     }
 
@@ -39,34 +38,6 @@ class Game extends React.Component {
             (err) => {
                 console.error(err)
             }
-        // let eirbmonInfo = {
-        //   Pokemons: [{
-        //     type: "Pikachu",
-        //     name: "Gribouille",
-        //     color: "Black",
-        //     position_x: -56.5,
-        //     position_y: 3.6,
-
-        //   },
-        //   {
-        //     type: "Carapuce",
-        //     name: "Artpick",
-        //     color: "Silver",
-        //     position_x: -57.44,
-        //     position_y: 3.7,
-
-        //   },
-        //   {
-        //     type: "Salameche",
-        //     name: "Loustick",
-        //     color: "Purple",
-        //     position_x: -55.5,
-        //     position_y: 3.6,
-
-        //   }
-        // ]
-        // };
-        // this.unityContent.send("GeneratePokemon", "GenerateFirstPokemon", JSON.stringify(eirbmonInfo));
     }
 
     getOrphanEirbmon() {
