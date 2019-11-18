@@ -40,6 +40,7 @@ const Layout = ({ currentPage, classes, history }) => {
                     <List component="nav">
                         <ItemLayout page="unity" primary="Jeux" secondary="Eirbmon" />
                         <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
+                        <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" />
                     </List>
                 </div>
             </Drawer>

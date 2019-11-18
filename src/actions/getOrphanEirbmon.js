@@ -1,5 +1,4 @@
-import {SUCCESS_OCCURS} from '../constants/action-types';
-import {ERROR_OCCURS} from '../constants/action-types';
+import { SUCCESS_OCCURS, ERROR_OCCURS } from '../constants/action-types';
 
 export default function getOrphanEirbmon(link) {
     return (dispatch, getState, api) => api.get(link)

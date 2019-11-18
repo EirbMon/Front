@@ -10,6 +10,7 @@ import { Route, Switch } from 'react-router-dom';
 import thunk from 'redux-thunk';
 
 import Game from './components/pageApplication/game';
+import Eirbdex from './components/pageApplication/eirbdex';
 import Login from './components/pageAuthentification/login';
 import Connect from './components/pageAuthentification/connectBlockchain';
 import SignUp from './components/pageAuthentification/signUp';
@@ -31,9 +32,7 @@ const store = createStore(reducers(history),
 window.__redux__ = store;
 
 ReactDOM.render(
-    
     <Provider store={store}>
-        
         <ConnectedRouter history={history}>
             <MuiThemeProvider theme={myTheme}>
                 <SnackbarProvider>
@@ -45,6 +44,7 @@ ReactDOM.render(
                             <Route path="/connect" component={Connect} />
                             <Route path="/signUp" component={SignUp} />
                             <Route path="/profil" component={Profil} />
+                            <Route path="/eirbdex" exact component={Eirbdex} />
                         </Switch>
                     </Snackbar>
                 </SnackbarProvider>

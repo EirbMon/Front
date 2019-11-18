@@ -24,11 +24,17 @@ const Snackbar = ({ children, enqueueSnackbar, errorHandler, successHandler }) =
 
 Snackbar.propTypes = {
     successHandler: PropTypes.shape({
-        success: PropTypes.number,
+        success: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
         successMessage: PropTypes.string,
     }).isRequired,
     errorHandler: PropTypes.shape({
-        error: PropTypes.number,
+        error: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
         errorMessage: PropTypes.string,
     }).isRequired,
     children: PropTypes.node,
