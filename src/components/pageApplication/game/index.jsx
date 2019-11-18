@@ -69,9 +69,9 @@ class Game extends React.Component {
                         Get Orphan Eirbmon
                     </Button>
                 </div>
-                {/* <div>
+                <div>
                     <Unity unityContent={this.unityContent} />
-                </div> */}
+                </div>
                 Message from unity :
                 {messageUnity}
             </Page>
