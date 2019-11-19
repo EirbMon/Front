@@ -18,7 +18,6 @@ import Profil from './components/pageApplication/profil';
 import Snackbar from './components/utils/snackbar';
 import reducers from './reducers';
 import API from './api';
-import Web3Provider from 'react-web3-provider';
 
 require('./scss/main.scss');
 
