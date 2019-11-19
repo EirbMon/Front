@@ -1,8 +1,6 @@
 import classNames from 'classnames';
 import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Typography, IconButton } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
@@ -12,22 +10,19 @@ import { withRouter } from 'react-router-dom';
 
 import Page from '../../utils/layout';
 import Eirbmon from './eirbmon';
+import EirbmonItem from './eirbmonItem';
 
 const styles = () => ({
     eirbdex: {
+        backgroundColor: '#7398AE',
         maxWidth: '700',
-        backgroundColor: 'grey',
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        top: 0,
-        paddingTop: '1px',
-        borderRadius: '5px',
         minHeight: '90vh',
+        borderRadius: '60px',
+        paddingTop: '20px',
         position: 'relative',
     },
     title: {
-        backgroundColor: 'red',
-        margin: '24px',
+        backgroundColor: '#B1A296',
         marginLeft: 'auto',
         marginRight: 'auto',
         padding: '20px',
@@ -36,35 +31,18 @@ const styles = () => ({
     },
     eirbmons: {
         padding: '10px',
+        paddingTop: '20px',
         marginRight: '0 !important',
         marginLeft: '0 !important',
+        paddingRight: '25px',
     },
-    eirbmon: {
-        width: '150px',
-        margin: '10',
-        border: '1px solid #efefef',
-        borderRadius: '4px',
-        '&:hover, &:focus': {
-            border: 'solid 1px',
-        },
-        paddingRight: '0 !important',
-        paddingLeft: '0 !important',
-    },
-    media: {
-        margin: '10 20 10 20',
-        height: 75,
-        backgroundColor: 'black',
-    },
-    eirbmonName: {
-        padding: '0 !important',
-    },
-    level: {
-        marginRight: '2px',
+    eirbmonSelected: {
+        paddingTop: '20px',
     },
     backButton: {
         position: 'absolute',
-        right: '10px',
-        top: '10px',
+        right: '50px',
+        top: '20px',
     },
 });
 
@@ -72,7 +50,20 @@ const Eirbdex = ({ classes }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
 
-    const eirbmons = [['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    const eirbmons = [
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
         ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
     ];
 
@@ -92,9 +83,9 @@ const Eirbdex = ({ classes }) => {
 
     return (
         <Page currentPage="Eirbdex">
-            <div>
-                <div className={classes.eirbdex}>
-                    <Paper className={classes.title}>
+            <div className="mx-auto">
+                <Paper className={classNames('mx-auto', classes.eirbdex)}>
+                    <Paper className={classNames('mx-auto', classes.title)}>
                         <Typography variant="h5" component="h3" align="center">
                             Eirbdex
                         </Typography>
@@ -106,50 +97,37 @@ const Eirbdex = ({ classes }) => {
                     ) : null}
                     {!isOpen ? (
                         <div className={classNames('row', classes.eirbmons)}>
-                            {eirbmonsForm.length !== 0 ? eirbmons.map((item, index) => {
+                            {eirbmonsForm.length !== 0 ? eirbmonsForm.map((item, index) => {
                                 const key = index;
 
                                 return (
-                                    <button
-                                        key={key}
-                                        type="button"
+                                    <EirbmonItem
                                         onClick={() => {
                                             setEirbmon(item);
                                             setIsOpen(!isOpen);
                                         }}
-                                        className={classNames('col-md-2', classes.eirbmon)}
-                                    >
-                                        <Card>
-                                            <Typography component="p" align="right" className={classes.level}>
-                                                Niveau
-                                                {item.level}
-                                            </Typography>
-                                            <CardMedia
-                                                className={classes.media}
-                                                image=""
-                                                title=""
-                                            />
-                                            <Typography component="h1" align="center">
-                                                {item.name}
-                                            </Typography>
-                                        </Card>
-                                    </button>
+                                        key={key}
+                                        name={item.name}
+                                        level={item.level}
+                                    />
                                 );
                             }) : null}
                         </div>
                     ) : (
-                        <Eirbmon
-                            name={eirbmon.name}
-                            image={eirbmon.image}
-                            level={eirbmon.level}
-                            xp={eirbmon.xp}
-                            attack={eirbmon.attack}
-                            date={eirbmon.date}
-                            pv={eirbmon.pv}
-                            filiere={eirbmon.filiere}
-                        />
+                        <div className={classes.eirbmonSelected}>
+                            <Eirbmon
+                                name={eirbmon.name}
+                                image={eirbmon.image}
+                                level={eirbmon.level}
+                                xp={eirbmon.xp}
+                                attack={eirbmon.attack}
+                                date={eirbmon.date}
+                                pv={eirbmon.pv}
+                                filiere={eirbmon.filiere}
+                            />
+                        </div>
                     )}
-                </div>
+                </Paper>
             </div>
         </Page>
     );
@@ -157,14 +135,11 @@ const Eirbdex = ({ classes }) => {
 
 Eirbdex.propTypes = {
     classes: PropTypes.shape({
-        eirbmon: PropTypes.string,
+        eirbmonSelected: PropTypes.string,
         eirbmons: PropTypes.string,
-        media: PropTypes.string,
         backButton: PropTypes.string,
         title: PropTypes.string,
         eirbdex: PropTypes.string,
-        level: PropTypes.string,
-        form: PropTypes.string,
     }).isRequired,
 };
 
