@@ -13,6 +13,7 @@ import { withRouter } from 'react-router-dom';
 import Eirbmon from './eirbmon';
 import Page from '../../utils/layout';
 import data from './data';
+import API from '../../../api';
 
 const styles = () => ({
     eirbdex: {
@@ -72,6 +73,50 @@ const styles = () => ({
 const Eirbdex = ({ classes }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
+    const [eirbmons, setEirbmons] = useState([]);
+
+    // const eirbmons = [['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    // ];
+
+    const { get } = API;
+    get('http://localhost:4000/getMyEirbmon?account=0xe5B62D0e4349FB0d7Ebf019a2b7a9f8f9ec00D18')
+        .then((res) => {
+            console.log(res);
+
+            if (res.length !== 0) {
+                const eirbmonsForm = res.map((item) => {
+                    const pokemon = {
+                        id: item[0],
+                        name: item[1],
+                        adress: item[2],
+                        level: item[3],
+                        filiere: item[4],
+                        attack: item[5],
+                        pv: item[6],
+                    };
+
+                    return pokemon;
+                });
+
+                setEirbmons(eirbmonsForm);
+                console.log(eirbmonsForm);
+            }
+        });
+
+    // const eirbmonsForm = eirbmons.map((item) => {
+    //     const pokemon = {
+    //         id: item[0],
+    //         name: item[1],
+    //         adress: item[2],
+    //         level: item[3],
+    //         filiere: item[4],
+    //         attack: item[5],
+    //         pv: item[6],
+    //     };
+
+    //     return pokemon;
+    // });
 
     return (
         <Page currentPage="Eirbdex">
@@ -89,7 +134,7 @@ const Eirbdex = ({ classes }) => {
                     ) : null}
                     {!isOpen ? (
                         <div className={classNames('row', classes.eirbmons)}>
-                            {data.eirbmons.map((item, index) => {
+                            {eirbmons.length !== 0 ? eirbmons.map((item, index) => {
                                 const key = index;
 
                                 return (
@@ -118,7 +163,7 @@ const Eirbdex = ({ classes }) => {
                                         </Card>
                                     </button>
                                 );
-                            })}
+                            }) : null}
                         </div>
                     ) : (
                         <Eirbmon
