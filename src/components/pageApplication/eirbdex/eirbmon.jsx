@@ -20,8 +20,7 @@ const styles = () => ({
     },
     media: {
         margin: '20 20 20 20',
-        height: 140,
-        backgroundColor: 'black',
+        height: 300,
     },
     paper: {
         textAlign: 'center',
@@ -41,51 +40,54 @@ const styles = () => ({
     },
 });
 
-const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => (
-    <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-    >
-        <Card className={classes.card}>
-            <Typography component="p" align="right" className={classes.level}>
-                Niveau
-                {level}
-            </Typography>
-            <CardMedia
-                className={classes.media}
-                image=""
-                title=""
-            />
-            <CardContent>
-                <Typography component="h1" align="center" className={classes.EirbmonName}>
-                    {name}
+const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
+    const levelTitle = `Niveau ${level}`;
+    const dateTitle = `Date de capture : ${date}`;
+
+    return (
+        <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+        >
+            <Card className={classes.card}>
+                <Typography component="p" align="right" className={classes.level}>
+                    {levelTitle}
                 </Typography>
-                <Grid container spacing={3}>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>{xp}</Paper>
+                <CardMedia
+                    className={classes.media}
+                    image="https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg"
+                    title="Test"
+                />
+                <CardContent>
+                    <Typography component="h1" align="center" className={classes.EirbmonName}>
+                        {name}
+                    </Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>{xp}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>{attack}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>{filiere}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>{pv}</Paper>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>{attack}</Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>{filiere}</Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.paper}>{pv}</Paper>
-                    </Grid>
-                </Grid>
-            </CardContent>
-            <CardActions>
-                <Typography component="p" className={classes.bottomText}>
-                    Date de capture :
-                    {date}
-                </Typography>
-            </CardActions>
-        </Card>
-    </Grid>
-);
+                </CardContent>
+                <CardActions>
+                    <Typography component="p" className={classes.bottomText}>
+                        {dateTitle}
+                    </Typography>
+                </CardActions>
+            </Card>
+        </Grid>
+    );
+};
 
 Eirbmon.propTypes = {
     name: PropTypes.string,
