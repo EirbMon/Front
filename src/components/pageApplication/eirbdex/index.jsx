@@ -81,7 +81,7 @@ const Eirbdex = ({ classes }) => {
     // ];
 
     const { get } = API;
-    get('http://localhost:4000/getMyEirbmon?account=0x42d6e9fb9af2e5331debe8ddb5e3519652fa0b95')
+    get('http://eirbmon.hopto.org:4000/getMyEirbmon?account=0x42d6e9fb9af2e5331debe8ddb5e3519652fa0b95')
         .then((res) => {
             console.log(res);
 
