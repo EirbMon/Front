@@ -81,7 +81,7 @@ const Eirbdex = ({ classes }) => {
     // ];
 
     const { get } = API;
-    get('http://localhost:4000/getMyEirbmon?account=0x8522727cab0bcd69782660ff6051a42a3160ee0b')
+    get('http://localhost:4000/getMyEirbmon?account=0xe5B62D0e4349FB0d7Ebf019a2b7a9f8f9ec00D18')
         .then((res) => {
             console.log(res);
 
@@ -119,7 +119,6 @@ const Eirbdex = ({ classes }) => {
     //     return pokemon;
     // });
 
-    console.log(eirbmonsForm);
 
     return (
         <Page currentPage="Eirbdex">
