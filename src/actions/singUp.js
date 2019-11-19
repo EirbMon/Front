@@ -11,8 +11,8 @@ export default function signUp(link, user) {
 
             if (res.token) {
                 localStorage.setItem('token', res.token);
-                localStorage.setItem('username', user.name);
-                localStorage.setItem('email', user.email);
+                localStorage.setItem('name', res.name);
+                localStorage.setItem('email', res.email);
                 dispatch({
                     type: SUCCESS_OCCURS,
                     payload: 'connected',

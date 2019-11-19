@@ -10,11 +10,8 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Eirbmon from './eirbmon';
 import Page from '../../utils/layout';
-import data from './data';
-
-import API from '../../../api';
+import Eirbmon from './eirbmon';
 
 const styles = () => ({
     eirbdex: {
@@ -74,51 +71,24 @@ const styles = () => ({
 const Eirbdex = ({ classes }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
-    const [eirbmons, setEirbmons] = useState([]);
 
-    // const eirbmons = [['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-    // ];
+    const eirbmons = [['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    ];
 
-    const { get } = API;
-    get('http://eirbmon.hopto.org:4000/getMyEirbmon?account=0x42d6e9fb9af2e5331debe8ddb5e3519652fa0b95')
-        .then((res) => {
-            console.log(res);
+    const eirbmonsForm = eirbmons.map((item) => {
+        const pokemon = {
+            id: item[0],
+            name: item[1],
+            adress: item[2],
+            level: item[3],
+            filiere: item[4],
+            attack: item[5],
+            pv: item[6],
+        };
 
-            if (res.length !== 0) {
-                const eirbmonsForm = res.map((item) => {
-                    const pokemon = {
-                        id: item[0],
-                        name: item[1],
-                        adress: item[2],
-                        level: item[3],
-                        filiere: item[4],
-                        attack: item[5],
-                        pv: item[6],
-                    };
-
-                    return pokemon;
-                });
-
-                setEirbmons(eirbmonsForm);
-                console.log(eirbmonsForm);
-            }
-        });
-
-    // const eirbmonsForm = eirbmons.map((item) => {
-    //     const pokemon = {
-    //         id: item[0],
-    //         name: item[1],
-    //         adress: item[2],
-    //         level: item[3],
-    //         filiere: item[4],
-    //         attack: item[5],
-    //         pv: item[6],
-    //     };
-
-    //     return pokemon;
-    // });
-
+        return pokemon;
+    });
 
     return (
         <Page currentPage="Eirbdex">
@@ -136,7 +106,7 @@ const Eirbdex = ({ classes }) => {
                     ) : null}
                     {!isOpen ? (
                         <div className={classNames('row', classes.eirbmons)}>
-                            {eirbmons.length !== 0 ? eirbmons.map((item, index) => {
+                            {eirbmonsForm.length !== 0 ? eirbmons.map((item, index) => {
                                 const key = index;
 
                                 return (
@@ -168,17 +138,17 @@ const Eirbdex = ({ classes }) => {
                             }) : null}
                         </div>
                     ) : (
-                            <Eirbmon
-                                name={eirbmon.name}
-                                image={eirbmon.image}
-                                level={eirbmon.level}
-                                xp={eirbmon.xp}
-                                attack={eirbmon.attack}
-                                date={eirbmon.date}
-                                pv={eirbmon.pv}
-                                filiere={eirbmon.filiere}
-                            />
-                        )}
+                        <Eirbmon
+                            name={eirbmon.name}
+                            image={eirbmon.image}
+                            level={eirbmon.level}
+                            xp={eirbmon.xp}
+                            attack={eirbmon.attack}
+                            date={eirbmon.date}
+                            pv={eirbmon.pv}
+                            filiere={eirbmon.filiere}
+                        />
+                    )}
                 </div>
             </div>
         </Page>

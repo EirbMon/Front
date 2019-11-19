@@ -54,13 +54,5 @@ module.exports = {
             'Access-Control-Allow-Headers': '*',
         },
         stats: 'errors-only',
-        // proxy: {
-        //     '/v1**': {
-        //         logLevel: 'debug',
-        //         target: 'http://localhost:4000',
-        //         secure: false,
-        //         changeOrigin: true,
-        //     },
-        // },
     },
 };
