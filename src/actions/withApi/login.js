@@ -1,21 +1,38 @@
-import {ERROR_OCCURS} from '../../constants/action-types';
+import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
 
 export default function login(link, user) {
     return (dispatch, getState, api) => api.post(link, user)
         .then((res) => {
-            if ('false' === res.check_user || 'false' === res.check_password) {
-                console.log('Pas de connexion');
+            if ('false' === res.check_user) {
+                const err = 'userDoesntExist';
+
+                throw err;
+            }
+
+            if ('false' === res.check_password) {
+                const err = 'errorPassword';
+
+                throw err;
             }
 
             if (res.token) {
                 localStorage.setItem('token', res.token);
-                localStorage.setItem('username', user.username);
+                localStorage.setItem('username', user.name);
+                localStorage.setItem('email', user.email);
+                dispatch({
+                    type: SUCCESS_OCCURS,
+                    payload: 'connected',
+                });
+            } else {
+                const err = 404;
+
+                throw err;
             }
         })
         .catch((err) => {
             dispatch({
                 type: ERROR_OCCURS,
-                payload: 404,
+                payload: err,
             });
 
             return err;

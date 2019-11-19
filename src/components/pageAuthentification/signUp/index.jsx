@@ -1,3 +1,4 @@
+import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -5,11 +6,10 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import CryptoJS from 'crypto-js';
 
 import bcAccess from '../../../actions/withApi/index';
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
-import generateLoginUrl from '../../../middleWare/generateLoginUrl';
+import getJwt from '../../../functions/getJwt';
 
 const styles = () => ({
     form: {
@@ -40,11 +40,12 @@ const styles = () => ({
     },
 });
 
-const SignUp = ({ classes, history, signUp, login }) => {
+const SignUp = ({ classes, history, signUp, displayMessage }) => {
     const [form, setValues] = useState({
-        username: '',
+        name: '',
         email: '',
         password: '',
+        passwordCheck: '',
     });
 
     const updateField = (e) => {
@@ -52,18 +53,22 @@ const SignUp = ({ classes, history, signUp, login }) => {
             ...form,
             [e.target.name]: e.target.value,
         });
-
-        const passwordCrypted = CryptoJS.AES.encrypt(form.password, 'secret key 123');
-        console.log(passwordCrypted.toString());
     };
 
     const signUpFunction = (e, user) => {
         e.preventDefault();
-        signUp(generateSignUpUrl(), { ...user })
-            .then(() => login(generateLoginUrl(), form))
-            .then(() => {
-                history.push('/profil');
-            });
+        if (user.password !== user.passwordCheck) {
+            displayMessage('errorPasswordVerification');
+        } else {
+            signUp(generateSignUpUrl, { ...user })
+                .then(() => {
+                    const jwt = getJwt();
+
+                    if (jwt) {
+                        history.push('/profil');
+                    }
+                });
+        }
     };
 
     return (
@@ -71,9 +76,9 @@ const SignUp = ({ classes, history, signUp, login }) => {
             <div className={classes.container}>
                 <form onSubmit={(e) => signUpFunction(e, form)} className={classes.form}>
                     <TextField
-                        name="username"
+                        name="name"
                         label="Nom utilisateur"
-                        value={form.username}
+                        value={form.name}
                         onChange={updateField}
                         margin="normal"
                         variant="outlined"
@@ -102,8 +107,27 @@ const SignUp = ({ classes, history, signUp, login }) => {
                         fullWidth
                         required
                     />
+                    <TextField
+                        name="passwordCheck"
+                        label="Vérification mot de passe"
+                        value={form.passwordCheck}
+                        onChange={updateField}
+                        margin="normal"
+                        variant="outlined"
+                        type="password"
+                        fullWidth
+                        required
+                    />
                     <Button variant="contained" type="submit" className={classes.button} fullWidth>
                         S&apos;inscrire
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        className={classes.button}
+                        onClick={() => { history.push('/login'); }}
+                        fullWidth
+                    >
+                        Se connecter
                     </Button>
                 </form>
             </div>
@@ -122,7 +146,14 @@ SignUp.propTypes = {
         push: PropTypes.func,
     }),
     signUp: PropTypes.func,
-    login: PropTypes.func,
+    displayMessage: PropTypes.func,
 };
 
-export default connect(null, { signUp: bcAccess.SignUp, login: bcAccess.Login })(withRouter(withStyles(styles)(SignUp)));
+export default flowRight([
+    withRouter,
+    withStyles(styles),
+    connect(null, {
+        signUp: bcAccess.SignUp,
+        displayMessage: bcAccess.DisplayMessage,
+    }),
+])(SignUp);

@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 import bcAccess from '../../../actions/withApi/index';
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
+import getJwt from '../../../functions/getJwt';
 
 const styles = () => ({
     form: {
@@ -40,7 +41,7 @@ const styles = () => ({
 
 const Login = ({ classes, history, login }) => {
     const [form, setValues] = useState({
-        username: '',
+        email: '',
         password: '',
     });
 
@@ -53,9 +54,13 @@ const Login = ({ classes, history, login }) => {
 
     const loginFunction = (e, user) => {
         e.preventDefault();
-        login(generateloginUrl(), user)
+        login(generateloginUrl, user)
             .then(() => {
-                history.push('/profil');
+                const jwt = getJwt();
+
+                if (jwt) {
+                    history.push('/profil');
+                }
             });
     };
 
@@ -64,9 +69,9 @@ const Login = ({ classes, history, login }) => {
             <div className={classes.container}>
                 <form onSubmit={(e) => loginFunction(e, form)} className={classes.form}>
                     <TextField
-                        name="username"
-                        label="Nom utilisateur"
-                        value={form.username}
+                        name="email"
+                        label="Email de l'utilisateur"
+                        value={form.email}
                         onChange={updateField}
                         margin="normal"
                         variant="outlined"
@@ -88,8 +93,7 @@ const Login = ({ classes, history, login }) => {
                         Se connecter
                     </Button>
                     <Button
-                        variant="contained"
-                        type="button"
+                        variant="outlined"
                         className={classes.button}
                         onClick={() => { history.push('/signup'); }}
                         fullWidth

@@ -1,4 +1,4 @@
 const apiUrl = process.env.REACT_APP_APIURL;
-const signUpUrl = `${apiUrl}/api/users`;
+const signUpUrl = 'http://eirbmon.hopto.org:4000/api/users';
 
 export default signUpUrl;

@@ -1,4 +1,3 @@
-import {SUCCESS_OCCURS} from '../../constants/action-types';
 import {ERROR_OCCURS} from '../../constants/action-types';
 import { LOAD_EIRBMON_SUCCESS } from '../../constants/action-types';
 

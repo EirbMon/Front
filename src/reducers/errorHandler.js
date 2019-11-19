@@ -14,7 +14,10 @@ const errorTab = {
     407: 'Invalid Data Form',
     502: 'Unable To Reach The Server',
     409: 'Unique Constraint Is Not Respected',
-    authID: 'Authentification failed',
+    errorPasswordVerification: 'Veuillez entrer le même mot de passe',
+    userAlreadyExists: 'Cet email est déjà utilisé',
+    userDoesntExist: 'Cet email ne correspond pas à un utilisateur',
+    errorPassword: "Le mot de passe n'est pas bon",
 };
 
 export default function errorHandler(state, action) {

@@ -1,4 +1,4 @@
-import {SUCCESS_OCCURS} from '../constants/action-types';
+import { SUCCESS_OCCURS } from '../constants/action-types';
 
 const initObj = {
     timeStamp: undefined,
@@ -9,6 +9,7 @@ const initObj = {
 const successTab = {
     200: 'Done',
     201: 'Successfuly Created',
+    connected: 'Vous êtes connecté',
 };
 
 export default function successHandler(state, action) {
