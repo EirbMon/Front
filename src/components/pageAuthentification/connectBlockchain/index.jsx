@@ -7,6 +7,9 @@ import TruffleContract from 'truffle-contract'
 
 import Page from '../../utils/layout/index';
 import Eirbmon from '../../../../build/contracts/Eirbmon.json';
+import reducerAccess from '../../../actions/withReducerOnly/index';
+import backAccess from '../../../actions/withApi/index';
+import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 
 class Connect extends React.Component {
     constructor(props) {
@@ -52,12 +55,13 @@ class Connect extends React.Component {
     }
 
     rende() {
-        var eirbmonInstance;
+        var {dispatch} = this.props;
         self = this;
         // Load account data
         this.web3.eth.getCoinbase(function (err, account) {
             if (err === null) {
                 self.setState({ account });
+                dispatch(reducerAccess.SetAccountInfo(account));
                 console.log("account : " + account);
             }
         });
@@ -83,6 +87,12 @@ class Connect extends React.Component {
         });
     }
 
+    getEirbmons(){
+        var {dispatch, accountInfo} = this.props;
+        
+        console.log(accountInfo);
+        dispatch(backAccess.GetEirbmon(generateGetEirbmonUrl(accountInfo.accountUrl)));
+    }
 
     render() {
 
@@ -93,12 +103,22 @@ class Connect extends React.Component {
                     <Button variant="outlined" color="primary" onClick={() => this.getAccounts()}>
                         Connect Blockchain
                     </Button>
+                    <Button variant="outlined" color="primary" onClick={() => this.getEirbmons()}>
+                        Get Eirbmons
+                    </Button>
                 </div>
-                <h1>Account : {this.state.account}</h1>
-                <h1> eirbmons : {this.state.eirbmons}  </h1>
+                <h1> Account : {this.state.account} </h1>
+                <h1> eirbmons : {this.state.eirbmons} </h1>
+                <h1> eirbmons from back : {this.props.eirbmonsInfo.eirbmons}  </h1>
 
             </Page>
         );
+    }
+}
+function select(state){
+    return {
+        accountInfo: state.accountInfo,
+        eirbmonsInfo: state.eirbmonsInfo
     }
 }
 
@@ -106,4 +126,4 @@ Connect.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect()(Connect);
+export default connect(select)(Connect);

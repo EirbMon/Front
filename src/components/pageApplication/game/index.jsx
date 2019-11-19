@@ -4,7 +4,7 @@ import React from 'react';
 import Unity, { UnityContent } from 'react-unity-webgl';
 import { connect } from 'react-redux';
 
-import mongoAccess from '../../../actions/index';
+import mongoAccess from '../../../actions/withApi/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateGetOrphanEirbmonUrl from '../../../middleWare/generateGetOrphanEirbmonUrl';
 import Page from '../../utils/layout/index';

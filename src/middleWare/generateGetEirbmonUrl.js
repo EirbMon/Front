@@ -1,5 +1,5 @@
 const apiUrl = process.env.REACT_APP_APIURL;
 
-const generateGetEirbmonUrl = () => (`${apiUrl}/api/catalogItem/search`);
+const generateGetEirbmonUrl = (accountInfo) => (`${apiUrl}/getMyEirbmon?account=${accountInfo}`);
 
 export default generateGetEirbmonUrl;

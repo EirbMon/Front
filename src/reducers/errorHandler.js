@@ -1,4 +1,4 @@
-import {ERROR_OCCURS} from '../constants/action-types';
+import { ERROR_OCCURS } from '../constants/action-types';
 
 const initObj = {
     timeStamp: undefined,

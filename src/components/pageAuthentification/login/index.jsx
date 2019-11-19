@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import bcAccess from '../../../actions/index';
+import bcAccess from '../../../actions/withApi/index';
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
 const styles = () => ({

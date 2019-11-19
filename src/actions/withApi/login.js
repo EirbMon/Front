@@ -1,4 +1,4 @@
-import {ERROR_OCCURS} from '../constants/action-types';
+import {ERROR_OCCURS} from '../../constants/action-types';
 
 export default function login(link, user) {
     return (dispatch, getState, api) => api.post(link, user)

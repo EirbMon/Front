@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
 
-import bcAccess from '../../../actions/index';
+import bcAccess from '../../../actions/withApi/index';
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import generateLoginUrl from '../../../middleWare/generateLoginUrl';
 
