@@ -75,6 +75,7 @@ const Login = ({ classes, history, login }) => {
                         onChange={updateField}
                         margin="normal"
                         variant="outlined"
+                        type="email"
                         fullWidth
                         required
                     />
