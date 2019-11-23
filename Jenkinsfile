@@ -62,7 +62,7 @@ pipeline {
         branch "dev"
       }
       steps {
-        sh 'docker run -p 3300:3000 -d --name eirbmon-front-dev eirbmon/front-dev'
+        sh 'docker run -p 3300:3000 -d --name eirbmon-front-dev -v /home/eirbmon/Documents/SharedFile:/build/contracts eirbmon/front-dev'
         echo 'Dev container ready !'
       }
     }
