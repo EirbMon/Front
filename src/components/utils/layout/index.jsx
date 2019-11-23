@@ -39,7 +39,7 @@ export default flowRight([
     withStyles(styles),
     lifecycle({
         componentWillMount() {
-            checkAuthen(this.props);
+            //checkAuthen(this.props);
         },
     }),
 ])(Page);
