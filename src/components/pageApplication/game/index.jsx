@@ -31,7 +31,7 @@ class Game extends React.Component {
     sendMsgToUnity() {
         const { dispatch } = this.props;
 
-        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/owner/xxx_userOwnerId_xxx`)
+        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/owner/xxx_userOwnerId_xxx`))
             .then(
             (initEirb) => {
                     console.log('Good');
@@ -45,7 +45,7 @@ class Game extends React.Component {
     getOrphanEirbmon() {
         const { dispatch } = this.props;
         console.log('button');
-        dispatch(mongoAccess.GetOrphanEirbmon(`${apiUrl}/api/owner/admin_id`)
+        dispatch(mongoAccess.GetOrphanEirbmon(`${apiUrl}/api/owner/admin_id`))
             .then(
                 (orphanEirbmon) => {
                     console.log(orphanEirbmon);
