@@ -28,6 +28,9 @@ const styles = () => ({
         position: 'absolute',
         right: '10px',
     },
+    logo: {
+        marginRight: '5px',
+    },
 });
 
 const Layout = ({ currentPage, classes, history }) => {
@@ -51,6 +54,7 @@ const Layout = ({ currentPage, classes, history }) => {
                     </IconButton>
                     {currentPage}
                     <Typography variant="h6" color="inherit" className={classes.apptitle}>
+                        <img src="../../../../LogoEirbmon2.png" alt="logo" height="40px" className={classes.logo} />
                         Eirbmon
                     </Typography>
                     <IconButton className={classes.disconnectionButton} color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
@@ -70,6 +74,7 @@ Layout.propTypes = {
         apptitle: PropTypes.string,
         appbar: PropTypes.string,
         root: PropTypes.string,
+        logo: PropTypes.string,
     }).isRequired,
     history: PropTypes.shape({}),
     currentPage: PropTypes.string,
