@@ -9,6 +9,8 @@ import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateGetOrphanEirbmonUrl from '../../../middleWare/generateGetOrphanEirbmonUrl';
 import Page from '../../utils/layout/index';
 
+const apiUrl = process.env.REACT_APP_APIURL;
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -29,11 +31,11 @@ class Game extends React.Component {
     sendMsgToUnity() {
         const { dispatch } = this.props;
 
-        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl()))
+        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/owner/xxx_userOwnerId_xxx`))
             .then(
             (initEirb) => {
                     console.log('Good');
-                    this.unityContent.send('GeneratePokemon', 'GenerateFirstPokemon', JSON.stringify(initEirb));
+                    this.unityContent.send('Inventory', 'RetrievePokemonList', JSON.stringify(initEirb));
                 }),
             (err) => {
                 console.error(err)
@@ -43,11 +45,11 @@ class Game extends React.Component {
     getOrphanEirbmon() {
         const { dispatch } = this.props;
         console.log('button');
-        dispatch(mongoAccess.GetOrphanEirbmon(generateGetOrphanEirbmonUrl()))
+        dispatch(mongoAccess.GetOrphanEirbmon(`${apiUrl}/api/owner/admin_id`))
             .then(
                 (orphanEirbmon) => {
                     console.log(orphanEirbmon);
-                    this.unityContent.send('GeneratePokemon', 'GenerateFirstPokemon', JSON.stringify(orphanEirbmon));
+                    this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(orphanEirbmon));
                 },
                 (err) => {
                     console.error(err)
