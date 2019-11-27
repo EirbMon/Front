@@ -48,9 +48,6 @@ export default flowRight([
     }),
     lifecycle({
         componentWillMount() {
-<<<<<<< HEAD
-            checkAuthen(this.props);
-=======
             const jwt = getJwt();
             const { checkToken, history } = this.props;
 
@@ -60,7 +57,6 @@ export default flowRight([
                         history.push('/login');
                     }
                 });
->>>>>>> 4ced3af1c4c54de8f68d5ae10aa869c09b82d4bf
         },
     }),
 ])(Page);
