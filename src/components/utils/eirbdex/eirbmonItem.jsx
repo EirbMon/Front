@@ -10,16 +10,15 @@ import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 const styles = () => ({
-    eirbmon: {
+    card: {
+        width: 150,
         border: '1px solid #efefef',
         borderRadius: '4px',
         '&:hover, &:focus': {
             border: 'solid 1px',
         },
-        width: 150,
-    },
-    card: {
-        width: 150,
+        paddingLeft: '15px',
+        paddingRight: '15px',
     },
     media: {
         margin: '20 20 20 20',
@@ -32,11 +31,14 @@ const styles = () => ({
     item: {
         marginBottom: '10px',
     },
+    selected: {
+        border: 'solid 1px',
+    },
 });
 
 const image = 'https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg';
 
-const EirbmonItem = ({ name, level, onClick, classes }) => {
+const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
     const levelTitle = `Niveau ${level}`;
 
     return (
@@ -51,7 +53,7 @@ const EirbmonItem = ({ name, level, onClick, classes }) => {
                 centerRipple
                 onClick={onClick}
             >
-                <Card className={classes.card}>
+                <Card className={classNames(classes.card, { [classes.selected]: isSelected })}>
                     <Typography component="p" align="right" className={classes.level}>
                         {levelTitle}
                     </Typography>
@@ -71,13 +73,15 @@ const EirbmonItem = ({ name, level, onClick, classes }) => {
 
 EirbmonItem.propTypes = {
     name: PropTypes.string,
-    level: PropTypes.number,
+    level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onClick: PropTypes.func,
+    isSelected: PropTypes.bool,
     classes: PropTypes.shape({
         item: PropTypes.string,
         card: PropTypes.string,
         media: PropTypes.string,
         level: PropTypes.string,
+        selected: PropTypes.string,
     }).isRequired,
 };
 

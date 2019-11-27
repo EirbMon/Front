@@ -3,7 +3,10 @@ import EirbmonContract from "./build/contracts/Eirbmon.json";
 import getWeb3 from "./getWeb3";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  constructor(props) {
+    super(props);
+    this.state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  }
 
   componentDidMount = async () => {
     try {

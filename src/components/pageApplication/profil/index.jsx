@@ -35,7 +35,7 @@ const Profil = ({ classes }) => (
                 <TextField
                     name="username"
                     label="Nom utilisateur"
-                    value={localStorage.getItem('name') || 'Unknown'}
+                    value={sessionStorage.getItem('name') || 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled
@@ -44,7 +44,7 @@ const Profil = ({ classes }) => (
                 <TextField
                     name="username"
                     label="Email de l'utilisateur"
-                    value={localStorage.getItem('email') || 'Unknown'}
+                    value={sessionStorage.getItem('email') || 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled
@@ -53,7 +53,7 @@ const Profil = ({ classes }) => (
                 <TextField
                     name="username"
                     label="Numéro de compte"
-                    value={localStorage.getItem('compteNumber') || 'Unknown'}
+                    value={sessionStorage.getItem('compteNumber') || 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled
