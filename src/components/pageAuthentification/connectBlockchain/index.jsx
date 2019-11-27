@@ -12,6 +12,7 @@ class Connect extends React.Component {
         super(props);
         this.state = {
             account: '0x0',
+            loading: false, // Loading button state
             eirbmons: [],
             contracts: {},
             web3Provider: null,
@@ -23,31 +24,37 @@ class Connect extends React.Component {
     }
 
     getAccounts() {
-        window.onload;
-        console.log(window.web3);
+        // window.onload;
+        // console.log(window.web3);
         this.initWeb3();
         
     }
 
     initWeb3() {
-        console.log("start");
-        console.log(window.ethereum);
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            try { 
-               window.ethereum.enable().then(function() {
-                   // User has allowed account access to DApp...
-               });
-            } catch(e) {
-               // User has denied account access to DApp...
-            }
-         }
-         // Legacy DApp Browsers
-         else if (window.web3) {
-             web3 = new Web3(window.web3.currentProvider);
-         }
-        //  console.log( typeof web3);
-        //  console.log(web3);
+       
+        // handleClick = async () => {
+        //     const { onLoggedIn } = this.props;
+        
+        //     // Check if MetaMask is installed
+        //     if (!(window as any).ethereum) {
+        //       window.alert('Please install MetaMask first.');
+        //       return;
+        //     }
+        
+        //     if (!web3) {
+        //       try {
+        //         // Request account access if needed
+        //         await (window as any).ethereum.enable();
+        
+        //         // We don't know window.web3 version, so we use our own instance of Web3
+        //         // with the injected provider given by MetaMask
+        //         web3 = new Web3((window as any).ethereum);
+        //       } catch (error) {
+        //         window.alert('You need to allow MetaMask.');
+        //         return;
+        //       }
+        //     }
+
         // if (typeof web3 !== 'undefined') {
         //     // If a web3 instance is already provided by Meta Mask.
         //     this.setState({web3Provider : web3.currentProvider});
@@ -58,17 +65,18 @@ class Connect extends React.Component {
         //     })
           
         // } else {
-        //     console.log("tessst");
         //     web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
         //     web3 = new Web3(this.web3Provider);
         // }
-        // //this.initContract();
+    
+
         web3.eth.getAccounts(accounts=>{
-          //  if (err === null) {
-             //   self.setState({ account });
+           if (err === null) {
+               self.setState({ account });
                 console.log("account : " + accounts);
-            //}
+            }
         });
+        this.initContract();
     }
 
     initContract() {
