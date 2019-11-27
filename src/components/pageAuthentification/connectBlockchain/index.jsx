@@ -2,9 +2,8 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Web3 from 'web3';
+//import Web3 from 'web3';
 import TruffleContract from 'truffle-contract'
-
 import Page from '../../utils/layout/index';
 import Eirbmon from '../../../../build/contracts/Eirbmon.json';
 import reducerAccess from '../../../actions/withReducerOnly/index';
@@ -18,6 +17,7 @@ class Connect extends React.Component {
             account: '0x0',
             eirbmons: [],
             contracts: {},
+            web3Provider: null,
         };
         this.getAccounts = this.getAccounts.bind(this);
         this.initWeb3 = this.initWeb3.bind(this);
@@ -26,21 +26,52 @@ class Connect extends React.Component {
     }
 
     getAccounts() {
+        window.onload;
+        console.log(window.web3);
         this.initWeb3();
+        
     }
 
     initWeb3() {
-
-        if (typeof web3 !== 'undefined') {
-            // If a web3 instance is already provided by Meta Mask.
-            this.web3Provider = this.web3.currentProvider;
-            this.web3 = new Web3(this.web3.currentProvider);
-        } else {
-            console.log("tessst");
-            this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-            this.web3 = new Web3(this.web3Provider);
-        }
-        this.initContract();
+        console.log("start");
+        console.log(window.ethereum);
+        if (window.ethereum) {
+            web3 = new Web3(window.ethereum);
+            try { 
+               window.ethereum.enable().then(function() {
+                   // User has allowed account access to DApp...
+               });
+            } catch(e) {
+               // User has denied account access to DApp...
+            }
+         }
+         // Legacy DApp Browsers
+         else if (window.web3) {
+             web3 = new Web3(window.web3.currentProvider);
+         }
+        //  console.log( typeof web3);
+        //  console.log(web3);
+        // if (typeof web3 !== 'undefined') {
+        //     // If a web3 instance is already provided by Meta Mask.
+        //     this.setState({web3Provider : web3.currentProvider});
+        //     web3 = new Web3(web3.currentProvider);
+        //     window.ethereum.enable().catch(error => {
+        //         // User denied account access
+        //         console.log(error)
+        //     })
+          
+        // } else {
+        //     console.log("tessst");
+        //     web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+        //     web3 = new Web3(this.web3Provider);
+        // }
+        // //this.initContract();
+        web3.eth.getAccounts(accounts=>{
+          //  if (err === null) {
+             //   self.setState({ account });
+                console.log("account : " + accounts);
+            //}
+        });
     }
 
     initContract() {
@@ -48,9 +79,9 @@ class Connect extends React.Component {
         // Instantiate a new truffle contract from the artifact
         this.eirbmon = TruffleContract(Eirbmon);
         // Connect provider to interact with contract
-        this.eirbmon.setProvider(this.web3Provider);
+       this.eirbmon.setProvider(this.web3Provider);
 
-        return this.rende();
+       return this.rende();
 
     }
 
@@ -58,7 +89,7 @@ class Connect extends React.Component {
         var {dispatch} = this.props;
         self = this;
         // Load account data
-        this.web3.eth.getCoinbase(function (err, account) {
+        web3.eth.getCoinbase(function (err, account) {
             if (err === null) {
                 self.setState({ account });
                 dispatch(reducerAccess.SetAccountInfo(account));

@@ -3,9 +3,12 @@ import { flowRight } from 'lodash/fp';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { lifecycle } from 'recompose';
 
-import checkAuthen from '../../../functions/checkAuthen';
+import bcAccess from '../../../actions/index';
+import generateCheckTokenUrl from '../../../middleWare/generateCheckTokenUrl';
+import getJwt from '../../../functions/getJwt';
 import Layout from './layout';
 
 const styles = (theme) => ({
@@ -32,14 +35,32 @@ Page.propTypes = {
     }).isRequired,
     children: PropTypes.node,
     currentPage: PropTypes.string,
+    history: PropTypes.shape({
+        push: PropTypes.func,
+    }),
 };
 
 export default flowRight([
     withRouter,
     withStyles(styles),
+    connect(null, {
+        checkToken: bcAccess.CheckToken,
+    }),
     lifecycle({
         componentWillMount() {
+<<<<<<< HEAD
             checkAuthen(this.props);
+=======
+            const jwt = getJwt();
+            const { checkToken, history } = this.props;
+
+            checkToken(generateCheckTokenUrl, { token: jwt })
+                .then((res) => {
+                    if (403 === res) {
+                        history.push('/login');
+                    }
+                });
+>>>>>>> 4ced3af1c4c54de8f68d5ae10aa869c09b82d4bf
         },
     }),
 ])(Page);

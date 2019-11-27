@@ -21,7 +21,10 @@ const styles = () => ({
         right: 0,
         bottom: 0,
         left: 0,
-        backgroundImage: 'url("https://www.unesourisetmoi.info/data/medias/0291/pokemon.jpg")',
+        backgroundImage: 'url("../../../../LogoEirbmon2.png")',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        backgroundColor: '#38b1e0',
     },
     container: {
         backgroundColor: 'grey',
