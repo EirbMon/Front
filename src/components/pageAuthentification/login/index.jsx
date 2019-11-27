@@ -54,6 +54,7 @@ const Login = ({ classes, history, login }) => {
 
     const loginFunction = (e, user) => {
         e.preventDefault();
+        console.log(generateloginUrl);
         login(generateloginUrl, user)
             .then(() => {
                 const jwt = getJwt();
