@@ -19,8 +19,8 @@ class Game extends React.Component {
         };
 
         this.unityContent = new UnityContent(
-            'Build/BuildInfo.json',
-            'Build/UnityLoader.js',
+            'BuildInfo/Build/BuildInfo.json',
+            'BuildInfo/Build/UnityLoader.js',
         );
 
         this.unityContent.on('DoInteraction', (message) => {

@@ -13664,26 +13664,28 @@
   },
   "networks": {
     "5777": {
-      "address": "0x4333A3f5B347c5380207e9FfBd044895Aa406986",
-      "events": {},
+      "address": "0xcC78700E7f962b3205e7C67f10C292fBBD21f4A3",
       "links": {},
-      "transactionHash": "0xafca9d51138be8fd29d5bf1232baa5fbe176331f6b0b15bc78b3a702b8cf9f70"
-    },
-    "1573543096796": {
-      "events": {},
-      "links": {},
-      "address": "0x9A4EBA7Dc25e3ED0cb3A85e5A3CBf04F7f3DFDc2",
-      "transactionHash": "0x643b53e753698311a766391e1e8b658b60f8244fcb7727e0dea2177293de498a"
-    },
-    "1573920686041": {
-      "events": {},
-      "links": {},
-      "address": "0xAE7fFEad4035DcC568842c3d0A477496334758fC",
-      "transactionHash": "0xf6d5d6748b4b6da4c6dd1582e9babb794a978ceb16017bb19c6e8a4cf9b91256"
+      "events": {
+        "0x01929b1546ac5c8cbd09f19de437245776c852d26202ac70ef8ede5dbb2e29b3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "message",
+              "type": "string"
+            }
+          ],
+          "name": "SendEvent",
+          "type": "event",
+          "signature": "0x01929b1546ac5c8cbd09f19de437245776c852d26202ac70ef8ede5dbb2e29b3"
+        }
+      },
+      "transactionHash": "0xb0f4b43afd069e45e3bc8f98c81b1cd0b6bc6911aefa56fab7050aa86c327fee"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-27T18:28:36.943Z",
+  "updatedAt": "2019-11-27T19:32:53.434Z",
   "devdoc": {
     "methods": {}
   },
