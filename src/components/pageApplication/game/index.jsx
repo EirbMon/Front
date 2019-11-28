@@ -8,6 +8,7 @@ import mongoAccess from '../../../actions/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import Page from '../../utils/layout/index';
 
+var owner_id = "0xa320ef816d9df19fcf88ad6b9b50e0ebac712c7f";
 
 class Game extends React.Component {
     constructor(props) {
@@ -48,9 +49,8 @@ class Game extends React.Component {
 
     onClick() {
         const { dispatch } = this.props ;
-        console.log("GetEirbmon: " + `${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`);
 
-        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
+        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
             (initEirb) => {
                     console.log(initEirb);
                     this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(initEirb));
@@ -64,7 +64,7 @@ class Game extends React.Component {
     onOrphanEirbmon() {
 
         const { dispatch } = this.props;
-        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
+        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
             (initEirb) => {
                     console.log(initEirb);
                     this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
