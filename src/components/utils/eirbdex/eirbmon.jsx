@@ -17,6 +17,8 @@ const styles = () => ({
     },
     card: {
         width: 345,
+        paddingLeft: '15px',
+        paddingRight: '15px',
     },
     media: {
         margin: '20 20 20 20',
@@ -30,13 +32,10 @@ const styles = () => ({
     bottomText: {
         fontSize: 12,
     },
-    EirbmonName: {
+    eirbmonName: {
         marginBottom: 20,
         fontSize: 20,
         fontWeight: 600,
-    },
-    level: {
-        margin: '10 10 0 0',
     },
 });
 
@@ -52,7 +51,7 @@ const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
             alignItems="center"
         >
             <Card className={classes.card}>
-                <Typography component="p" align="right" className={classes.level}>
+                <Typography component="p" align="right">
                     {levelTitle}
                 </Typography>
                 <CardMedia
@@ -61,7 +60,7 @@ const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
                     title="Test"
                 />
                 <CardContent>
-                    <Typography component="h1" align="center" className={classes.EirbmonName}>
+                    <Typography component="h1" align="center" className={classes.eirbmonName}>
                         {name}
                     </Typography>
                     <Grid container spacing={3}>
@@ -91,20 +90,19 @@ const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
 
 Eirbmon.propTypes = {
     name: PropTypes.string,
-    level: PropTypes.number,
-    xp: PropTypes.number,
+    level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    xp: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     attack: PropTypes.string,
     filiere: PropTypes.string,
     date: PropTypes.string,
-    pv: PropTypes.string,
+    pv: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     classes: PropTypes.shape({
         container: PropTypes.string,
         bottomText: PropTypes.string,
         paper: PropTypes.string,
         media: PropTypes.string,
-        EirbmonName: PropTypes.string,
+        eirbmonName: PropTypes.string,
         card: PropTypes.string,
-        level: PropTypes.string,
     }).isRequired,
 };
 

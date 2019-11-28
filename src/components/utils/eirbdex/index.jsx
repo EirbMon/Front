@@ -14,7 +14,7 @@ import EirbmonItem from './eirbmonItem';
 const styles = () => ({
     eirbdex: {
         backgroundColor: '#7398AE',
-        width: '700',
+        width: '700px',
         height: '880px',
         borderRadius: '60px',
         paddingTop: '20px',
@@ -37,9 +37,8 @@ const styles = () => ({
         marginLeft: '0 !important',
         paddingRight: '25px',
         overflowY: 'auto',
-        height: '750px',
-        position: 'absolute',
-        right: '-17px',
+        maxHeight: '700px',
+        width: '700px',
     },
     backButton: {
         position: 'absolute',

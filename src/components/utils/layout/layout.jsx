@@ -44,6 +44,7 @@ const Layout = ({ currentPage, classes, history }) => {
                         <ItemLayout page="unity" primary="Jeux" secondary="Eirbmon" />
                         <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
                         <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" />
+                        <ItemLayout page="exchangeEirbmon" primary="Echange" secondary="Echanger vos eirbmons" />
                     </List>
                 </div>
             </Drawer>
@@ -54,7 +55,7 @@ const Layout = ({ currentPage, classes, history }) => {
                     </IconButton>
                     {currentPage}
                     <Typography variant="h6" color="inherit" className={classes.apptitle}>
-                        <img src="../../../../LogoEirbmon2.png" alt="logo" height="30px" className={classes.logo} />
+                        <img src="LogoEirbmon.png" alt="logo" height="30px" className={classes.logo} />
                         Eirbmon
                     </Typography>
                     <IconButton className={classes.disconnectionButton} color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
