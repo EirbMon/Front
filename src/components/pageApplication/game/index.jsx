@@ -20,8 +20,8 @@ class Game extends React.Component {
         this.onClick = this.onClick.bind(this);
 
         this.unityContent = new UnityContent(
-            'src/game/Unity/BuildInfo/Build/BuildInfo.json',
-            'src/game/Unity/BuildInfo/Build/UnityLoader.js',
+            'BuildInfo/Build/BuildInfo.json',
+            'BuildInfo/Build/UnityLoader.js',
         );
 
         this.unityContent.on('DoInteraction', (message) => {

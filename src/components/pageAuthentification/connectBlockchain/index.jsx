@@ -2,129 +2,77 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-//import Web3 from 'web3';
-import TruffleContract from 'truffle-contract'
 import Page from '../../utils/layout/index';
-import Eirbmon from '../../../../build/contracts/Eirbmon.json';
-
+import EirbmonContract from '../../../build/contracts/Eirbmon.json';
+import getWeb3 from '../../../getWeb3'
 class Connect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            account: '0x0',
-            eirbmons: [],
-            contracts: {},
-            web3Provider: null,
-        };
-        this.getAccounts = this.getAccounts.bind(this);
-        this.initWeb3 = this.initWeb3.bind(this);
-        this.rende = this.rende.bind(this);
-        this.initContract = this.initContract.bind(this);
+            web3: null, 
+            accounts: null,
+            contract: null,
+            eirbmons: null,
+          };
     }
 
-    getAccounts() {
-        window.onload;
-        console.log(window.web3);
-        this.initWeb3();
-        
+
+
+  componentDidMount = async () => {
+    try {
+      // Get network provider and web3 instance.
+      const web3 = await getWeb3();
+
+      // Use web3 to get the user's accounts.
+      const accounts = await web3.eth.getAccounts();
+      console.log(accounts);
+      this.setState({ account:accounts[0] });
+      // Get the contract instance.
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = EirbmonContract.networks[networkId];
+      const instance = new web3.eth.Contract(
+        EirbmonContract.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+
+      // Set web3, accounts, and contract to the state, and then proceed with an
+      // example of interacting with the contract's methods.
+      this.setState({ web3, accounts, contract: instance }, this.getEirbmon);
+    } catch (error) {
+      // Catch any errors for any of the above operations.
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`,
+      );
+      console.error(error);
     }
+  };
 
-    initWeb3() {
-        console.log("start");
-        console.log(window.ethereum);
-        if (window.ethereum) {
-            web3 = new Web3(window.ethereum);
-            try { 
-               window.ethereum.enable().then(function() {
-                   // User has allowed account access to DApp...
-               });
-            } catch(e) {
-               // User has denied account access to DApp...
-            }
-         }
-         // Legacy DApp Browsers
-         else if (window.web3) {
-             web3 = new Web3(window.web3.currentProvider);
-         }
-        //  console.log( typeof web3);
-        //  console.log(web3);
-        // if (typeof web3 !== 'undefined') {
-        //     // If a web3 instance is already provided by Meta Mask.
-        //     this.setState({web3Provider : web3.currentProvider});
-        //     web3 = new Web3(web3.currentProvider);
-        //     window.ethereum.enable().catch(error => {
-        //         // User denied account access
-        //         console.log(error)
-        //     })
-          
-        // } else {
-        //     console.log("tessst");
-        //     web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
-        //     web3 = new Web3(this.web3Provider);
-        // }
-        // //this.initContract();
-        web3.eth.getAccounts(accounts=>{
-          //  if (err === null) {
-             //   self.setState({ account });
-                console.log("account : " + accounts);
-            //}
-        });
-    }
 
-    initContract() {
+  getEirbmon = async () => {
+    const { accounts, contract } = this.state;
 
-        // Instantiate a new truffle contract from the artifact
-        this.eirbmon = TruffleContract(Eirbmon);
-        // Connect provider to interact with contract
-       this.eirbmon.setProvider(this.web3Provider);
-
-       return this.rende();
-
-    }
-
-    rende() {
-        var eirbmonInstance;
-        self = this;
-        // Load account data
-        web3.eth.getCoinbase(function (err, account) {
-            if (err === null) {
-                self.setState({ account });
-                console.log("account : " + account);
-            }
-        });
-
-        // Load contract data
-
-        self.eirbmon.deployed().then(function (instance) {
-            self.eirbmonInstance = instance;
-            return self.eirbmonInstance.eirbmonsCount();
-        }).then(function (eirbmonsCount) {
-            console.log(eirbmonsCount);
-            for (var i = 1; i <= eirbmonsCount; i++) {
-                self.eirbmonInstance._Eirbmons(i).then((eirbmon) => {
-                    const eirbmons = [...self.state.eirbmons]
-                   eirbmons.push(eirbmon[1]);
-                    self.setState({ eirbmons: eirbmons })
-
-                    console.log(eirbmon);
-                });
-            }
-        }).catch(function (error) {
-            console.warn(error);
-        });
-    }
+    // Get the value from the contract to prove it worked.
+    const response = await contract.methods._Eirbmons(1).call();
+  
+    console.log(response);
+    // Update state with the eirbmon result.
+    this.setState({ eirbmons: response.name });
+ 
+    console.log(contract.methods);
+    //this function must be executed in the register function
+  // await contract.methods.initAccount().send({ from: accounts[0] });
+ };
+   
 
 
     render() {
 
-        return (
+        if (!this.state.web3) {
+            return <div>Loading Web3, accounts, and contract...</div>;
+          }
+          return (
             <Page currentPage="Jeux">
                 <h1>Eirbmon</h1>
-                <div>
-                    <Button variant="outlined" color="primary" onClick={() => this.getAccounts()}>
-                        Connect Blockchain
-                    </Button>
-                </div>
                 <h1>Account : {this.state.account}</h1>
                 <h1> eirbmons : {this.state.eirbmons}  </h1>
 
