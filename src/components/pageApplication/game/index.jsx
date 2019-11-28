@@ -6,10 +6,8 @@ import { connect } from 'react-redux';
 
 import mongoAccess from '../../../actions/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
-import generateGetOrphanEirbmonUrl from '../../../middleWare/generateGetOrphanEirbmonUrl';
 import Page from '../../utils/layout/index';
 
-const apiUrl = process.env.REACT_APP_APIURL;
 
 class Game extends React.Component {
     constructor(props) {
@@ -32,27 +30,24 @@ class Game extends React.Component {
 
 
     onClick() {
-        const { dispatch } = this.props;
-        //this.unityContent.send('Inventory', 'RetrievePokemonList', JSON.stringify(initEirb));
-        console.log("hey 1")
-        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/eirbmon/owner/xxx_userOwnerId_xxx`))
-            .then(
+        const { dispatch } = this.props ;
+        console.log("hey 1 : " + `${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`);
+
+        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
             (initEirb) => {
                     console.log(initEirb);
                     this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(initEirb));
-                }),
+                },
             (err) => {
-                console.log("hey 2")
-                console.error(err)
+                console.error(err);
             }
-        console.log("hey 3")
+        );
     }
 
     getOrphanEirbmon() {
         const { dispatch } = this.props;
         console.log('button');
-        dispatch(mongoAccess.GetOrphanEirbmon(`${apiUrl}/api/owner/admin_id`))
-            .then(
+        dispatch(mongoAccess.GetOrphanEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
                 (orphanEirbmon) => {
                     console.log(orphanEirbmon);
                     this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(orphanEirbmon));
