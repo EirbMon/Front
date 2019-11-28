@@ -10,13 +10,14 @@ export default function get(url) {
     };
 
     headers.Authorization = `Basic ${btoa(`${login}:${password}`)}`;
-    
+    console.log("TEST 2 et url = " + url);
     return fetch(url, {
         headers: new Headers(headers),
         method: 'GET',
 
     })
         .then((res) => {
+            console.log("TEST 3");
             if (200 === res.status) {
                 return res.json();
             }

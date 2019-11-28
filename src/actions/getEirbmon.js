@@ -3,6 +3,7 @@ import { SUCCESS_OCCURS, ERROR_OCCURS } from '../constants/action-types';
 export default function getEirbmon(link) {
     return (dispatch, getState, api) => api.get(link)
         .then((res) => {
+            console.log("TEST 1");
             dispatch({
                 type: SUCCESS_OCCURS,
                 payload: res,

@@ -16,6 +16,7 @@ class Game extends React.Component {
             messageUnity: '',
         };
         this.onClick = this.onClick.bind(this);
+        this.onOrphanEirbmon = this.onOrphanEirbmon.bind(this);
 
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
@@ -23,6 +24,22 @@ class Game extends React.Component {
         );
 
         this.unityContent.on('DoInteraction', (message) => {
+            if (message == "user_pokemon"){
+                console.log("User Eirbmons");
+                this.onClick();
+            }
+            if (message == "combat_pokemon"){
+                console.log("InCombat Eirbmon");
+                this.onOrphanEirbmon();
+            }
+            if (message == "starter_pokemon"){
+                console.log("Starter Eirbmon");
+                this.onStarterEirbmon();
+            }
+            else{
+                console.log("Receiving: " + message);
+            }
+
             this.setState({ messageUnity: message });
         });
     }
@@ -31,7 +48,7 @@ class Game extends React.Component {
 
     onClick() {
         const { dispatch } = this.props ;
-        console.log("hey 1 : " + `${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`);
+        console.log("GetEirbmon: " + `${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`);
 
         dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
             (initEirb) => {
@@ -44,18 +61,24 @@ class Game extends React.Component {
         );
     }
 
-    getOrphanEirbmon() {
+    onOrphanEirbmon() {
+
         const { dispatch } = this.props;
-        console.log('button');
-        dispatch(mongoAccess.GetOrphanEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
-                (orphanEirbmon) => {
-                    console.log(orphanEirbmon);
-                    this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(orphanEirbmon));
+        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}xxx_userOwnerId_xxx`)).then(
+            (initEirb) => {
+                    console.log(initEirb);
+                    this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
                 },
-                (err) => {
-                    console.error(err)
-                }
-            );
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    onStarterEirbmon() {
+
+        var JSONString = "[{\"type\":\"Pikachu\",\"name\":\"PikaPika\",\"color\":\"yellow\",\"position_x\":\"-56.5\",\"position_y\":\"3.6\"},{\"type\":\"Carapuce\",\"name\":\"CaraCara\",\"color\":\"blue\",\"position_x\":\"-57.5\",\"position_y\":\"3.6\"},{\"type\":\"Salameche\",\"name\":\"SalaSala\",\"color\":\"red\",\"position_x\":\"-55.5\",\"position_y\":\"3.6\"}]";
+        this.unityContent.send('GameManager', 'GenerateFirstPokemon', JSONString);
     }
 
     render() {
@@ -63,17 +86,6 @@ class Game extends React.Component {
 
         return (
             <Page currentPage="Jeux">
-                <h1>Eirbmon</h1>
-                <button onClick={this.onClick.bind(this)}>Spawn!</button>
-                <div>
-                    <Button variant="outlined" color="primary" onClick={() => this.onClick().bind(this)}>
-                        Send Eirbmon to Unity
-                    </Button>
-                    <Button variant="outlined" color="primary" onClick={() => this.getOrphanEirbmon().bind(this)}>
-                        Get Orphan Eirbmon
-                    </Button>
-                    
-                </div>
                 { <div>
                     <Unity unityContent={this.unityContent} />
                 </div> }
