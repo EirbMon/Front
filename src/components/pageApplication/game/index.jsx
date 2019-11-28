@@ -17,6 +17,7 @@ class Game extends React.Component {
         this.state = {
             messageUnity: '',
         };
+        this.onClick = this.onClick.bind(this);
 
         this.unityContent = new UnityContent(
             'src/game/Unity/BuildInfo/Build/BuildInfo.json',
@@ -28,18 +29,23 @@ class Game extends React.Component {
         });
     }
 
-    sendMsgToUnity() {
-        const { dispatch } = this.props;
 
-        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/owner/xxx_userOwnerId_xxx`))
+
+    onClick() {
+        const { dispatch } = this.props;
+        //this.unityContent.send('Inventory', 'RetrievePokemonList', JSON.stringify(initEirb));
+        console.log("hey 1")
+        dispatch(mongoAccess.GetEirbmon(`${apiUrl}/api/eirbmon/owner/xxx_userOwnerId_xxx`))
             .then(
             (initEirb) => {
-                    console.log('Good');
-                    this.unityContent.send('Inventory', 'RetrievePokemonList', JSON.stringify(initEirb));
+                    console.log(initEirb);
+                    this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(initEirb));
                 }),
             (err) => {
+                console.log("hey 2")
                 console.error(err)
             }
+        console.log("hey 3")
     }
 
     getOrphanEirbmon() {
@@ -63,13 +69,15 @@ class Game extends React.Component {
         return (
             <Page currentPage="Jeux">
                 <h1>Eirbmon</h1>
+                <button onClick={this.onClick.bind(this)}>Spawn!</button>
                 <div>
-                    <Button variant="outlined" color="primary" onClick={() => this.sendMsgToUnity().bind(this)}>
+                    <Button variant="outlined" color="primary" onClick={() => this.onClick().bind(this)}>
                         Send Eirbmon to Unity
                     </Button>
                     <Button variant="outlined" color="primary" onClick={() => this.getOrphanEirbmon().bind(this)}>
                         Get Orphan Eirbmon
                     </Button>
+                    
                 </div>
                 { <div>
                     <Unity unityContent={this.unityContent} />

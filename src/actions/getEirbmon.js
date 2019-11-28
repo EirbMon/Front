@@ -7,7 +7,6 @@ export default function getEirbmon(link) {
                 type: SUCCESS_OCCURS,
                 payload: res,
             });
-
             return Promise.resolve(res);
         })
         .catch((err) => {
