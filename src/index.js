@@ -11,6 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 import thunk from 'redux-thunk';
 
 import Game from './components/pageApplication/game';
+import ExchangeEirbmon from './components/pageApplication/exchangeEirbmon';
 import Eirbdex from './components/pageApplication/eirbdex';
 import Login from './components/pageAuthentification/login';
 import Connect from './components/pageAuthentification/connectBlockchain';
@@ -45,6 +46,7 @@ ReactDOM.render(
                             <Route path="/signUp" component={SignUp} />
                             <Route path="/profil" component={Profil} />
                             <Route path="/eirbdex" exact component={Eirbdex} />
+                            <Route path="/exchangeEirbmon" exact component={ExchangeEirbmon} />
                         </Switch>
                     </Snackbar>
                 </SnackbarProvider>

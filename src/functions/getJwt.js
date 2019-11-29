@@ -1,3 +1,3 @@
-const getJwt = () => localStorage.getItem('token');
+const getJwt = () => sessionStorage.getItem('token');
 
 export default getJwt;
