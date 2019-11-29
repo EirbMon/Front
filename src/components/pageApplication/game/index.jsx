@@ -26,15 +26,15 @@ class Game extends React.Component {
 
         this.unityContent.on('DoInteraction', (message) => {
             if (message == "user_pokemon"){
-                console.log("User Eirbmons");
+                console.log("Get My Eirbmons");
                 this.onClick();
             }
-            if (message == "combat_pokemon"){
-                console.log("InCombat Eirbmon");
+            else if (message == "combat_pokemon"){
+                console.log("Get Orphelin Eirbmon for Combat");
                 this.onOrphanEirbmon();
             }
-            if (message == "starter_pokemon"){
-                console.log("Starter Eirbmon");
+            else if (message == "starter_pokemon"){
+                console.log("Get Starter SERVER Eirbmon");
                 this.onStarterEirbmon();
             }
             else{
@@ -52,8 +52,7 @@ class Game extends React.Component {
 
         dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
             (initEirb) => {
-                    console.log(initEirb);
-                    this.unityContent.send('Dresser(Clone)', 'RetrievePokemonList', JSON.stringify(initEirb));
+                    this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
                 },
             (err) => {
                 console.error(err);
@@ -66,7 +65,6 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
             (initEirb) => {
-                    console.log(initEirb);
                     this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
                 },
             (err) => {
