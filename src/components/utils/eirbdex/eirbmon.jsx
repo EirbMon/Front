@@ -39,6 +39,8 @@ const styles = () => ({
     },
 });
 
+const image = 'https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg';
+
 const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;
     const dateTitle = `Date de capture : ${date}`;
@@ -56,7 +58,7 @@ const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
                 </Typography>
                 <CardMedia
                     className={classes.media}
-                    image="https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg"
+                    image={image}
                     title="Test"
                 />
                 <CardContent>

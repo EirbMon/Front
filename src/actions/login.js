@@ -19,6 +19,7 @@ export default function login(link, user) {
                 sessionStorage.setItem('token', res.token);
                 sessionStorage.setItem('name', res.name);
                 sessionStorage.setItem('email', res.email);
+
                 dispatch({
                     type: SUCCESS_OCCURS,
                     payload: 'connected',
