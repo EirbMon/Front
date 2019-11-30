@@ -1,5 +1,7 @@
 node_modules
 
+/src/components/pageApplication/testBase
+/src/components/pageApplication/TestImplementation
 /src/game/TestBase/Resources
 /src/game/TestImplementation/Resources
 /src/game/Unity/Resources
