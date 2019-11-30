@@ -5,11 +5,13 @@ import errorHandler from './errorHandler';
 import successHandler from './succesHandler';
 import accountInfo from './accountInfo';
 import eirbmonsInfo from './eirbmonsInfos';
+import pusher from './pusher';
 
 export default (history) => combineReducers({
     router: connectRouter(history),
     errorHandler,
     successHandler,
     accountInfo,
-    eirbmonsInfo
+    eirbmonsInfo,
+    pusher
 });

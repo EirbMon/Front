@@ -1,5 +1,5 @@
 const disconnect = (history) => {
-    localStorage.removeItem('token');
+    sessionStorage.clear();
     history.push('/login');
 };
 
