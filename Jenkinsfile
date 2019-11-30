@@ -62,7 +62,7 @@ pipeline {
         branch "dev"
       }
       steps {
-        sh 'docker run -p 3300:3000 -d --name eirbmon-front-dev -v /var/lib/docker/volumes/jenkins-data/_data/workspace/Game_dev/BuildInfo:/Front/public/BuildInfo/ -v /home/eirbmon/Documents/SharedFileDev:/src/build/contracts eirbmon/front-dev'
+        sh 'docker run -p 3300:3000 -d --name eirbmon-front-dev -v /var/lib/docker/volumes/jenkins-data/_data/workspace/Game_dev/BuildInfo:/Front/public/BuildInfo/ -v /home/eirbmon/Documents/SharedFileDev:/Front/src/build/contracts/ eirbmon/front-dev'
         echo 'Dev container ready !'
       }
     }
@@ -71,7 +71,7 @@ pipeline {
         branch "master"
       }
       steps {
-        sh 'docker run -p 3000:3000 -d --name eirbmon-front -v /var/lib/docker/volumes/jenkins-data/_data/workspace/Game_master/BuildInfo/:/Front/src/game/Unity/BuildInfo/ -v /home/eirbmon/Documents/SharedFile:/src/build/contracts eirbmon/front'
+        sh 'docker run -p 3000:3000 -d --name eirbmon-front -v /var/lib/docker/volumes/jenkins-data/_data/workspace/Game_master/BuildInfo/:/Front/src/game/Unity/BuildInfo/ -v /home/eirbmon/Documents/SharedFile:/Front/src/build/contracts eirbmon/front'
         echo 'Prod container ready !'
       }
     }
