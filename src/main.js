@@ -18,6 +18,7 @@ import Profil from './components/pageApplication/profil';
 import Snackbar from './components/utils/snackbar';
 import reducers from './reducers';
 import API from './api';
+import App from './App';
 
 require('./scss/main.scss');
 
@@ -30,25 +31,27 @@ const store = createStore(reducers(history),
 // eslint-disable-next-line no-underscore-dangle
 window.__redux__ = store;
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <MuiThemeProvider theme={myTheme}>
-                <SnackbarProvider>
-                    <Snackbar>
-                        <Switch>
-                            <Route path="/" exact component={Login} />
-                            <Route path="/unity" component={Game} />
-                            <Route path="/login" component={Login} />
-                            <Route path="/connect" component={Connect} />
-                            <Route path="/signUp" component={SignUp} />
-                            <Route path="/profil" component={Profil} />
-                            <Route path="/eirbdex" exact component={Eirbdex} />
-                        </Switch>
-                    </Snackbar>
-                </SnackbarProvider>
-            </MuiThemeProvider>
-        </ConnectedRouter>
-    </Provider>,
-    document.getElementById('root'),
-);
+// ReactDOM.render(
+//     <Provider store={store}>
+//         <ConnectedRouter history={history}>
+//             <MuiThemeProvider theme={myTheme}>
+//                 <SnackbarProvider>
+//                     <Snackbar>
+//                         <Switch>
+//                             <Route path="/" exact component={Login} />
+//                             <Route path="/unity" component={Game} />
+//                             <Route path="/login" component={Login} />
+//                             <Route path="/connect" component={App} />
+//                             <Route path="/signUp" component={SignUp} />
+//                             <Route path="/profil" component={Profil} />
+//                             <Route path="/eirbdex" exact component={Eirbdex} />
+//                         </Switch>
+//                     </Snackbar>
+//                 </SnackbarProvider>
+//             </MuiThemeProvider>
+//         </ConnectedRouter>
+//     </Provider>,
+//     document.getElementById('root'),
+// );
+
+ReactDOM.render(<App />, document.getElementById('root'));

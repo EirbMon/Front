@@ -9,7 +9,6 @@ import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateGetOrphanEirbmonUrl from '../../../middleWare/generateGetOrphanEirbmonUrl';
 import Page from '../../utils/layout/index';
 
-const apiUrl = process.env.REACT_APP_APIURL;
 
 class Game extends React.Component {
     constructor(props) {
@@ -19,8 +18,8 @@ class Game extends React.Component {
         };
 
         this.unityContent = new UnityContent(
-            'src/game/Unity/BuildInfo/Build/BuildInfo.json',
-            'src/game/Unity/BuildInfo/Build/UnityLoader.js',
+            'Build/BuildInfo.json',
+            'Build/UnityLoader.js',
         );
 
         this.unityContent.on('DoInteraction', (message) => {
@@ -28,8 +27,8 @@ class Game extends React.Component {
         });
     }
 
-    sendMsgToUnity() {
-        const { dispatch } = this.props;
+     sendMsgToUnity() {
+         const { dispatch } = this.props;
 
         dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(12)))
             .then(
