@@ -9,8 +9,6 @@ export default function SetAccountInfo(account) {
         dispatch({
             type : LOAD_ACCOUNT_SUCCESS,
             payload : account,
-        });
-
-        
+        }); 
     }
 }
