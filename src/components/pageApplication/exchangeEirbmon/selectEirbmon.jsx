@@ -42,7 +42,7 @@ const styles = () => ({
     },
 });
 
-const Eirbdex = ({ classes, setMyForm, selectedEirbmonId }) => {
+const Eirbdex = ({ classes, setMyEirbmon, selectedEirbmonId }) => {
     const [selectedEirbmon, setSelectedEirbmon] = useState(selectedEirbmonId);
     const eirbmons = [
         ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
@@ -78,7 +78,7 @@ const Eirbdex = ({ classes, setMyForm, selectedEirbmonId }) => {
                         return (
                             <EirbmonItem
                                 onClick={() => {
-                                    setMyForm(item);
+                                    setMyEirbmon(item);
                                     setSelectedEirbmon(item.id);
                                 }}
                                 key={key}
@@ -102,7 +102,7 @@ Eirbdex.propTypes = {
         eirbdex: PropTypes.string,
     }).isRequired,
     selectedEirbmonId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    setMyForm: PropTypes.func,
+    setMyEirbmon: PropTypes.func,
 };
 
 export default flowRight([

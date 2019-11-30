@@ -25,14 +25,14 @@ const styles = () => ({
     },
 });
 
-const EirbmonToExchange = ({ classes, myEirbmon, form, choose, confirmerEchange }) => (
+const EirbmonToExchange = ({ classes, isMyEirbmon, form, choose, confirmerEchange }) => (
     <div className={classes.playerZone}>
         <Paper className={classes.paper} elevation={6}>
             <Typography variant="h5" component="h3">
-                {myEirbmon ? 'Mon Eirbmon' : 'Son Eirbmon'}
+                {isMyEirbmon ? 'Mon Eirbmon' : 'Son Eirbmon'}
             </Typography>
             <Typography component="p">
-                {myEirbmon ? 'Le Eirbmon que je vais lui donner' : "Le Eirbmon qu'il va me donner"}
+                {isMyEirbmon ? 'Le Eirbmon que je vais lui donner' : "Le Eirbmon qu'il va me donner"}
             </Typography>
         </Paper>
         <Eirbmon {...form} />
@@ -50,7 +50,7 @@ EirbmonToExchange.propTypes = {
         paper: PropTypes.string,
         button: PropTypes.string,
     }).isRequired,
-    myEirbmon: PropTypes.bool,
+    isMyEirbmon: PropTypes.bool,
     form: PropTypes.shape({}),
     choose: PropTypes.bool,
     confirmerEchange: PropTypes.func,
