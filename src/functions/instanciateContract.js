@@ -12,7 +12,6 @@ function instanciateContract() {
         // Use web3 to get the user's accounts.
         return web3.eth.getAccounts().then(res => {
             accounts = res;
-            promises.push(accounts);
         }).then(res => {
             return web3.eth.net.getId().then(res => {
                 networkId = res;

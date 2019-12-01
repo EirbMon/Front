@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Page from '../../utils/layout/index';
-import bcAccess from '../../../actions/index';
+import instanciateContract from '../../../functions/instanciateContract';
 
 class Connect extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Connect extends React.Component {
 
 
   componentDidMount = async () => {
-   bcAccess.instanciateContract.then(res=>{
+    instanciateContract.then(res=>{
     this.setState({web3:res.web3});
     this.setState({accounts:res.accounts});
     this.getEirbmon(res.web3,res.accounts,res.contract);
