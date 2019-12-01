@@ -37,10 +37,6 @@ class Game extends React.Component {
                 console.log("Get Orphelin Eirbmon for Combat");
                 this.onOrphanEirbmon();
             }
-            else if (message === "starter_pokemon"){
-                console.log("Get Starter SERVER Eirbmon");
-                this.onStarterEirbmon();
-            }
             else if (message === "catch_pokemon"){
                 console.log("Post Update Catch Eirbmon");
                 this.onUpdateEirbmon();
