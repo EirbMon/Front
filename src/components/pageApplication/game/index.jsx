@@ -9,6 +9,7 @@ import generateGetOwnerEirbmonUrl from '../../../middleWare/generateGetOwnerEirb
 import Page from '../../utils/layout/index';
 
 var owner_id = "0xa320ef816d9df19fcf88ad6b9b50e0ebac712c7f";
+var eirbmon_id;
 
 class Game extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Game extends React.Component {
         };
         this.onOwnerEirbmons = this.onOwnerEirbmons.bind(this);
         this.onOrphanEirbmon = this.onOrphanEirbmon.bind(this);
-        this.onUpdateEirbmonOwner = this.onUpdateEirbmonOwner.bind(this);
+        this.onUpdateEirbmon = this.onUpdateEirbmon.bind(this);
         this.onStarterEirbmon = this.onStarterEirbmon.bind(this);
 
         this.unityContent = new UnityContent(
@@ -41,7 +42,7 @@ class Game extends React.Component {
             }
             else if (message === "catch_pokemon"){
                 console.log("Post Update Catch Eirbmon");
-                this.onUpdateEirbmonOwner();
+                this.onUpdateEirbmon();
             }
             else{
                 console.log("Receiving: " + message);
@@ -73,6 +74,7 @@ class Game extends React.Component {
         var orphean_id = owner_id; 
         dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}${orphean_id}`)).then(
             (initEirb) => {
+                    eirbmon_id = initEirb[0].idInBlockchain;
                     this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
                 },
             (err) => {
@@ -81,12 +83,14 @@ class Game extends React.Component {
         );
     }
 
-    onUpdateEirbmonOwner() {
+    onUpdateEirbmon() {
 
         const { dispatch } = this.props;
-        dispatch(mongoAccess.updateEirbmonOwner(`${generateGetEirbmonUrl()}`,owner_id)).then(
+        console.log(`${generateGetEirbmonUrl()}`);
+        dispatch(mongoAccess.UpdateEirbmon(`${generateGetEirbmonUrl()}`,{idInBlockchain: eirbmon_id, owner_id: owner_id})).then(
             (initEirb) => {
-                    this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
+                console.log("Eirbmon updated: " + initEirb);
+                console.log(initEirb);
                 },
             (err) => {
                 console.error(err);
