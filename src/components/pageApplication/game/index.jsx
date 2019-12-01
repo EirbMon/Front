@@ -51,7 +51,7 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         instanciateContract.then(res => {
-            this.setState({ owner_id: res.accounts });
+            this.setState({ owner_id: res.accounts[0] });
             this.setState({ contract: res.contract });
             console.log("REGARDE ICI");
             console.log(this.state.owner_id);
@@ -94,8 +94,9 @@ class Game extends React.Component {
         console.log(`${generateGetEirbmonUrl()}`);
         dispatch(mongoAccess.UpdateEirbmon(`${generateGetEirbmonUrl()}`,{idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
             (initEirb) => {
+                console.log(this.state)
                 console.log("Eirbmon updated: ");
-                this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.accounts[0] });
+                this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
                 },
             (err) => {
                 console.error(err);
