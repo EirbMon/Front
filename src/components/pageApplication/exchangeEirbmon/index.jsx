@@ -55,18 +55,26 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
-        
+
     const channel = pusher.subscribe('presence-my-channel');
 
     channel.bind('pusher:subscription_succeeded', (members) => {
+        let timesUserIsConnected = 0;
         setSpinner(false);
         setDisplaySalon(true);
 
         members.each((member) => {
             if (member.info.name !== sessionStorage.getItem('email')) {
                 setHisName(member.info.name);
+            } else if (member.info.name === sessionStorage.getItem('email')) {
+                timesUserIsConnected++;
             }
         });
+
+        if (timesUserIsConnected >= 2) {
+            pusher.unsubscribe('presence-my-channel');
+            setDisplaySalon(false);
+        }
     });
 
     channel.bind('pusher:subscription_error', () => {
@@ -84,10 +92,7 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
         }
     });
 
-    channel.bind('pusher:member_removed', () => {
-        console.log('Un utilisateur est parti');
-        setHisName('undefined');
-    });
+    channel.bind('pusher:member_removed', () => setHisName('undefined'));
 
     channel.bind('client-pokemon', (data) => setHisEirbmon(data));
 
@@ -142,10 +147,10 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
                                     <SelectEirbmonModal setMyEirbmon={updateMyForm} selectedEirbmonId={myEirbmon.id} classeButton={classes.modal} />
                                 </div>
                             ) : (
-                                    <p className={classes.usersName}>
-                                        En attente d&apos;un nouveau utilisateur
+                                <p className={classes.usersName}>
+                                    En attente d&apos;un nouveau utilisateur
                                 </p>
-                                )}
+                            )}
                         </div>
                         <div className="col-6">
                             <Informations />
@@ -178,7 +183,10 @@ ExchangeEirbmon.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
-    pusher: PropTypes.shape({}),
+    pusher: PropTypes.shape({
+        subscribe: PropTypes.func,
+        unsubscribe: PropTypes.func,
+    }),
     channel: PropTypes.shape({
         bind: PropTypes.func,
         trigger: PropTypes.func,
@@ -188,13 +196,11 @@ ExchangeEirbmon.propTypes = {
     }),
 };
 
-
-
 export default flowRight([
     withRouter,
     withStyles(styles),
     connect((state, props) => {
-        const { history, checkToken } = props;
+        const { history } = props;
         if (isEmpty(state.pusher)) {
             history.push('/profil');
         }
