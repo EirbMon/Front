@@ -10,6 +10,8 @@ import bcAccess from '../../../actions/withApi/index';
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
 import getJwt from '../../../functions/getJwt';
 
+import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
+
 const styles = () => ({
     form: {
         display: 'inline',
@@ -20,7 +22,7 @@ const styles = () => ({
         right: 0,
         bottom: 0,
         left: 0,
-        backgroundImage: 'url("../../../../LogoEirbmon2.png")',
+        backgroundImage: `url(${logoEirbmon})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundColor: '#38b1e0',
@@ -62,7 +64,7 @@ const Login = ({ classes, history, login }) => {
                 const jwt = getJwt();
 
                 if (jwt) {
-                    history.push('/profil');
+                    history.push('/connect');
                 }
             });
     };

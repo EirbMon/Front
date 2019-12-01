@@ -1,7 +1,6 @@
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Unity, { UnityContent } from 'react-unity-webgl';
+import { UnityContent } from 'react-unity-webgl';
 import { connect } from 'react-redux';
 
 import mongoAccess from '../../../actions/withApi/index';
@@ -25,15 +24,15 @@ class Game extends React.Component {
         );
 
         this.unityContent.on('DoInteraction', (message) => {
-            if (message == "user_pokemon"){
+            if (message === "user_pokemon"){
                 console.log("Get My Eirbmons");
                 this.onClick();
             }
-            else if (message == "combat_pokemon"){
+            else if (message === "combat_pokemon"){
                 console.log("Get Orphelin Eirbmon for Combat");
                 this.onOrphanEirbmon();
             }
-            else if (message == "starter_pokemon"){
+            else if (message === "starter_pokemon"){
                 console.log("Get Starter SERVER Eirbmon");
                 this.onStarterEirbmon();
             }
@@ -50,7 +49,7 @@ class Game extends React.Component {
     onClick() {
         const { dispatch } = this.props ;
 
-        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(owner_id))).then(
             (initEirb) => {
                     this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
                 },
@@ -63,7 +62,7 @@ class Game extends React.Component {
     onOrphanEirbmon() {
 
         const { dispatch } = this.props;
-        dispatch(mongoAccess.GetEirbmon(`${generateGetEirbmonUrl()}${owner_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(owner_id))).then(
             (initEirb) => {
                     this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
                 },
@@ -93,12 +92,14 @@ class Game extends React.Component {
         );
     }
 }
-// function select(state){
-//     return {};
-// }
+function select(state){
+    return {
+        accountInfo: state.accountInfo,
+    };
+}
 
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect()(Game);
+export default connect(select)(Game);

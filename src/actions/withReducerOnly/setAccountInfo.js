@@ -1,5 +1,3 @@
-'use strict';
-
 import {LOAD_ACCOUNT_SUCCESS} from '../../constants/action-types';
 
 export default function SetAccountInfo(account) {

@@ -11,12 +11,13 @@ export default function getEirbmon(link) {
                     type: LOAD_EIRBMON_SUCCESS,
                     payload: res,
                 });
-
+                return Promise.resolve(res);
             })
         .catch((err) => {
             dispatch({
                 type: ERROR_OCCURS,
                 payload: err,
             });
+            return Promise.reject(err);
         });
 }

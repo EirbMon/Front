@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Eirbmon from './eirbmon';
 import EirbmonItem from './eirbmonItem';
@@ -50,41 +51,54 @@ const styles = () => ({
     },
 });
 
-const Eirbdex = ({ classes }) => {
+const Eirbdex = ({ classes, eirbmonsInfos }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
 
-    const eirbmons = [
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-        ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
-    ];
+    // const eirbmons = [
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    //     ['1', 'pika', '0xae02198861390d15c15389672f0147bc8bf79b3b', '0', 'telecom', 'roulade', '100'],
+    // ];
 
-    const eirbmonsForm = eirbmons.map((item) => {
-        const pokemon = {
-            id: item[0],
-            name: item[1],
-            adress: item[2],
-            level: item[3],
-            filiere: item[4],
-            attack: item[5],
-            pv: item[6],
-        };
+    // const eirbmonsForm = eirbmons.map((item) => {
+    //     const pokemon = {
+    //         id: item[0],
+    //         name: item[1],
+    //         adress: item[2],
+    //         level: item[3],
+    //         filiere: item[4],
+    //         attack: item[5],
+    //         pv: item[6],
+    //     };
 
-        return pokemon;
-    });
+    //     return pokemon;
+    // });
 
+    const eirbmonsForm = eirbmonsInfos.eirbmons.map(
+        myEirbmon => {
+            return {
+                id: myEirbmon._id,
+                name: myEirbmon.name,
+                adress: myEirbmon.owner_id,
+                level: myEirbmon.lvl,
+                filiere: myEirbmon.field,
+                attack: "roulade",
+                pv: myEirbmon.hp,
+            }
+        }
+    )
     return (
         <div className="mx-auto">
             <Paper className={classNames('mx-auto', classes.eirbdex)}>
@@ -147,5 +161,8 @@ Eirbdex.propTypes = {
 
 export default flowRight([
     withRouter,
+    connect((state) => ({
+        eirbmonsInfos: state.eirbmonsInfos,
+    })),
     withStyles(styles),
 ])(Eirbdex);

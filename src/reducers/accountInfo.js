@@ -1,6 +1,6 @@
 import { LOAD_ACCOUNT_SUCCESS } from '../constants/action-types';
 
-export default function account(state, action) {
+export default function accountInfo(state, action) {
 
     switch (action.type) {
 
@@ -8,7 +8,6 @@ export default function account(state, action) {
             let payload = action.payload;
             console.log(payload);
             return Object.assign({}, state, {
-                isloading: false,
                 accountUrl: payload,
             });
         }
@@ -16,8 +15,6 @@ export default function account(state, action) {
         default: {
             // send back default datas for state
             return state || {
-                isloading: false,
-                error: undefined,
                 accountUrl: undefined,
             }
         }

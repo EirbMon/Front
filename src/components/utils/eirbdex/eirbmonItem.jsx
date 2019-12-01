@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import image from '../../../scss/images/pikachu-inverse.jpg';
 
 const styles = () => ({
     card: {
@@ -35,8 +36,6 @@ const styles = () => ({
         border: 'solid 1px',
     },
 });
-
-const image = 'https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg';
 
 const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
     const levelTitle = `Niveau ${level}`;

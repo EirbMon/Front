@@ -4,30 +4,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Page from '../../utils/layout/index';
 import EirbmonContract from '../../../build/contracts/Eirbmon.json';
-import getWeb3 from '../../../getWeb3'
+import getWeb3 from '../../../getWeb3';
+
+import reducerAcces from '../../../actions/withReducerOnly/index';
+import mongoAccess from '../../../actions/withApi/index';
+import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 
 class Connect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            web3: null, 
-            accounts: null,
-            contract: null,
-            eirbmons: null,
-          };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      web3: null,
+      accounts: null,
+      contract: null,
+      eirbmons: null,
+    };
+  }
 
-
-
-  componentDidMount = async () => {
+  componentWillMount = async () => {
     try {
+      const { dispatch } = this.props;
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
       console.log(accounts);
-      this.setState({ account:accounts[0] });
+      this.setState({ account: accounts[0] });
+
+      dispatch(reducerAcces.SetAccountInfo(this.state.account));
+      dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(this.state.account)))
+
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = EirbmonContract.networks[networkId];
@@ -48,54 +55,71 @@ class Connect extends React.Component {
     }
   };
 
-
   getEirbmon = async () => {
-    const { accounts, contract } = this.state;
+    const { contract } = this.state;
 
     // Get the value from the contract to prove it worked.
     const response = await contract.methods._Eirbmons(1).call();
-  
+
     console.log(response);
     // Update state with the eirbmon result.
     this.setState({ eirbmons: response.name });
- 
+
     console.log(contract.methods);
     //this function must be executed in the register function
-  // await contract.methods.initAccount().send({ from: accounts[0] });
- };
-   
+    // await contract.methods.initAccount().send({ from: accounts[0] });
+    this.props.history.push('/profil');
+  };
 
-    getEirbmons(){
-        var {dispatch, accountInfo} = this.props;
-        
-        console.log(accountInfo);
-        dispatch(backAccess.GetEirbmon(generateGetEirbmonUrl(accountInfo.accountUrl)));
+  onClick = () => {
+    const { dispatch, accountInfo } = this.props;
+
+    dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(accountInfo.accountUrl))).then(
+      (initEirb) => {
+        console.log(initEirb);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  };
+
+
+  render() {
+
+    if (!this.state.web3) {
+      return <div>Loading Web3, accounts, and contract...</div>;
     }
+    return (
+      <Page currentPage="Jeux">
+        <h1>Eirbmon</h1>
+        <Button variant="outlined" color="primary" onClick={()=>{console.log('lol');this.onClick()}}>
+          Get My Eirbmon
+        </Button>
+        <h1>Account : {this.state.account}</h1>
+        <h1> eirbmons : {this.state.eirbmons}  </h1>
+        <br/>
+        <h1>Account in store : {this.props.accountInfo.accountUrl}</h1>
+        <h1> eirbmons in store:
+        { (this.props.eirbmonsInfos.eirbmons) &&
+            this.props.eirbmonsInfos.eirbmons.map(
+              eirbmon => { console.log(eirbmon) ; return <li key={eirbmon._id}>{eirbmon._id}</li> }
+            )
+        } 
+        </h1>
+      </Page>
+     );
+  }
 
-    render() {
-
-        if (!this.state.web3) {
-            return <div>Loading Web3, accounts, and contract...</div>;
-          }
-          return (
-            <Page currentPage="Jeux">
-                <h1>Eirbmon</h1>
-                <h1>Account : {this.state.account}</h1>
-                <h1> eirbmons : {this.state.eirbmons}  </h1>
-
-            </Page>
-        );
-    }
-}
-function select(state){
-    return {
-        accountInfo: state.accountInfo,
-        eirbmonsInfo: state.eirbmonsInfo
-    }
+} function select(state) {
+  return {
+    accountInfo: state.accountInfo,
+    eirbmonsInfos: state.eirbmonsInfos,
+  }
 }
 
 Connect.propTypes = {
-    dispatch: PropTypes.func,
+  dispatch: PropTypes.func,
 };
 
 export default connect(select)(Connect);
