@@ -51,8 +51,8 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         instanciateContract.then(res => {
-            this.setState({ owner_id: res.accounts[0] });
-            this.setState({ contract: res.contract });
+            //this.setState({ owner_id: res.accounts[0] });
+            //this.setState({ contract: res.contract });
             console.log("REGARDE ICI");
             console.log(this.state.owner_id);
         });
@@ -61,7 +61,7 @@ class Game extends React.Component {
     onOwnerEirbmons() {
         const { dispatch } = this.props ;
 
-        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}${this.state.owner_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}all/${this.state.owner_id}`)).then(
             (initEirb) => {
                 this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
             },
@@ -75,7 +75,7 @@ class Game extends React.Component {
 
         const { dispatch } = this.props;
         // orphean normalement c'est soit un owner vide, soit un owner admin.
-        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}${this.state.orphean_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}all/${this.state.orphean_id}`)).then(
             (initEirb) => {
                     this.setState({eirbmon_id: initEirb[0].idInBlockchain});
                     console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id);
@@ -96,7 +96,7 @@ class Game extends React.Component {
             (initEirb) => {
                 console.log(this.state)
                 console.log("Eirbmon updated: ");
-                this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
+                //this.state.contract.methods.catchEirbmon(2).send({ from: this.state.owner_id });
                 },
             (err) => {
                 console.error(err);
