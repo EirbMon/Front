@@ -24,6 +24,8 @@ export default function login(link, user) {
                     type: SUCCESS_OCCURS,
                     payload: 'connected',
                 });
+
+                return Promise.resolve();
             } else {
                 const err = 404;
 
@@ -36,6 +38,6 @@ export default function login(link, user) {
                 payload: err,
             });
 
-            return err;
+            return Promise.reject(err);
         });
 }

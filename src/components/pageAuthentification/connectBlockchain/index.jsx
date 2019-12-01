@@ -21,7 +21,7 @@ class Connect extends React.Component {
     };
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
     try {
       const { dispatch } = this.props;
       // Get network provider and web3 instance.
@@ -68,7 +68,7 @@ class Connect extends React.Component {
     console.log(contract.methods);
     //this function must be executed in the register function
     // await contract.methods.initAccount().send({ from: accounts[0] });
-    this.props.history.push('/profil');
+
   };
 
   onClick = () => {

@@ -1,3 +1,4 @@
+import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -6,9 +7,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import bcAccess from '../../../actions/withApi/index';
-import generateloginUrl from '../../../middleWare/generateLoginUrl';
 import getJwt from '../../../functions/getJwt';
+import getWeb3 from './getWeb3';
+
+import reducerAcces from '../../../actions/withReducerOnly/index';
+import mongoAccess from '../../../actions/withApi/index';
+
+import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
+import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
 
@@ -44,7 +50,8 @@ const styles = () => ({
     },
 });
 
-const Login = ({ classes, history, login }) => {
+
+const Login = ({ classes, history, dispatch }) => {
     const [form, setValues] = useState({
         email: '',
         password: '',
@@ -57,17 +64,59 @@ const Login = ({ classes, history, login }) => {
         });
     };
 
+    function getMetamaskUrlAndEirbmons() {
+        return new Promise(
+
+            async (resolve, reject) => {
+
+                try {
+                    console.log('ok');
+                    // Get network provider and web3 instance.
+                    const web3 = await getWeb3();
+                    console.log('ok1');
+                    // Use web3 to get the user's accounts.
+                    const accounts = await web3.eth.getAccounts();
+                    const accountAddress = accounts[0];
+                    console.log(accounts);
+                    console.log('ok2');
+
+                    dispatch(reducerAcces.SetAccountInfo(accountAddress));
+                    dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(accountAddress)));
+                    console.log('ok3');
+                    resolve();
+                } catch (error) {
+                    // Catch any errors for any of the above operations.
+                    console.error(error);
+                    alert(
+                        `Failed to load web3, accounts, or contract. Check console for details.`,
+                    );
+                    console.error(error);
+                    reject(error);
+                }
+
+            })
+    }
     const loginFunction = (e, user) => {
         e.preventDefault();
-        login(generateloginUrl, user)
-            .then(() => {
-                const jwt = getJwt();
-
-                if (jwt) {
-                    history.push('/connect');
-                }
+        console.log("ire");
+        getMetamaskUrlAndEirbmons().then(
+            () => {
+                console.log('heuuu')
+                dispatch(mongoAccess.Login(generateloginUrl, user)).then(
+                    () => {
+                        console.log('yesss')
+                        const jwt = getJwt();
+                        if (jwt) {
+                            history.push('/profil');
+                        }
+                    })
+            },
+            (err)=>{
+                console.error(err)
             });
+        console.log("ire");
     };
+
 
     return (
         <div className={classes.page}>
@@ -124,5 +173,10 @@ Login.propTypes = {
     }),
     login: PropTypes.func,
 };
+export default flowRight([
+    withRouter,
+    withStyles(styles),
+    connect(),
+])(Login);
 
-export default connect(null, { login: bcAccess.Login })(withRouter(withStyles(styles)(Login)));
+//export default connect(null, { login: mongoAccess.Login })(withRouter(withStyles(styles)(Login)));
