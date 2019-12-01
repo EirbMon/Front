@@ -100,17 +100,12 @@ class Game extends React.Component {
         dispatch(mongoAccess.UpdateEirbmon(`${generateGetEirbmonUrl()}`,{idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
             (initEirb) => {
                 console.log("Eirbmon updated: ");
-                //this.state.contract.methods.catchEirbmon(eirbmon_id).send({ from: this.state.accounts[0] });
+                this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.accounts[0] });
                 },
             (err) => {
                 console.error(err);
             }
         );
-    }
-
-    onStarterEirbmon() {
-        var JSONString = "[{\"type\":\"Pikachu\",\"name\":\"PikaPika\",\"color\":\"yellow\",\"position_x\":\"-56.5\",\"position_y\":\"3.6\"},{\"type\":\"Carapuce\",\"name\":\"CaraCara\",\"color\":\"blue\",\"position_x\":\"-57.5\",\"position_y\":\"3.6\"},{\"type\":\"Salameche\",\"name\":\"SalaSala\",\"color\":\"red\",\"position_x\":\"-55.5\",\"position_y\":\"3.6\"}]";
-        this.unityContent.send('GameManager', 'GenerateFirstPokemon', JSONString);
     }
 
     render() {
