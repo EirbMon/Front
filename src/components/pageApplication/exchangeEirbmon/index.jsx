@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
 
 import Page from '../../utils/layout/index';
+import getJwt from '../../../functions/getJwt';
 import isEmpty from '../../../functions/isEmpty';
 import SelectEirbmonModal from './selectEirbmonModal';
 import Informations from './informations';
@@ -74,14 +75,19 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
     });
 
     channel.bind('pusher:member_added', (member) => {
-        setMyEirbmon(pokemon);
-        setHisEirbmon(pokemon);
-        setMyChoose(false);
-        setHisChoose(false);
-        setHisName(member.info.name);
+        if (member.info.name) {
+            setMyEirbmon(pokemon);
+            setHisEirbmon(pokemon);
+            setMyChoose(false);
+            setHisChoose(false);
+            setHisName(member.info.name);
+        }
     });
 
-    channel.bind('pusher:member_removed', () => setHisName('undefined'));
+    channel.bind('pusher:member_removed', () => {
+        console.log('Un utilisateur est parti');
+        setHisName('undefined');
+    });
 
     channel.bind('client-pokemon', (data) => setHisEirbmon(data));
 
@@ -182,13 +188,21 @@ ExchangeEirbmon.propTypes = {
     }),
 };
 
+
+
 export default flowRight([
     withRouter,
     withStyles(styles),
     connect((state, props) => {
-        const { history } = props;
+        const { history, checkToken } = props;
         if (isEmpty(state.pusher)) {
             history.push('/profil');
+        }
+
+        const jwt = getJwt();
+
+        if (!jwt) {
+            history.push('/login');
         }
 
         return ({
