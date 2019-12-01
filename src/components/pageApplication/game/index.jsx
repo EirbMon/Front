@@ -96,7 +96,7 @@ class Game extends React.Component {
             (initEirb) => {
                 console.log(this.state)
                 console.log("Eirbmon updated: ");
-                this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id });
+                this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
                 },
             (err) => {
                 console.error(err);
