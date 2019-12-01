@@ -13,4 +13,5 @@
 #To link the front to the blockchain you need to execute 
 
 truffle migrate --reset
+
 copy the files in the build/contracts of the blockchain directory to your Front/src/build/contracts to be able to use them in your code.
