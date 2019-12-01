@@ -22,7 +22,6 @@ class Game extends React.Component {
         this.onOwnerEirbmons = this.onOwnerEirbmons.bind(this);
         this.onOrphanEirbmon = this.onOrphanEirbmon.bind(this);
         this.onUpdateEirbmon = this.onUpdateEirbmon.bind(this);
-        this.onStarterEirbmon = this.onStarterEirbmon.bind(this);
 
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
