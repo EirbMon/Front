@@ -7,14 +7,18 @@ import mongoAccess from '../../../actions/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateGetOwnerEirbmonUrl from '../../../middleWare/generateGetOwnerEirbmonUrl';
 import Page from '../../utils/layout/index';
+import instanciateContract from '../../../functions/instanciateContract';
 
-var owner_id = "0xa320ef816d9df19fcf88ad6b9b50e0ebac712c7f";
+
+var owner_id = null;
 
 class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             messageUnity: '',
+            owner_id: '',
+            contract:null,
         };
         this.onOwnerEirbmons = this.onOwnerEirbmons.bind(this);
         this.onOrphanEirbmon = this.onOrphanEirbmon.bind(this);
@@ -53,13 +57,21 @@ class Game extends React.Component {
 
 
 
+    componentDidMount = async () => {
+        instanciateContract.then(res => {
+            this.setState({ owner_id: res.accounts });
+            this.setState({ contract: res.contract });
+            console.log(this.state.owner_id);
+        });
+    }
+
     onOwnerEirbmons() {
         const { dispatch } = this.props ;
 
         dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}${owner_id}`)).then(
             (initEirb) => {
-                    this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
-                },
+                this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
+            },
             (err) => {
                 console.error(err);
             }
@@ -73,8 +85,8 @@ class Game extends React.Component {
         var orphean_id = owner_id; 
         dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}${orphean_id}`)).then(
             (initEirb) => {
-                    this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
-                },
+                this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
+            },
             (err) => {
                 console.error(err);
             }
@@ -82,10 +94,11 @@ class Game extends React.Component {
     }
 
     onUpdateEirbmonOwner() {
-
+        const eirbmon_id = 2;
         const { dispatch } = this.props;
         dispatch(mongoAccess.updateEirbmonOwner(`${generateGetEirbmonUrl()}`,owner_id)).then(
             (initEirb) => {
+                    this.state.contract.methods.catchEirbmon(eirbmon_id).send({ from: this.state.accounts[0] });
                     this.unityContent.send('CombatManager', 'GenerateWildPokemon', JSON.stringify(initEirb));
                 },
             (err) => {
@@ -104,9 +117,9 @@ class Game extends React.Component {
 
         return (
             <Page currentPage="Jeux">
-                { <div>
+                {<div>
                     <Unity unityContent={this.unityContent} />
-                </div> }
+                </div>}
                 Message from unity :
                 {messageUnity}
             </Page>
