@@ -92,10 +92,7 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
         }
     });
 
-    channel.bind('pusher:member_removed', () => {
-        console.log('Un utilisateur est parti');
-        setHisName('undefined');
-    });
+    channel.bind('pusher:member_removed', () => setHisName('undefined'));
 
     channel.bind('client-pokemon', (data) => setHisEirbmon(data));
 
@@ -198,6 +195,8 @@ ExchangeEirbmon.propTypes = {
         }),
     }),
 };
+
+
 
 export default flowRight([
     withRouter,
