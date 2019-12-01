@@ -5,6 +5,7 @@ import Login from './login';
 import SignUp from './singUp';
 import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
+import instanciateContract from '../functions/instanciateContract'
 
 export default {
     SaveEirbmon,
@@ -14,4 +15,5 @@ export default {
     SignUp,
     DisplayMessage,
     CheckToken,
+    instanciateContract
 };

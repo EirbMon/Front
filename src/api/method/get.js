@@ -10,6 +10,7 @@ export default function get(url) {
     };
 
     headers.Authorization = `Basic ${btoa(`${login}:${password}`)}`;
+
     return fetch(url, {
         headers: new Headers(headers),
         method: 'GET',
