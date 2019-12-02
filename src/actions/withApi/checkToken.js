@@ -1,4 +1,4 @@
-import { ERROR_OCCURS } from '../constants/action-types';
+import { ERROR_OCCURS } from '../../constants/action-types';
 
 export default function checkToken(link, token) {
     return (dispatch, getState, api) => api.post(link, token)

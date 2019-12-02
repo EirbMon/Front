@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { lifecycle } from 'recompose';
 
-import bcAccess from '../../../actions/index';
+import bcAccess from '../../../actions/withApi/index';
 import generateCheckTokenUrl from '../../../middleWare/generateCheckTokenUrl';
 import getJwt from '../../../functions/getJwt';
 import Layout from './layout';

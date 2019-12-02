@@ -3,11 +3,15 @@ import { connectRouter } from 'connected-react-router';
 
 import errorHandler from './errorHandler';
 import successHandler from './succesHandler';
+import accountInfo from './accountInfo';
+import eirbmonsInfos from './eirbmonsInfos';
 import pusher from './pusher';
 
 export default (history) => combineReducers({
     router: connectRouter(history),
     errorHandler,
     successHandler,
-    pusher,
+    accountInfo,
+    eirbmonsInfos,
+    pusher
 });

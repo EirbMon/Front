@@ -15,7 +15,6 @@ class Connect extends React.Component {
     };
   }
 
-
   getEirbmon = (web3, accounts, contract) => {
    
     //Get the value from the contract to prove it worked.

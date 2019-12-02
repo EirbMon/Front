@@ -1,16 +1,10 @@
-import { SUCCESS_OCCURS, ERROR_OCCURS } from '../constants/action-types';
+import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
 
-export default function login(link, user) {
+export default function signUp(link, user) {
     return (dispatch, getState, api) => api.post(link, user)
         .then((res) => {
-            if ('false' === res.check_user) {
-                const err = 'userDoesntExist';
-
-                throw err;
-            }
-
-            if ('false' === res.check_password) {
-                const err = 'errorPassword';
+            if ('true' === res.exist_user) {
+                const err = 'userAlreadyExists';
 
                 throw err;
             }
@@ -19,7 +13,6 @@ export default function login(link, user) {
                 sessionStorage.setItem('token', res.token);
                 sessionStorage.setItem('name', res.name);
                 sessionStorage.setItem('email', res.email);
-
                 dispatch({
                     type: SUCCESS_OCCURS,
                     payload: 'connected',
@@ -29,6 +22,8 @@ export default function login(link, user) {
 
                 throw err;
             }
+
+            return res;
         })
         .catch((err) => {
             dispatch({

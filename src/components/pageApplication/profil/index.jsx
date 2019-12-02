@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Page from '../../utils/layout/index';
 
@@ -28,7 +29,7 @@ const styles = () => ({
     },
 });
 
-const Profil = ({ classes }) => (
+const Profil = ({ classes, accountInfo }) => (
     <Page currentPage="Profil">
         <div className={classes.page}>
             <div className={classes.container}>
@@ -53,7 +54,7 @@ const Profil = ({ classes }) => (
                 <TextField
                     name="username"
                     label="Numéro de compte"
-                    value={sessionStorage.getItem('compteNumber') || 'Unknown'}
+                    value={accountInfo.accountUrl || 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled
@@ -73,5 +74,8 @@ Profil.propTypes = {
 
 export default flowRight([
     withRouter,
+    connect((state)=>({
+        accountInfo: state.accountInfo
+    })),
     withStyles(styles),
 ])(Profil);

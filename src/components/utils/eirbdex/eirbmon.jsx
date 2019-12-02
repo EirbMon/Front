@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import PropTypes from 'prop-types';
 import React from 'react';
+import image from '../../../scss/images/pikachu-inverse.jpg';
 
 const styles = () => ({
     container: {
@@ -38,8 +39,6 @@ const styles = () => ({
         fontWeight: 600,
     },
 });
-
-const image = 'https://s3-ca-central-1.amazonaws.com/jeuxcanada-images/wp-content/uploads/2019/05/11093808/pikachu-inverse.jpg';
 
 const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;

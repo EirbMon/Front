@@ -3,11 +3,13 @@ import React from 'react';
 import Unity, { UnityContent } from 'react-unity-webgl';
 import { connect } from 'react-redux';
 
-import mongoAccess from '../../../actions/index';
+import mongoAccess from '../../../actions/withApi/index';
 import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateGetOwnerEirbmonUrl from '../../../middleWare/generateGetOwnerEirbmonUrl';
 import Page from '../../utils/layout/index';
 import instanciateContract from '../../../functions/instanciateContract';
+
+var owner_id = "0xa320ef816d9df19fcf88ad6b9b50e0ebac712c7f";
 
 class Game extends React.Component {
     constructor(props) {
@@ -37,6 +39,10 @@ class Game extends React.Component {
                 console.log("Get Orphelin Eirbmon for Combat");
                 this.onOrphanEirbmon();
             }
+            else if (message === "starter_pokemon"){
+                console.log("Get Starter SERVER Eirbmon");
+                this.onStarterEirbmon();
+            }
             else if (message === "catch_pokemon"){
                 console.log("Post Update Catch Eirbmon");
                 this.onUpdateEirbmon();
@@ -61,7 +67,7 @@ class Game extends React.Component {
     onOwnerEirbmons() {
         const { dispatch } = this.props ;
 
-        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}all/${this.state.owner_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(owner_id))).then(
             (initEirb) => {
                 this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
             },
@@ -74,8 +80,7 @@ class Game extends React.Component {
     onOrphanEirbmon() {
 
         const { dispatch } = this.props;
-        // orphean normalement c'est soit un owner vide, soit un owner admin.
-        dispatch(mongoAccess.GetEirbmon(`${generateGetOwnerEirbmonUrl()}all/${this.state.orphean_id}`)).then(
+        dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(owner_id))).then(
             (initEirb) => {
                     this.setState({eirbmon_id: initEirb[0].idInBlockchain});
                     console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id);
@@ -109,18 +114,23 @@ class Game extends React.Component {
 
         return (
             <Page currentPage="Jeux">
-                {<div>
+                <div>
                     <Unity unityContent={this.unityContent} />
-                </div>}
+                </div>
                 Message from unity :
                 {messageUnity}
             </Page>
         );
     }
 }
+function select(state){
+    return {
+        accountInfo: state.accountInfo,
+    };
+}
 
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect()(Game);
+export default connect(select)(Game);
