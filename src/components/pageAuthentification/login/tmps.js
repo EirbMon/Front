@@ -58,12 +58,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-const Login = ({ history, dispatch }) => {
-    const classes = useStyles();
+const SignUp = ({ classes, history, signUp, displayMessage }) => {
     const [form, setValues] = useState({
+        name: '',
         email: '',
         password: '',
+        passwordCheck: '',
     });
 
     const updateField = (e) => {
@@ -73,52 +73,21 @@ const Login = ({ history, dispatch }) => {
         });
     };
 
-    function getMetamaskUrlAndEirbmons() {
-        return new Promise(
-
-            async (resolve, reject) => {
-
-                try {
-                    // Get network provider and web3 instance.
-                    const web3 = await getWeb3();
-
-                    // Use web3 to get the user's accounts.
-                    const accounts = await web3.eth.getAccounts();
-                    const accountAddress = accounts[0];
-                    console.log(accounts);
-
-                    dispatch(reducerAcces.SetAccountInfo(accountAddress));
-                    dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(accountAddress)));
-
-                    resolve();
-                } catch (error) {
-                    // Catch any errors for any of the above operations.
-                    alert(
-                        `Failed to load web3, accounts, or contract. Check console for details.`,
-                    );
-                    console.error(error);
-                    reject(error);
-                }
-
-            })
-    }
-    const loginFunction = (e, user) => {
+    const signUpFunction = (e, user) => {
         e.preventDefault();
-        getMetamaskUrlAndEirbmons().then(
-            () => {
-                dispatch(mongoAccess.Login(generateloginUrl, user)).then(
-                    () => {
-                        const jwt = getJwt();
-                        if (jwt) {
-                            history.push('/profil');
-                        }
-                    })
-            },
-            (err) => {
-                console.error(err)
-            });
-    };
+        if (user.password !== user.passwordCheck) {
+            displayMessage('errorPasswordVerification');
+        } else {
+            signUp(generateSignUpUrl, { ...user })
+                .then(() => {
+                    const jwt = getJwt();
 
+                    if (jwt) {
+                        history.push('/profil');
+                    }
+                });
+        }
+    };
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -132,19 +101,30 @@ const Login = ({ history, dispatch }) => {
                     <Typography component="h1" variant="h5">
                         Bienvenue sur EirbMon
             </Typography>
-                    <form className={classes.form} onSubmit={(e) => loginFunction(e, form)}>
+                    <form className={classes.form} onSubmit={(e) => signUpFunction(e, form)}>
                         <TextField
+                            id="name"
+                            name="name"
+                            label="Nom utilisateur"
+                            value={form.name}
+                            onChange={updateField}
+                            margin="normal"
+                            variant="outlined"
+                            fullWidth
+                            required
+                            autoFocus
+                        />
+                        <TextField
+                            id="email"
+                            name="email"
+                            label="Email de l'utilisateur"
                             variant="outlined"
                             margin="normal"
                             required
-                            fullWidth
-                            id="email"
-                            label="Email de l'utilisateur"
-                            name="email"
+                            fullWidth                            
                             autoComplete="email"
                             value={form.email}
                             onChange={updateField}
-                            autoFocus
                         />
                         <TextField
                             variant="outlined"
@@ -159,6 +139,19 @@ const Login = ({ history, dispatch }) => {
                             value={form.password}
                             onChange={updateField}
                         />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="passwordCheck"
+                            label="Vérification mot de passe"
+                            type="password"
+                            id="passwordCheck"
+                            autoComplete="current-password"
+                            value={form.passwordCheck}
+                            onChange={updateField}
+                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -170,13 +163,11 @@ const Login = ({ history, dispatch }) => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Button onClick={() => history.push('/signUp')} size="small">
-                                    Mot de passe oublié?
-                                </Button>
+
                             </Grid>
                             <Grid item>
-                                <Button onClick={() => history.push('/signUp')} size="small">
-                                    {"S'inscrire"}
+                                <Button onClick={() => history.push('/login')} size="small">
+                                    {"Se connecter"}
                                 </Button>
                             </Grid>
                         </Grid>
@@ -187,7 +178,7 @@ const Login = ({ history, dispatch }) => {
     );
 };
 
-Login.propTypes = {
+SignUp.propTypes = {
     classes: PropTypes.shape({
         button: PropTypes.string,
         form: PropTypes.string,
@@ -197,10 +188,15 @@ Login.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func,
     }),
-    login: PropTypes.func,
+    signUp: PropTypes.func,
+    displayMessage: PropTypes.func,
 };
+
 export default flowRight([
     withRouter,
     withStyles(useStyles),
-    connect(),
-])(Login);
+    connect(null, {
+        signUp: mongoAccess.SignUp,
+        displayMessage: mongoAccess.DisplayMessage,
+    }),
+])(SignUp);
