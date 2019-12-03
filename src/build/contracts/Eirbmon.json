@@ -11661,10 +11661,24 @@
   },
   "networks": {
     "5777": {
-      "address": "0xf7833Bb96632De82c8D46Aad5B4f911CE6f12dA8",
+      "address": "0xbCE565bA617868B6b349aa2613Db8bCC917DECa8",
       "links": {},
-      "events": {},
-      "transactionHash": "0xc754126bc0447794df29dda85f96d044a69ae851b0d30ae5dfa056c31553d0fb"
+      "events": {
+        "0x01929b1546ac5c8cbd09f19de437245776c852d26202ac70ef8ede5dbb2e29b3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "message",
+              "type": "string"
+            }
+          ],
+          "name": "SendEvent",
+          "type": "event",
+          "signature": "0x01929b1546ac5c8cbd09f19de437245776c852d26202ac70ef8ede5dbb2e29b3"
+        }
+      },
+      "transactionHash": "0xbbab9b7915e915053fbcf371eeedb84e19c3a6917221b7e8b1c7e3fc60904dbc"
     },
     "1573543096796": {
       "events": {},
@@ -11679,9 +11693,8 @@
       "transactionHash": "0xf6d5d6748b4b6da4c6dd1582e9babb794a978ceb16017bb19c6e8a4cf9b91256"
     }
   },
-  "schemaVersion": "3.0.17",
-  "updatedAt": "2019-12-01T15:40:41.999Z",
-  "networkType": "ethereum",
+  "schemaVersion": "3.0.16",
+  "updatedAt": "2019-12-01T14:02:39.288Z",
   "devdoc": {
     "methods": {}
   },

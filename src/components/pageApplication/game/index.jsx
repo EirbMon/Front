@@ -25,6 +25,9 @@ class Game extends React.Component {
         this.onOrphanEirbmon = this.onOrphanEirbmon.bind(this);
         this.onUpdateEirbmon = this.onUpdateEirbmon.bind(this);
 
+        console.log('je suis ici', this.props);
+
+
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
             'BuildInfo/Build/UnityLoader.js',
@@ -57,10 +60,23 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         instanciateContract.then(res => {
-            //this.setState({ owner_id: res.accounts[0] });
-            //this.setState({ contract: res.contract });
+            console.log(this.state);
+   
+            this.setState({ owner_id: res.accounts[0] });
+            this.setState({ contract: res.contract });
+            this.props.dispatch(mongoAccess.Blockchain(
+                {
+                        owner_id: res.accounts[0],
+                        contract: res.contract,
+                    }
+            ));
+            // const blockchainFunction = (object) => mongoAccess.blockchain(object);
+            // this.props.dispatch(blockchainFunction({
+            //     owner_id: res.accounts[0],
+            //     contract: res.contract,
+            // }));
             console.log("REGARDE ICI");
-            console.log(this.state.owner_id);
+            console.log(this.props);
         });
     }
 
@@ -92,6 +108,7 @@ class Game extends React.Component {
         );
     }
 
+
     onUpdateEirbmon() {
 
         const { dispatch } = this.props;
@@ -101,7 +118,7 @@ class Game extends React.Component {
             (initEirb) => {
                 console.log(this.state)
                 console.log("Eirbmon updated: ");
-                //this.state.contract.methods.catchEirbmon(2).send({ from: this.state.owner_id });
+                this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id });
                 },
             (err) => {
                 console.error(err);
@@ -133,4 +150,4 @@ Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect(select)(Game);
+export default connect(null, null)(Game);

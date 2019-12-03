@@ -117,8 +117,12 @@ const ExchangeEirbmon = ({ classes, history, pusher, channel }) => {
 
     useEffect(() => {
         if (hisChoose && myChoose) {
+            console.log(this.state);
+            this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
             alert('Echange a eu lieu');
+
             channel.trigger('client-exchangeMade', {}); // Callback function possible
+
             // history.push('/eirbdex');
         }
     }, [myChoose]);

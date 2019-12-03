@@ -7,6 +7,7 @@ function instanciateContract() {
     var accounts = null;
     var networkId = null;
     var instance = null;
+
     return getWeb3().then(res => {
         web3 = res;
         // Use web3 to get the user's accounts.
