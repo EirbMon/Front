@@ -47,7 +47,7 @@ const pokemon = {
     date: '---',
 };
 
-const ExchangeEirbmon = ({ classes, history, pusher }) => {
+const ExchangeEirbmon = ({ classes, history, pusher, channel }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
@@ -55,8 +55,6 @@ const ExchangeEirbmon = ({ classes, history, pusher }) => {
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
-
-    const channel = pusher.subscribe('presence-my-channel');
 
     channel.bind('pusher:subscription_succeeded', (members) => {
         let timesUserIsConnected = 0;
@@ -213,6 +211,7 @@ export default flowRight([
 
         return ({
             pusher: state.pusher.pusher,
+            channel: state.pusher.pusher.subscribe('presence-my-channel'),
         });
     }),
     lifecycle({
