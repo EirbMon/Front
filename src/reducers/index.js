@@ -14,6 +14,6 @@ export default (history) => combineReducers({
     successHandler,
     accountInfo,
     eirbmonsInfos,
-    pusher
+    pusher,
     blockchain,
 });
