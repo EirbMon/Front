@@ -17,9 +17,6 @@ import Informations from './informations';
 import SalonClosed from './salonClosed';
 import Eirbmon from './eirbmon';
 
-import mongoAccess from '../../../actions/withApi/index';
-import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
-
 const styles = () => ({
     zone: {
         marginTop: '15px',

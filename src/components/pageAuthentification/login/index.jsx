@@ -21,11 +21,12 @@ import getWeb3 from './getWeb3';
 
 import reducerAcces from '../../../actions/withReducerOnly/index';
 import mongoAccess from '../../../actions/withApi/index';
+import Blockchain from '../../../actions/withApi/blockchain';
 
-import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
+import instanciateContract from '../../../functions/instanciateContract';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -89,6 +90,14 @@ const Login = ({ history, dispatch }) => {
 
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
                     dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
+
+                    console.log(Blockchain);
+                    instanciateContract.then(res => {
+                        dispatch(Blockchain({
+                            owner_id: res.accounts[0],
+                            contract: res.contract,
+                        }));
+                    });
 
                     resolve();
                 } catch (error) {
