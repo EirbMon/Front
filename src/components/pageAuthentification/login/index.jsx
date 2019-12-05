@@ -88,7 +88,7 @@ const Login = ({ history, dispatch }) => {
                     console.log(accounts);
 
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
-                    dispatch(mongoAccess.GetEirbmon(generateGetEirbmonUrl(accountAddress)));
+                    dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
 
                     resolve();
                 } catch (error) {
