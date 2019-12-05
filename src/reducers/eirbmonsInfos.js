@@ -14,7 +14,7 @@ export default function eirbmonsInfos(state, action) {
         default: {
             // send back default datas for state
             return state || {
-                eirbmons: undefined,
+                eirbmons: [],
             }
         }
     }

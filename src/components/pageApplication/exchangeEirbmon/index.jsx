@@ -17,6 +17,9 @@ import Informations from './informations';
 import SalonClosed from './salonClosed';
 import Eirbmon from './eirbmon';
 
+import mongoAccess from '../../../actions/withApi/index';
+import generateGetEirbmonUrl from '../../../middleWare/generateGetEirbmonUrl';
+
 const styles = () => ({
     zone: {
         marginTop: '15px',
@@ -47,10 +50,11 @@ const pokemon = {
     date: '---',
 };
 
-const ExchangeEirbmon = ({ classes, history, pusher, channel }) => {
+const ExchangeEirbmon = ({ classes, history, pusher, channel, blockchain, dispatch }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
+    const [hisAdressID, setHisAdressID] = useState('undefined');
     const [hisEirbmon, setHisEirbmon] = useState(pokemon);
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
@@ -94,7 +98,10 @@ const ExchangeEirbmon = ({ classes, history, pusher, channel }) => {
 
     channel.bind('client-pokemon', (data) => setHisEirbmon(data));
 
-    channel.bind('client-choose', (data) => setHisChoose(data.choose));
+    channel.bind('client-choose', (data) => {
+        setHisChoose(data.choose);
+        setHisAdressID(data.adressID);
+    });
 
     channel.bind('client-exchangeMade', () => {
         alert('Echange a eu lieu');
@@ -105,20 +112,30 @@ const ExchangeEirbmon = ({ classes, history, pusher, channel }) => {
         setMyEirbmon(eirbmon);
         channel.trigger('client-pokemon', eirbmon);
     };
+    console.log('Mon eirbmon', myEirbmon.id);
 
     const confirmerEchange = () => {
         if (pokemon === myEirbmon) {
             alert('Selectionner un pokémon');
         } else {
             setMyChoose(!myChoose);
-            channel.trigger('client-choose', { choose: !myChoose });
+            channel.trigger('client-choose', { choose: !myChoose, adressID: blockchain.blockchain.owner_id });
         }
     };
 
+    console.log('Mon eirbmon', blockchain);
+
+
     useEffect(() => {
         if (hisChoose && myChoose) {
-            console.log(this.state);
-            this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
+            console.log('Mon eirbmon', myEirbmon.id);
+            console.log('Son eirbmon', hisEirbmon.id);
+            console.log('Mon adress id', blockchain.owner_id);
+            console.log('Son adress id', hisAdressID);
+
+            blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id,hisAdressID,myEirbmon.id, blockchain.blockchain.owner_id ).send({ from:  blockchain.blockchain.owner_id  });
+
+            // this.state.contract.methods.catchEirbmon(4).send({ from: this.state.owner_id });
             alert('Echange a eu lieu');
 
             channel.trigger('client-exchangeMade', {}); // Callback function possible
@@ -216,8 +233,9 @@ export default flowRight([
         return ({
             pusher: state.pusher.pusher,
             channel: state.pusher.pusher.subscribe('presence-my-channel'),
+            blockchain: state.blockchain,
         });
-    }),
+    }, null),
     lifecycle({
         componentDidMount() {
             const { history, pusher } = this.props;
