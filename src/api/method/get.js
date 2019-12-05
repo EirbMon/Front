@@ -4,7 +4,6 @@ const login = process.env.REACT_APP_LOGIN;
 const password = process.env.REACT_APP_PASSWORD;
 
 export default function get(url) {
-    console.log(url);
     const headers = {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
@@ -18,7 +17,6 @@ export default function get(url) {
 
     })
         .then((res) => {
-            console.log(res);
             if (200 === res.status) {
                 return res.json();
             }

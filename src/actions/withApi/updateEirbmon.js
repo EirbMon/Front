@@ -1,7 +1,8 @@
 import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
+import generateGetEirbmonUrl from '../../middleWare/generateGetEirbmonUrl';
 
-export default function updateEirbmon(link, ownerID) {
-    return (dispatch, getState, api) => api.put(link, ownerID)
+export default function updateEirbmon(data) {
+    return (dispatch, getState, api) => api.put(generateGetEirbmonUrl(), data)
         .then((res) => {
             dispatch({
                 type: SUCCESS_OCCURS,

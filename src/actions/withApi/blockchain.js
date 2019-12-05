@@ -1,4 +1,4 @@
-import { INFORMATION_BLOCKCHAIN } from '../constants/action-types';
+import { INFORMATION_BLOCKCHAIN } from '../../constants/action-types';
 
 export default function blockchain(data) {
     return ({

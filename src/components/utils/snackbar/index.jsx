@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 const Snackbar = ({ children, enqueueSnackbar, errorHandler, successHandler }) => {
     useEffect(() => {
         if (errorHandler.error) {
-            console.log(errorHandler.error);
             enqueueSnackbar(errorHandler.errorMessage, { variant: 'error' });
         }
 

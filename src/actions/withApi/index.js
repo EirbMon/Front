@@ -5,6 +5,7 @@ import Login from './login';
 import SignUp from './singUp';
 import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
+import Blockchain from './blockchain';
 import instanciateContract from '../../functions/instanciateContract'
 
 export default {
@@ -15,5 +16,6 @@ export default {
     SignUp,
     DisplayMessage,
     CheckToken,
-    instanciateContract
+    instanciateContract,
+    Blockchain
 };

@@ -6,7 +6,6 @@ export default function eirbmonsInfos(state, action) {
 
         case LOAD_EIRBMON_SUCCESS: {
             let payload = action.payload;
-            console.log(payload);
             return Object.assign({}, state, {
                 eirbmons: payload,
             });
