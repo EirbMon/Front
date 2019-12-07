@@ -87,9 +87,13 @@ const Login = ({ history, dispatch }) => {
                     const accounts = await web3.eth.getAccounts();
                     const accountAddress = accounts[0];
                     console.log(accounts);
-
+                    sessionStorage.setItem('accountAddress',accountAddress)
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
-                    dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
+                    dispatch(mongoAccess.GetOwnerEirbmon(accountAddress)).then(
+                        (eirbmons)=>{
+                            sessionStorage.setItem('eirbmons',JSON.stringify(eirbmons))
+                        }
+                    );
 
                     console.log(Blockchain);
                     instanciateContract.then(res => {

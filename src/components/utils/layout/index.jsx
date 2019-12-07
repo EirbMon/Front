@@ -6,7 +6,9 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { lifecycle } from 'recompose';
 
-import bcAccess from '../../../actions/withApi/index';
+import reducerAcces from '../../../actions/withReducerOnly/index';
+import mongoAccess from '../../../actions/withApi/index';
+
 import generateCheckTokenUrl from '../../../middleWare/generateCheckTokenUrl';
 import getJwt from '../../../functions/getJwt';
 import Layout from './layout';
@@ -43,13 +45,23 @@ Page.propTypes = {
 export default flowRight([
     withRouter,
     withStyles(styles),
-    connect(null, {
-        checkToken: bcAccess.CheckToken,
+    connect((state)=>({
+        accountAddress: state.accountAddress,
+    }), 
+    {
+        setAccountInfo: reducerAcces.SetAccountInfo,
+        getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
+        checkToken: mongoAccess.CheckToken,
     }),
     lifecycle({
         componentWillMount() {
             const jwt = getJwt();
-            const { checkToken, history } = this.props;
+            const { checkToken, history, getOwnerEirbmon, setAccountInfo } = this.props;
+            const accountAddress = sessionStorage.getItem('accountAddress');
+            if(!accountAddress.accountUrl){
+                setAccountInfo(accountAddress);
+                getOwnerEirbmon(accountAddress);
+            }
 
             checkToken(generateCheckTokenUrl, { token: jwt })
                 .then((res) => {
