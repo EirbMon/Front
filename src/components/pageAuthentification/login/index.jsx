@@ -21,7 +21,6 @@ import getWeb3 from '../functions/getWeb3';
 
 import reducerAcces from '../../../actions/withReducerOnly/index';
 import mongoAccess from '../../../actions/withApi/index';
-import Blockchain from '../../../actions/withApi/blockchain';
 
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
 
@@ -86,7 +85,6 @@ const Login = ({ history, dispatch }) => {
                     // Use web3 to get the user's accounts.
                     const accounts = await web3.eth.getAccounts();
                     const accountAddress = accounts[0];
-                    console.log(accounts);
                     sessionStorage.setItem('accountAddress',accountAddress)
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
                     dispatch(mongoAccess.GetOwnerEirbmon(accountAddress)).then(
@@ -95,9 +93,8 @@ const Login = ({ history, dispatch }) => {
                         }
                     );
 
-                    console.log(Blockchain);
                     instanciateContract.then(res => {
-                        dispatch(Blockchain({
+                        dispatch(mongoAccess.GetBlockchainInfo({
                             owner_id: res.accounts[0],
                             contract: res.contract,
                         }));
