@@ -19,6 +19,7 @@ import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
 import reducerAcces from '../../../actions/withReducerOnly/index';
 import getWeb3 from '../functions/getWeb3';
+import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
@@ -101,9 +102,10 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
         if (user.password !== user.passwordCheck) {
             displayMessage('errorPasswordVerification');
         } else {
-            getMetamaskUrlAndInitiateEirbmon().then(
-                (accountAddress) => {
-                    Object.assign(user, {owner_id: accountAddress})
+            instanciateContract.then(
+                (res) => {
+                    Object.assign(user, {owner_id: res.accounts[0]})
+                    res.contract.methods.initAccount().send({ from: res.accounts[0] })
                     signUp(generateSignUpUrl, { ...user })
                         .then(() => {
                             const jwt = getJwt();
