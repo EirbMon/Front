@@ -54,15 +54,8 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         instanciateContract.then(res => {
-
             this.setState({ owner_id: res.accounts[0] });
             this.setState({ contract: res.contract });
-            this.props.dispatch(mongoAccess.Blockchain(
-                {
-                        owner_id: res.accounts[0],
-                        contract: res.contract,
-                    }
-            ));
             console.log(this.state.contract.methods);        
             console.log(this.props);
         });

@@ -18,7 +18,6 @@ export default function post(url, data) {
     })
         .then((res) => {
         // check status
-            console.log(res);
             if (200 === res.status) { // handle serial number generation for example
                 return res.json();
             } if (201 === res.status) { // handle catalog item addition for example

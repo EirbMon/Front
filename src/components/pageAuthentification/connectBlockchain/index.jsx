@@ -21,13 +21,11 @@ class Connect extends React.Component {
     contract.methods._Eirbmons(1).call().then(res => {
      const response = res
 
-      console.log(response);
       // Update state with the eirbmon result.
       this.setState({ eirbmons: response.name });
       this.setState({ web3 });
       
 
-      console.log(contract.methods);
       //this function must be executed in the register function
       //await contract.methods.initAccount().send({ from: accounts[0] });
 
