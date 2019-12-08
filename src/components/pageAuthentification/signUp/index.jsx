@@ -70,7 +70,7 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
         });
     };
 
-    function getMetamaskUrl() {
+    function getMetamaskUrlAndInitiateEirbmon() {
         return new Promise(
 
             async (resolve, reject) => {
@@ -101,7 +101,7 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
         if (user.password !== user.passwordCheck) {
             displayMessage('errorPasswordVerification');
         } else {
-            getMetamaskUrl().then(
+            getMetamaskUrlAndInitiateEirbmon().then(
                 (accountAddress) => {
                     Object.assign(user, {owner_id: accountAddress})
                     signUp(generateSignUpUrl, { ...user })
