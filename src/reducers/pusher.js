@@ -1,9 +1,10 @@
 import Pusher from 'pusher-js';
 import generatePusherAuthenUrl from '../middleWare/generatePusherAuthenUrl';
+import { GET_NEW_PUSHER_ID } from '../constants/action-types';
 
 export default function pusher(state, action) {
     switch (action.type) {
-        default: {
+        case GET_NEW_PUSHER_ID: {
             const pusherObject = new Pusher('1584d8f85246e88b597f', {
                 cluster: 'eu',
                 forceTLS: true,
@@ -11,12 +12,15 @@ export default function pusher(state, action) {
                 auth: {
                     params: {
                         param1: sessionStorage.getItem('email'),
-                        param2: 'vous pouvez mettre ce que vous voulez',
+                        param2: sessionStorage.getItem('accountAddress'),
                     },
                 },
             });
 
             return { ...state, pusher: pusherObject };
+        }
+        default: {
+            return { ...state};
         }
     }
 }

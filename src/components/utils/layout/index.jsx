@@ -10,6 +10,7 @@ import reducerAcces from '../../../actions/withReducerOnly/index';
 import mongoAccess from '../../../actions/withApi/index';
 
 import generateCheckTokenUrl from '../../../middleWare/generateCheckTokenUrl';
+import instanciateContract from '../../../functions/instanciateContract';
 import getJwt from '../../../functions/getJwt';
 import Layout from './layout';
 
@@ -45,24 +46,19 @@ Page.propTypes = {
 export default flowRight([
     withRouter,
     withStyles(styles),
-    connect((state)=>({
+    connect((state) => ({
         accountAddress: state.accountAddress,
-    }), 
-    {
-        setAccountInfo: reducerAcces.SetAccountInfo,
-        getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        checkToken: mongoAccess.CheckToken,
     }),
+        {
+            setAccountInfo: reducerAcces.SetAccountInfo,
+            getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
+            getBlockchainInfo: mongoAccess.GetBlockchainInfo,
+            checkToken: mongoAccess.CheckToken,
+        }),
     lifecycle({
         componentWillMount() {
             const jwt = getJwt();
-            console.log(jwt);
-            const { checkToken, history, getOwnerEirbmon, setAccountInfo } = this.props;
-            const accountAddress = sessionStorage.getItem('accountAddress');
-            if(!accountAddress.accountUrl){
-                setAccountInfo(accountAddress);
-                getOwnerEirbmon(accountAddress);
-            }
+            const { checkToken, history, getOwnerEirbmon, setAccountInfo, getBlockchainInfo } = this.props;
 
             checkToken(generateCheckTokenUrl, { token: jwt })
                 .then((res) => {
@@ -70,6 +66,18 @@ export default flowRight([
                         history.push('/login');
                     }
                 });
+
+            const accountAddress = sessionStorage.getItem('accountAddress');
+            if (accountAddress && !accountAddress.accountUrl) {
+                setAccountInfo(accountAddress);
+                getOwnerEirbmon(accountAddress);
+                instanciateContract.then(res => {
+                    getBlockchainInfo({
+                        owner_id: res.accounts[0],
+                        contract: res.contract,
+                    });
+                });
+            }
         },
     }),
 ])(Page);

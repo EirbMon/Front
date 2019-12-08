@@ -5,8 +5,7 @@ import Login from './login';
 import SignUp from './singUp';
 import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
-import Blockchain from './blockchain';
-import instanciateContract from '../../functions/instanciateContract'
+import GetBlockchainInfo from './getBlockchainInfo';
 
 export default {
     GetEirbmon,
@@ -16,6 +15,5 @@ export default {
     SignUp,
     DisplayMessage,
     CheckToken,
-    instanciateContract,
-    Blockchain
+    GetBlockchainInfo
 };
