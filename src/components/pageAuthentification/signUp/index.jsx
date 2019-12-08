@@ -17,6 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
+import reducerAcces from '../../../actions/withReducerOnly/index';
+import getWeb3 from '../functions/getWeb3';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
@@ -52,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUp = ({  history, signUp, displayMessage }) => {
+const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
     const classes = useStyles();
     const [form, setValues] = useState({
         name: '',
@@ -68,19 +70,53 @@ const SignUp = ({  history, signUp, displayMessage }) => {
         });
     };
 
+    function getMetamaskUrl() {
+        return new Promise(
+
+            async (resolve, reject) => {
+
+                try {
+                    // Get network provider and web3 instance.
+                    const web3 = await getWeb3();
+                    // Use web3 to get the user's accounts.
+                    const accounts = await web3.eth.getAccounts();
+                    const accountAddress = accounts[0];
+                    sessionStorage.setItem('accountAddress', accountAddress);
+                    setAccountInfo(accountAddress);
+                    resolve(accountAddress);
+                } catch (error) {
+                    // Catch any errors for any of the above operations.
+                    alert(
+                        `Failed to load web3, accounts, or contract. Check console for details.`,
+                    );
+                    console.error(error);
+                    reject(error);
+                }
+
+            })
+    }
+
     const signUpFunction = (e, user) => {
         e.preventDefault();
         if (user.password !== user.passwordCheck) {
             displayMessage('errorPasswordVerification');
         } else {
-            signUp(generateSignUpUrl, { ...user })
-                .then(() => {
-                    const jwt = getJwt();
+            getMetamaskUrl().then(
+                (accountAddress) => {
+                    Object.assign(user, {owner_id: accountAddress})
+                    signUp(generateSignUpUrl, { ...user })
+                        .then(() => {
+                            const jwt = getJwt();
+                            if (jwt) {
+                                history.push('/profil');
+                            }
+                        });
+                },
+                (err) => {
+                    console.error(err)
+                }
+            )
 
-                    if (jwt) {
-                        history.push('/profil');
-                    }
-                });
         }
     };
 
@@ -191,6 +227,7 @@ export default flowRight([
     withRouter,
     withStyles(useStyles),
     connect(null, {
+        setAccountInfo: reducerAcces.SetAccountInfo,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,
     }),

@@ -220,13 +220,6 @@ export default flowRight([
         if (isEmpty(state.pusher)) {
             history.push('/profil');
         }
-
-        const jwt = getJwt();
-
-        if (!jwt) {
-            history.push('/login');
-        }
-
         return ({
             pusher: state.pusher.pusher,
             channel: state.pusher.pusher.subscribe('presence-my-channel'),

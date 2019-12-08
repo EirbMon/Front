@@ -17,7 +17,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import getJwt from '../../../functions/getJwt';
-import getWeb3 from './getWeb3';
+import getWeb3 from '../functions/getWeb3';
 
 import reducerAcces from '../../../actions/withReducerOnly/index';
 import mongoAccess from '../../../actions/withApi/index';

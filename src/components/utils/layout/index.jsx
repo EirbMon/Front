@@ -56,6 +56,7 @@ export default flowRight([
     lifecycle({
         componentWillMount() {
             const jwt = getJwt();
+            console.log(jwt);
             const { checkToken, history, getOwnerEirbmon, setAccountInfo } = this.props;
             const accountAddress = sessionStorage.getItem('accountAddress');
             if(!accountAddress.accountUrl){
