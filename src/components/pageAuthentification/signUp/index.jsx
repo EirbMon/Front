@@ -55,7 +55,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
+const SignUp = ({ history, signUp, 
+    displayMessage, setAccountInfo, 
+    getBlockchainInfo, getOwnerEirbmon  }) => {
+    
     const classes = useStyles();
     const [form, setValues] = useState({
         name: '',
@@ -71,32 +74,6 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
         });
     };
 
-    function getMetamaskUrlAndInitiateEirbmon() {
-        return new Promise(
-
-            async (resolve, reject) => {
-
-                try {
-                    // Get network provider and web3 instance.
-                    const web3 = await getWeb3();
-                    // Use web3 to get the user's accounts.
-                    const accounts = await web3.eth.getAccounts();
-                    const accountAddress = accounts[0];
-                    sessionStorage.setItem('accountAddress', accountAddress);
-                    setAccountInfo(accountAddress);
-                    resolve(accountAddress);
-                } catch (error) {
-                    // Catch any errors for any of the above operations.
-                    alert(
-                        `Failed to load web3, accounts, or contract. Check console for details.`,
-                    );
-                    console.error(error);
-                    reject(error);
-                }
-
-            })
-    }
-
     const signUpFunction = (e, user) => {
         e.preventDefault();
         if (user.password !== user.passwordCheck) {
@@ -104,14 +81,30 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo }) => {
         } else {
             instanciateContract.then(
                 (res) => {
-                    Object.assign(user, {owner_id: res.accounts[0]})
-                    res.contract.methods.initAccount().send({ from: res.accounts[0] })
-                    signUp(generateSignUpUrl, { ...user })
-                        .then(() => {
-                            const jwt = getJwt();
-                            if (jwt) {
-                                history.push('/profil');
-                            }
+                    Object.assign(user, { owner_id: res.accounts[0] });
+                    console.log(res.accounts);
+                    var accountAddress =  res.accounts[0];
+                    var contract = res.contract;
+                    contract.methods.initAccount().send({ from: accountAddress }).
+                        then(res => {
+                            console.log("here is result init account ", res);
+                            sessionStorage.setItem('accountAddress', accountAddress);
+                            setAccountInfo(accountAddress);
+                            getOwnerEirbmon(accountAddress);
+
+                            instanciateContract.then(res => {
+                                getBlockchainInfo({
+                                    owner_id:  accountAddress,
+                                    contract: contract,
+                                });
+                            });
+                            signUp(generateSignUpUrl, { ...user })
+                                .then(() => {
+                                    const jwt = getJwt();
+                                    if (jwt) {
+                                        history.push('/profil');
+                                    }
+                                });
                         });
                 },
                 (err) => {
@@ -229,6 +222,8 @@ export default flowRight([
     withRouter,
     withStyles(useStyles),
     connect(null, {
+        getBlockchainInfo: mongoAccess.GetBlockchainInfo,
+        getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
         setAccountInfo: reducerAcces.SetAccountInfo,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,

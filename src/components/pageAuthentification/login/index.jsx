@@ -87,11 +87,7 @@ const Login = ({ history, dispatch }) => {
                     const accountAddress = accounts[0];
                     sessionStorage.setItem('accountAddress',accountAddress)
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
-                    dispatch(mongoAccess.GetOwnerEirbmon(accountAddress)).then(
-                        (eirbmons)=>{
-                            sessionStorage.setItem('eirbmons',JSON.stringify(eirbmons))
-                        }
-                    );
+                    dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
 
                     instanciateContract.then(res => {
                         dispatch(mongoAccess.GetBlockchainInfo({
