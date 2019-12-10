@@ -1,5 +1,5 @@
 const apiUrl = process.env.REACT_APP_APIURL;
 
-const generateGetEirbmonUrl = () => (`${apiUrl}/api/eirbmon`);
+const generateCatchEirbmonUrl = () => (`${apiUrl}/api/eirbmon/catch`);
 
 export default generateGetEirbmonUrl;
