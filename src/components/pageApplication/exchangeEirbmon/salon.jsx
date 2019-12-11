@@ -3,6 +3,7 @@ import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, IconButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
@@ -13,7 +14,6 @@ import SelectEirbmonModal from './selectEirbmonModal';
 import Informations from './informations';
 import SalonClosed from './salonClosed';
 import Eirbmon from './eirbmon';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const styles = () => ({
     zone: {
@@ -45,7 +45,7 @@ const pokemon = {
     date: '---',
 };
 
-const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispatch, setSalon }) => {
+const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispatch, setSalon, salon }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
@@ -54,6 +54,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
+
 
     channel.bind('pusher:subscription_succeeded', (members) => {
         setSpinner(false);
@@ -95,7 +96,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
     });
 
     const leaveChannel = () => {
-        pusher.unsubscribe('presence-my-channel');
+        pusher.unsubscribe(`presence-${salon}`);
         setSalon(null);
     }
 
@@ -123,10 +124,16 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
             });
 
 
-            // blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id).send({ from: sessionStorage.getItem('accountAddress') });
+            blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id)
+            .send({ from: sessionStorage.getItem('accountAddress') })
+            .then(resp=>{
 
-            console.log('Echange a eu lieu');
-            channel.trigger('client-exchangeMade', {}); // Callback function possible
+                
+                console.log('Echange a eu lieu');
+                channel.trigger('client-exchangeMade', {}); // Callback function possible
+    
+
+            });
         }
     }, [myChoose]);
 
@@ -176,7 +183,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
                     ) : null}
                 </div>
             ) : null}
-            {!spinner && !displaySalon ? <SalonClosed /> : null}
+            {!spinner && !displaySalon ? <SalonClosed leaveChannel={leaveChannel} /> : null}
         </Fragment>
     );
 };
@@ -195,29 +202,29 @@ ExchangeEirbmon.propTypes = {
         subscribe: PropTypes.func,
         unsubscribe: PropTypes.func,
     }),
-    channel: PropTypes.shape({
-        bind: PropTypes.func,
-        trigger: PropTypes.func,
-        members: PropTypes.shape({
-            count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        }),
-    }),
 };
 
 export default flowRight([
     withRouter,
     withStyles(styles),
-    connect((state) => ({
-        pusher: state.pusher.pusher,
-        channel: state.pusher.pusher.subscribe('presence-my-channel'),
-        blockchain: state.blockchain,
+    connect((state, props) => ({
+            pusher: state.pusher.pusher,
+            channel: state.pusher.pusher.subscribe(`presence-${props.salon}`),
+            blockchain: state.blockchain,
     }), null),
     lifecycle({
+        componentWillMount() {
+            const { channel } = this.props;
+            if (channel.subscribed === false) {
+                channel.subscribe();
+                channel.unbind('pusher:subscription_error'); // should not unbind in here
+            }
+        },
         componentDidMount() {
-            const { history, pusher } = this.props;
+            const { history, pusher, salon } = this.props;
             history.listen(() => {
                 console.log('Quitte le salon');
-                pusher.unsubscribe('presence-my-channel');
+                pusher.unsubscribe(`presence-${salon}`);
             });
         },
     }),

@@ -18,11 +18,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
 import reducerAcces from '../../../actions/withReducerOnly/index';
+import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
-import instanciateContract from '../../../functions/instanciateContract';
-import updateMongoEirbmonFromBlockchain from '../../../actions/withApi/updateMongoEirbmonFromBlockchain';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -57,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = ({ history, signUp,
     displayMessage, setAccountInfo,
-    getBlockchainInfo, getOwnerEirbmon, updateMongoEirbmon }) => {
+    getBlockchainInfo, getOwnerEirbmon, updateMongoEirbmonFromBlockchain }) => {
 
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -234,7 +233,7 @@ export default flowRight([
     connect(null, {
         getBlockchainInfo: mongoAccess.GetBlockchainInfo,
         getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        updateMongoEirbmon: mongoAccess.UpdateMongoEirbmonFromBlockchain,
+        updateMongoEirbmonFromBlockchain: mongoAccess.UpdateMongoEirbmonFromBlockchain,
         setAccountInfo: reducerAcces.SetAccountInfo,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,
