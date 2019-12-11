@@ -98,7 +98,7 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.orphean_id,1)).then(
             (initEirb) => {
-
+                console.log(initEirb);
                 this.setState({eirbmon_id: initEirb[0].idInBlockchain});
                 this.unityContent.send('CombatManager', 'GenerateOrphelin', JSON.stringify(initEirb));
 
@@ -117,16 +117,19 @@ class Game extends React.Component {
         }
         else{
             const { dispatch } = this.props;
-            console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id);
+            console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id,"pour compte ",this.state.owner_id);
 
             //dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
-            dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id})).then(
+            dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id,owner_id:this.state.owner_id})).then(
                 (initEirb) => {
+                 
                     console.log(initEirb);
-                    this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
-                    console.log(this.state.contract.methods);
-                    this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id });
-                    this.setState({eirbmon_id: null});
+                    this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
+                    .then(response=>{
+                        console.log(response);
+                        this.setState({eirbmon_id: null});
+                        this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
+                    });
                     
                 },
                 (err) => {
