@@ -22,16 +22,29 @@ const styles = () => ({
         transform: 'translate(-50%, -50%)',
         marginLeft: 'auto',
         marginRight: 'auto',
+    },
+    button: {
+        margin: '4px',
     }
 });
 
 const ExchangeEirbmon = ({ classes, pusher }) => {
     const [salon, setSalon] = useState(null);
 
+    const changeSalon = (salon) => {
+        setSalon(salon);
+    }
+
     const listSalon = () => (
         <div className={classes.selectSalon}>
-            <Button variant='outlined' type="button" onClick={() => setSalon("salon1")} fullWidth>
+            <Button className={classes.button} variant='outlined' type="button" onClick={() => changeSalon('salon1')} fullWidth>
                 Salon n°1
+            </Button>
+            <Button className={classes.button} variant='outlined' type="button" onClick={() => changeSalon('salon2')} fullWidth>
+                Salon n°2
+            </Button>
+            <Button className={classes.button} variant='outlined' type="button" onClick={() => changeSalon('salon3')} fullWidth>
+                Salon n°3
             </Button>
         </div>
     );
@@ -49,7 +62,7 @@ const ExchangeEirbmon = ({ classes, pusher }) => {
 
             ) : null}
             {!isEmpty(pusher) ? (
-                salon ? <Salon setSalon={setSalon} /> : listSalon()
+                salon ? <Salon salon={salon} setSalon={setSalon} /> : listSalon()
             ) : null}
         </Page>
     );
