@@ -8,6 +8,7 @@ import CheckToken from './checkToken';
 import GetBlockchainInfo from './getBlockchainInfo';
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
+import CheckInitAccount from './checkInitAccount'
 
 export default {
     GetEirbmon,
@@ -19,5 +20,6 @@ export default {
     CheckToken,
     GetBlockchainInfo,
     UpdateCatchEirbmon,
-    GetAllSkills
+    GetAllSkills,
+    CheckInitAccount
 };

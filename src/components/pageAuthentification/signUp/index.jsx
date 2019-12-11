@@ -54,9 +54,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUp = ({ history, signUp, 
-    displayMessage, setAccountInfo, 
-    getBlockchainInfo, getOwnerEirbmon  }) => {
+const SignUp = ({ history, dispatch}) => {
     
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -76,7 +74,7 @@ const SignUp = ({ history, signUp,
     const signUpFunction = (e, user) => {
         e.preventDefault();
         if (user.password !== user.passwordCheck) {
-            displayMessage('errorPasswordVerification');
+            dispatch(reducerAcces.DisplayMessage('errorPasswordVerification'));
         } else {
             instanciateContract.then(
                 (res) => {
@@ -84,26 +82,30 @@ const SignUp = ({ history, signUp,
                     console.log(res.accounts);
                     var accountAddress =  res.accounts[0];
                     var contract = res.contract;
+                    
+                    console.log(dispatch);
                     contract.methods.initAccount().send({ from: accountAddress }).
                         then(res => {
                             console.log("here is result init account ", res);
                             sessionStorage.setItem('accountAddress', accountAddress);
-                            setAccountInfo(accountAddress);
-                            getOwnerEirbmon(accountAddress);
-
+                            dispatch(reducerAcces.SetAccountInfo(accountAddress));
+                            dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
+                            dispatch(mongoAccess.CheckInitAccount({ owner_id:  accountAddress}));
                             instanciateContract.then(res => {
-                                getBlockchainInfo({
+                                dispatch(mongoAccess.GetBlockchainInfo({
                                     owner_id:  accountAddress,
                                     contract: contract,
-                                });
+                                }));
                             });
-                            signUp(generateSignUpUrl, { ...user })
+                        
+                            dispatch(mongoAccess.SignUp(generateSignUpUrl, { ...user }))
                                 .then(() => {
                                     const jwt = getJwt();
                                     if (jwt) {
                                         history.push('/profil');
                                     }
-                                });
+                                })
+                          
                         });
                 },
                 (err) => {
@@ -214,17 +216,10 @@ SignUp.propTypes = {
         push: PropTypes.func,
     }),
     signUp: PropTypes.func,
-    displayMessage: PropTypes.func,
 };
 
 export default flowRight([
     withRouter,
     withStyles(useStyles),
-    connect(null, {
-        getBlockchainInfo: mongoAccess.GetBlockchainInfo,
-        getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        setAccountInfo: reducerAcces.SetAccountInfo,
-        signUp: mongoAccess.SignUp,
-        displayMessage: mongoAccess.DisplayMessage,
-    }),
+    connect(),
 ])(SignUp);
