@@ -44,6 +44,10 @@ class Game extends React.Component {
                 console.log("Catch Eirbmon in Combat");
                 this.onCatchEirbmon();
             }
+            else if (message === "eirbmon_skills"){
+                console.log("Send Eirbmon Skills list when the game start");
+                this.onSendEirmobSkill();
+            }
             else{
                 console.log("Receiving: " + message);
             }
@@ -76,6 +80,19 @@ class Game extends React.Component {
         );
     }
 
+    onSendEirmobSkill() {
+
+        const { dispatch } = this.props;
+        dispatch(mongoAccess.GetAllSkills()).then(
+            (initSkills) => {
+                this.unityContent.send('GameManager', 'SetEirbmonSkills', JSON.stringify(initSkills));
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
     onEnterInCombat() {
 
         const { dispatch } = this.props;
@@ -101,11 +118,12 @@ class Game extends React.Component {
         else{
             const { dispatch } = this.props;
             console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id);
-            // UpdateCatchEirbmon ou UpdateEirbmon ?
-            dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
-                (initEirb) => {
-                    this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
 
+            //dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
+            dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id})).then(
+                (initEirb) => {
+                    console.log(initEirb);
+                    this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
                     console.log(this.state.contract.methods);
                     this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id });
                     this.setState({eirbmon_id: null});

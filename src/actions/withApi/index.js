@@ -6,6 +6,8 @@ import SignUp from './singUp';
 import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
 import GetBlockchainInfo from './getBlockchainInfo';
+import UpdateCatchEirbmon from './updateCatchEirbmon';
+import GetAllSkills from './getAllSkills';
 
 export default {
     GetEirbmon,
@@ -15,5 +17,7 @@ export default {
     SignUp,
     DisplayMessage,
     CheckToken,
-    GetBlockchainInfo
+    GetBlockchainInfo,
+    UpdateCatchEirbmon,
+    GetAllSkills
 };
