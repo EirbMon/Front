@@ -101,7 +101,8 @@ class Game extends React.Component {
         else{
             const { dispatch } = this.props;
             console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id);
-            dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
+            // UpdateCatchEirbmon ou UpdateEirbmon ?
+            dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id, owner_id: this.state.owner_id})).then(
                 (initEirb) => {
                     this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
 
