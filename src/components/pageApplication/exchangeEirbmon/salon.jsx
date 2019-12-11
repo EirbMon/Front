@@ -124,10 +124,16 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
             });
 
 
-            // blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id).send({ from: sessionStorage.getItem('accountAddress') });
+            blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id)
+            .send({ from: sessionStorage.getItem('accountAddress') })
+            .then(resp=>{
 
-            console.log('Echange a eu lieu');
-            channel.trigger('client-exchangeMade', {}); // Callback function possible
+                
+                console.log('Echange a eu lieu');
+                channel.trigger('client-exchangeMade', {}); // Callback function possible
+    
+
+            });
         }
     }, [myChoose]);
 

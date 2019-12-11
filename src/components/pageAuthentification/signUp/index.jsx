@@ -18,7 +18,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
 import reducerAcces from '../../../actions/withReducerOnly/index';
-import getWeb3 from '../functions/getWeb3';
 import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
