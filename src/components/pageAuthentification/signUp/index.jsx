@@ -18,11 +18,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
 import reducerAcces from '../../../actions/withReducerOnly/index';
-import getWeb3 from '../functions/getWeb3';
-import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
+import instanciateContract from '../../../functions/instanciateContract';
+import updateMongoEirbmonFromBlockchain from '../../../actions/withApi/updateMongoEirbmonFromBlockchain';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -55,10 +55,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUp = ({ history, signUp, 
-    displayMessage, setAccountInfo, 
-    getBlockchainInfo, getOwnerEirbmon  }) => {
-    
+const SignUp = ({ history, signUp,
+    displayMessage, setAccountInfo,
+    getBlockchainInfo, getOwnerEirbmon, updateMongoEirbmon }) => {
+
     const classes = useStyles();
     const [form, setValues] = useState({
         name: '',
@@ -83,28 +83,38 @@ const SignUp = ({ history, signUp,
                 (res) => {
                     Object.assign(user, { owner_id: res.accounts[0] });
                     console.log(res.accounts);
-                    var accountAddress =  res.accounts[0];
+                    var accountAddress = res.accounts[0];
                     var contract = res.contract;
                     contract.methods.initAccount().send({ from: accountAddress }).
                         then(res => {
                             console.log("here is result init account ", res);
                             sessionStorage.setItem('accountAddress', accountAddress);
                             setAccountInfo(accountAddress);
-                            getOwnerEirbmon(accountAddress);
 
                             instanciateContract.then(res => {
                                 getBlockchainInfo({
-                                    owner_id:  accountAddress,
+                                    owner_id: accountAddress,
                                     contract: contract,
                                 });
                             });
-                            signUp(generateSignUpUrl, { ...user })
-                                .then(() => {
-                                    const jwt = getJwt();
-                                    if (jwt) {
-                                        history.push('/profil');
-                                    }
-                                });
+
+                            updateMongoEirbmonFromBlockchain().then(
+                                () => {
+                                    getOwnerEirbmon(accountAddress);
+                                    signUp(generateSignUpUrl, { ...user })
+                                        .then(() => {
+                                            const jwt = getJwt();
+                                            if (jwt) {
+                                                history.push('/profil');
+                                            }
+                                        });
+                                },
+                                (error) => {
+                                    console.error(error)
+                                }
+                            )
+
+
                         });
                 },
                 (err) => {
@@ -224,6 +234,7 @@ export default flowRight([
     connect(null, {
         getBlockchainInfo: mongoAccess.GetBlockchainInfo,
         getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
+        updateMongoEirbmon: mongoAccess.UpdateMongoEirbmonFromBlockchain,
         setAccountInfo: reducerAcces.SetAccountInfo,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,

@@ -1,18 +1,20 @@
 import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
-import generateGetEirbmonUrl from '../../middleWare/generateGetEirbmonUrl';
+import generateUpdateMongoEirbmonFromBlockchainUrl from '../../middleWare/generateUpdateMongoEirbmonFromBlockchainUrl';
 
-export default function updateEirbmon(data) {
-    return (dispatch, getState, api) => api.put(generateGetEirbmonUrl(), data)
+export default function updateMongoEirbmonFromBlockchain() {
+    return (dispatch, getState, api) => api.get(generateUpdateMongoEirbmonFromBlockchainUrl())
         .then((res) => {
             dispatch({
                 type: SUCCESS_OCCURS,
                 payload: res,
             });
+            Promise.resolve();
         })
         .catch((err) => {
             dispatch({
                 type: ERROR_OCCURS,
                 payload: err,
             });
+            Promise.reject();
         });
 }
