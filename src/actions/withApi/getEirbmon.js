@@ -1,9 +1,9 @@
 import {ERROR_OCCURS} from '../../constants/action-types';
-import { LOAD_EIRBMON_SUCCESS } from '../../constants/action-types';
+import {LOAD_EIRBMON_SUCCESS} from '../../constants/action-types';
 import generateGetEirbmonUrl from '../../middleWare/generateGetEirbmonUrl';
 
 export default function getEirbmon(eirbmon_id) {
-    return (dispatch, getState, api) => api.get(generateGetEirbmonUrl(eirbmon_id))
+    return (dispatch, getState, api) => api.get(generateGetEirbmonUrl())
         .then(
             (res) => {
                 dispatch({
@@ -17,6 +17,7 @@ export default function getEirbmon(eirbmon_id) {
                 if (eirbmon_id === null)
                     return Promise.reject("Aucun eirbmon a attrapé n'été trouvé, eirbmon_id = null");
                 
+                console.log(Promise.resolve(res));
                 return Promise.resolve(res);
             })
         .catch((err) => {
