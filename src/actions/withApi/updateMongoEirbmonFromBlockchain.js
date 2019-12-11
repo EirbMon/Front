@@ -8,13 +8,13 @@ export default function updateMongoEirbmonFromBlockchain() {
                 type: SUCCESS_OCCURS,
                 payload: res,
             });
-            Promise.resolve();
+            return Promise.resolve();
         })
         .catch((err) => {
             dispatch({
                 type: ERROR_OCCURS,
                 payload: err,
             });
-            Promise.reject();
+            return Promise.reject(err);
         });
 }

@@ -17,6 +17,7 @@ export default function getOwnerEirbmon(owner_id, number = 0) {
             if (res.length === 0)
                 return Promise.reject("No Eirbmon found with owner: " + owner_id);
 
+            
             return Promise.resolve(res);
         })
     .catch((err) => {

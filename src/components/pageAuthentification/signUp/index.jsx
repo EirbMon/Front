@@ -54,8 +54,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SignUp = ({ history, signUp,
-    displayMessage, setAccountInfo,
+const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
     getBlockchainInfo, getOwnerEirbmon, updateMongoEirbmonFromBlockchain }) => {
 
     const classes = useStyles();
@@ -84,44 +83,48 @@ const SignUp = ({ history, signUp,
                     console.log(res.accounts);
                     var accountAddress = res.accounts[0];
                     var contract = res.contract;
-                    contract.methods.initAccount().send({ from: accountAddress }).
-                        then(res => {
-                            console.log("here is result init account ", res);
-                            sessionStorage.setItem('accountAddress', accountAddress);
-                            setAccountInfo(accountAddress);
 
-                            instanciateContract.then(res => {
-                                getBlockchainInfo({
-                                    owner_id: accountAddress,
-                                    contract: contract,
-                                });
-                            });
+                    contract.methods.initAccount().send({ from: accountAddress })
+                        .then(
+                            (res) => {
+                                console.log("here is result init account ", res);
+                                sessionStorage.setItem('accountAddress', accountAddress);
+                                setAccountInfo(accountAddress);
 
-                            updateMongoEirbmonFromBlockchain().then(
-                                () => {
-                                    getOwnerEirbmon(accountAddress);
-                                    signUp(generateSignUpUrl, { ...user })
-                                        .then(() => {
-                                            const jwt = getJwt();
-                                            if (jwt) {
-                                                history.push('/profil');
+                                instanciateContract.then(() => {
+                                    getBlockchainInfo({
+                                        owner_id: accountAddress,
+                                        contract: contract,
+                                    });
+
+
+                                    updateMongoEirbmonFromBlockchain()
+                                        .then(
+                                            () => {
+                                                getOwnerEirbmon(accountAddress);
+                                                signUp(generateSignUpUrl, { ...user })
+                                                    .then(() => {
+                                                        const jwt = getJwt();
+                                                        if (jwt) {
+                                                            history.push('/profil');
+                                                        }
+                                                    });
+                                            },
+                                            (error) => {
+                                                console.error(error)
                                             }
-                                        });
-                                },
-                                (error) => {
-                                    console.error(error)
-                                }
-                            )
+                                        )
 
 
-                        });
-                },
-                (err) => {
-                    console.error(err)
-                }
-            )
+                                });
+                            },
+                            (err) => {
+                                console.error(err)
+                            }
+                        )
 
-        }
+                })
+        };
     };
 
     return (
@@ -224,7 +227,6 @@ SignUp.propTypes = {
         push: PropTypes.func,
     }),
     signUp: PropTypes.func,
-    displayMessage: PropTypes.func,
 };
 
 export default flowRight([

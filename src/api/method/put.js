@@ -5,6 +5,7 @@ const password = process.env.REACT_APP_PASSWORD;
 
 export default function put(url, data) {
     const headers = {
+        Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
     };
 
@@ -17,7 +18,7 @@ export default function put(url, data) {
     })
         .then((res) => {
             if (200 === res.status || 201 === res.status) {
-                return res;
+                return res.json();
             }
 
             return Promise.reject(res.status);

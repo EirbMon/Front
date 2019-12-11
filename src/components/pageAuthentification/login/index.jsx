@@ -86,9 +86,9 @@ const Login = ({ history, dispatch }) => {
                     const accounts = await web3.eth.getAccounts();
                     const accountAddress = accounts[0];
                     sessionStorage.setItem('accountAddress',accountAddress)
+                    console.log(dispatch);
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
                     dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
-
                     instanciateContract.then(res => {
                         dispatch(mongoAccess.GetBlockchainInfo({
                             owner_id: res.accounts[0],

@@ -9,6 +9,7 @@ import GetBlockchainInfo from './getBlockchainInfo';
 import UpdateMongoEirbmonFromBlockchain from './updateMongoEirbmonFromBlockchain';
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
+import CheckInitAccount from './checkInitAccount'
 
 export default {
     GetEirbmon,
@@ -21,5 +22,6 @@ export default {
     GetBlockchainInfo,
     UpdateMongoEirbmonFromBlockchain,
     UpdateCatchEirbmon,
-    GetAllSkills
+    GetAllSkills,
+    CheckInitAccount
 };
