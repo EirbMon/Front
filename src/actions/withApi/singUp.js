@@ -3,13 +3,11 @@ import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
 export default function signUp(link, user) {
     return (dispatch, getState, api) => api.post(link, user)
         .then((res) => {
-
             if ('true' === res.exist_user) {
                 const err = 'userAlreadyExists';
                 throw err;
             }
-
-            if (res.user.token) {
+            else if (res.user.token) {
                 sessionStorage.setItem('token', res.user.token);
                 sessionStorage.setItem('name', res.user.name);
                 sessionStorage.setItem('email', res.user.email);

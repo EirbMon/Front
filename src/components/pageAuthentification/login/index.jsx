@@ -85,18 +85,19 @@ const Login = ({ history, dispatch }) => {
                     // Use web3 to get the user's accounts.
                     const accounts = await web3.eth.getAccounts();
                     const accountAddress = accounts[0];
-                    sessionStorage.setItem('accountAddress',accountAddress)
-                    console.log(dispatch);
+                    
+                    sessionStorage.setItem('accountAddress', accountAddress);
                     dispatch(reducerAcces.SetAccountInfo(accountAddress));
                     dispatch(mongoAccess.GetOwnerEirbmon(accountAddress));
-                    instanciateContract.then(res => {
-                        dispatch(mongoAccess.GetBlockchainInfo({
-                            owner_id: res.accounts[0],
-                            contract: res.contract,
-                        }));
-                    });
+                    instanciateContract.then(
+                        (res) => {
+                            dispatch(mongoAccess.GetBlockchainInfo({
+                                owner_id: res.accounts[0],
+                                contract: res.contract,
+                            }));
+                        });
 
-                    resolve();
+                    resolve(accountAddress);
                 } catch (error) {
                     // Catch any errors for any of the above operations.
                     alert(
@@ -111,7 +112,8 @@ const Login = ({ history, dispatch }) => {
     const loginFunction = (e, user) => {
         e.preventDefault();
         getMetamaskUrlAndEirbmons().then(
-            () => {
+            (accountAddress) => {
+                Object.assign(user, { owner_id: accountAddress });
                 dispatch(mongoAccess.Login(generateloginUrl, user)).then(
                     () => {
                         const jwt = getJwt();
@@ -121,7 +123,7 @@ const Login = ({ history, dispatch }) => {
                     })
             },
             (err) => {
-                console.error(err)
+                console.error(err);
             });
     };
 
@@ -137,7 +139,7 @@ const Login = ({ history, dispatch }) => {
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Bienvenue sur EirbMon
-            </Typography>
+                    </Typography>
                     <form className={classes.form} onSubmit={(e) => loginFunction(e, form)}>
                         <TextField
                             variant="outlined"
@@ -182,7 +184,7 @@ const Login = ({ history, dispatch }) => {
                             </Grid>
                             <Grid item>
                                 <Button onClick={() => history.push('/signUp')} size="small">
-                                    {"S'inscrire"}
+                                    S'inscrire
                                 </Button>
                             </Grid>
                         </Grid>

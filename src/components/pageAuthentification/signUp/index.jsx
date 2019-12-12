@@ -79,15 +79,12 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
         } else {
             instanciateContract.then(
                 (res) => {
-                    Object.assign(user, { owner_id: res.accounts[0] });
-                    console.log(res.accounts);
-                    var accountAddress = res.accounts[0];
-                    var contract = res.contract;
-
+                    const accountAddress = res.accounts[0];
+                    const contract = res.contract;
+                    Object.assign(user, { owner_id: accountAddress });
                     contract.methods.initAccount().send({ from: accountAddress })
                         .then(
-                            (res) => {
-                                console.log("here is result init account ", res);
+                            () => {
                                 sessionStorage.setItem('accountAddress', accountAddress);
                                 setAccountInfo(accountAddress);
 
@@ -96,8 +93,6 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                                         owner_id: accountAddress,
                                         contract: contract,
                                     });
-
-
                                     updateMongoEirbmonFromBlockchain()
                                         .then(
                                             () => {
@@ -111,18 +106,13 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                                                     });
                                             },
                                             (error) => {
-                                                console.error(error)
-                                            }
-                                        )
-
-
+                                                console.error(error);
+                                            })
                                 });
                             },
                             (err) => {
-                                console.error(err)
-                            }
-                        )
-
+                                console.error(err);
+                            })
                 })
         };
     };

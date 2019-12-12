@@ -5,17 +5,13 @@ export default function login(link, user) {
         .then((res) => {
             if ('false' === res.check_user) {
                 const err = 'userDoesntExist';
-
                 throw err;
             }
-
-            if ('false' === res.check_password) {
+            else if ('false' === res.check_password) {
                 const err = 'errorPassword';
-
                 throw err;
             }
-
-            if (res.token) {
+            else if (res.token && res.owner_id.toLowerCase() === user.owner_id.toLowerCase()) {
                 sessionStorage.setItem('token', res.token);
                 sessionStorage.setItem('name', res.name);
                 sessionStorage.setItem('email', res.email);
@@ -28,7 +24,6 @@ export default function login(link, user) {
                 return Promise.resolve();
             } else {
                 const err = 404;
-
                 throw err;
             }
         })
