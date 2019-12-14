@@ -96,7 +96,6 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.orphean_id,1)).then(
             (initEirb) => {
-                console.log(initEirb);
                 this.setState({eirbmon_id: initEirb[0].idInBlockchain});
                 this.unityContent.send('CombatManager', 'GenerateOrphelin', JSON.stringify(initEirb));
 

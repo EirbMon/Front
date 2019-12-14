@@ -3,7 +3,6 @@ import { LOAD_EIRBMON_SUCCESS } from '../../constants/action-types';
 import generateGetOwnerEirbmonUrl from '../../middleWare/generateGetOwnerEirbmonUrl';
 
 export default function getOwnerEirbmon(owner_id, number = 0) {
-    console.log(owner_id + " et " + number);
     return (dispatch, getState, api) => api.get(generateGetOwnerEirbmonUrl(owner_id,number))
     .then(
         (res) => {
