@@ -20,13 +20,17 @@ export default function put(url, data) {
         .then((res) => {
             console.log("Bonjour PUT REPONSE");
             console.log("reponse: " + res);
-            console.log(res.json());
+            console.log();
 
             if (200 === res.status || 201 === res.status || 204 === res.status ) {
+
                 return res.json();
             }
 
             return Promise.reject(res.status);
+        }).then(json=>{
+            console.log(json)
+            return json;
         })
         .catch((err) => {console.log("Bonjour PUT ERR " + err);});
 }
