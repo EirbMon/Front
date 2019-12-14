@@ -118,19 +118,20 @@ class Game extends React.Component {
 
             this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
             .then(response=>{
-                dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id,owner_id:this.state.owner_id})).then(
-                    (initEirb) => {
-                        console.log("Bonjour index.js GAME: initEirb:");
-                        console.log(initEirb);
-                        this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
-                    },
-                    (err) => {
-                        console.error(err);
-                    }
-                );
                 this.setState({eirbmon_id: null});
                 console.log("Bonjour dans le contract :o !");
             });
+
+            dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id,owner_id:this.state.owner_id})).then(
+                (initEirb) => {
+                    console.log("Bonjour index.js GAME: initEirb:");
+                    console.log(initEirb);
+                    this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
     }
 
     render() {
