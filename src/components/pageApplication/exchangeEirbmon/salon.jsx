@@ -9,6 +9,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
+import mongoAccess from '../../../actions/withApi/index';
 
 import SelectEirbmonModal from './selectEirbmonModal';
 import Informations from './informations';
@@ -45,7 +46,7 @@ const pokemon = {
     date: '---',
 };
 
-const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispatch, setSalon, salon }) => {
+const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatch, setSalon, salon, exchageEirbmons }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
@@ -127,12 +128,13 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, dispat
             blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp=>{
-                                
+                dispatch(exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
+                                                        id_eirbmon_blockchain_2: myEirbmon.id,
+                                                        owner_id_1: hisAccountAddress,
+                                                        owner_id_2: blockchain.blockchain.owner_id}));                
                 console.log('Echange a eu lieu');
                 channel.trigger('client-exchangeMade', {}); // Callback function possible
-    
-
-            });
+                });
         }
     }, [myChoose]);
 
@@ -210,7 +212,10 @@ export default flowRight([
             pusher: state.pusher.pusher,
             channel: state.pusher.pusher.subscribe(`presence-${props.salon}`),
             blockchain: state.blockchain,
-    }), null),
+            // mongoAccess: state,
+    }),  {
+        exchageEirbmons: mongoAccess.ExchageEirbmons
+    }),
     lifecycle({
         componentWillMount() {
             const { channel } = this.props;

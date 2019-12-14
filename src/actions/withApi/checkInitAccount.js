@@ -5,6 +5,7 @@ import { LOAD_EIRBMON_SUCCESS } from '../../constants/action-types';
 export default function checkInitAccount(data) {
     return (dispatch, getState, api) => api.post(generateCheckInitAccount(), data)
         .then((res) => {
+            console.log(res);
             dispatch({
                 type:  LOAD_EIRBMON_SUCCESS,
                 payload: res,

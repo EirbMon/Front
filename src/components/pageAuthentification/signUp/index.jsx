@@ -79,14 +79,40 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
         } else {
             instanciateContract.then(
                 (res) => {
-                    const accountAddress = res.accounts[0];
-                    const contract = res.contract;
-                    Object.assign(user, { owner_id: accountAddress });
-                    contract.methods.initAccount().send({ from: accountAddress })
-                        .then(
-                            () => {
-                                sessionStorage.setItem('accountAddress', accountAddress);
-                                setAccountInfo(accountAddress);
+                    Object.assign(user, { owner_id: res.accounts[0] });
+                    console.log(res.accounts);
+                    var accountAddress =  res.accounts[0];
+                    var contract = res.contract;
+                    
+                    console.log(dispatch);
+                    contract.methods.initAccount().send({ from: accountAddress }).
+                        then(res => {
+                            console.log("here is result init account ", res);
+                            sessionStorage.setItem('accountAddress', accountAddress);
+                            dispatch(reducerAcces.SetAccountInfo(accountAddress));
+                            instanciateContract.then(res => {
+                                dispatch(mongoAccess.GetBlockchainInfo({
+                                    owner_id:  accountAddress,
+                                    contract: contract,
+                                }));
+                            });
+                            dispatch(mongoAccess.CheckInitAccount({ owner_id:  accountAddress})).then(()=>{
+                                dispatch(mongoAccess.SignUp(generateSignUpUrl, { ...user }))
+                                .then(() => {
+                                    const jwt = getJwt();
+                                    if (jwt) {
+                                        history.push('/profil');
+                                    }
+                                })
+                            })
+                         
+                          
+                        });
+                },
+                (err) => {
+                    console.error(err)
+                }
+            )
 
                                 instanciateContract.then(() => {
                                     getBlockchainInfo({
