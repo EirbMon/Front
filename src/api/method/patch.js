@@ -16,7 +16,7 @@ export default function patch(url, data) {
         body: JSON.stringify(data),
     })
         .then((res) => {
-            if (200 === res.status) {
+            if (200 === res.status || 204 === res.status) {
                 return res.json();
             }
 

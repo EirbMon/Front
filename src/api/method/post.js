@@ -18,7 +18,7 @@ export default function post(url, data) {
     })
         .then((res) => {
         // check status
-            if (200 === res.status) {
+            if (200 === res.status || 204 === res.status) {
                 return res.json();
             } if (201 === res.status) { 
                 return res;
