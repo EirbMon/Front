@@ -124,14 +124,15 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
                 "Mon pokemon": myEirbmon.id
             });
 
-
+            //execute metamask transaction
             blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp=>{
-                dispatch(exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
+                //request bac server to update mongo database 
+                exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
                                                         id_eirbmon_blockchain_2: myEirbmon.id,
                                                         owner_id_1: hisAccountAddress,
-                                                        owner_id_2: blockchain.blockchain.owner_id}));                
+                                                        owner_id_2: blockchain.blockchain.owner_id});                
                 console.log('Echange a eu lieu');
                 channel.trigger('client-exchangeMade', {}); // Callback function possible
                 });
