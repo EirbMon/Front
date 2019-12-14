@@ -12,13 +12,14 @@ export default function put(url, data) {
 
     headers.Authorization = `Basic ${btoa(`${login}:${password}`)}`;
 
-    fetch(url, {
+    return fetch(url, {
         headers: new Headers(headers),
         method: 'PUT',
         body: JSON.stringify(data),
         })
         .then((res) => {
             console.log("Bonjour PUT REPONSE");
+
             if (200 === res.status || 201 === res.status || 204 === res.status ) {
                 return res.json();
             }
