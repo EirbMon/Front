@@ -4,7 +4,7 @@ import generateUpdateCatchEirbmonUrl from '../../middleWare/generateUpdateCatchE
 export default function updateCatchEirbmon(data) {
     console.log("Bonjour UPDATE CATCH EIEBRMON? URL: " + generateUpdateCatchEirbmonUrl() );
     console.log(data);
-    return (dispatch, getState, api) => {api.put(generateUpdateCatchEirbmonUrl(), data)
+    return (dispatch, getState, api) => api.put(generateUpdateCatchEirbmonUrl(), data)
         .then((res) => {
             console.log('update cactch')
             console.log(res)
@@ -19,5 +19,4 @@ export default function updateCatchEirbmon(data) {
                 payload: err,
             });
         });
-    }
 }
