@@ -12,6 +12,8 @@ export default function updateCatchEirbmon(data) {
                 type: SUCCESS_OCCURS,
                 payload: res,
             });
+            return Promise.resolve(res);
+
         })
         .catch((err) => {
             dispatch({
