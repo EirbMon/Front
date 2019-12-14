@@ -10,11 +10,12 @@ import UpdateMongoEirbmonFromBlockchain from './updateMongoEirbmonFromBlockchain
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
 import CheckInitAccount from './checkInitAccount'
-
+import ExchageEirbmons from './exchangeEirbmons'
 export default {
     GetEirbmon,
     GetOwnerEirbmon,
     UpdateEirbmon,
+    ExchageEirbmons,
     Login,
     SignUp,
     DisplayMessage,

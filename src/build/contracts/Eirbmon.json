@@ -16632,12 +16632,12 @@
         }
       },
       "links": {},
-      "address": "0xCc5A0463587b1C8496c218c3535cA81982f12084",
-      "transactionHash": "0x77f5131b9f5ceaa1b12bb905cd04348f11a14410576e2d669dcf88ea470514b7"
+      "address": "0x16F846eB3Ce0c6a8C18e512126F060A5fe4BFAE1",
+      "transactionHash": "0x116248b0bc0546452509fddde7a03c5d913357c21cc0a2f98bebea7cf803947f"
     }
   },
-  "schemaVersion": "3.0.17",
-  "updatedAt": "2019-12-11T21:26:29.930Z",
+  "schemaVersion": "3.0.19",
+  "updatedAt": "2019-12-14T10:09:12.963Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

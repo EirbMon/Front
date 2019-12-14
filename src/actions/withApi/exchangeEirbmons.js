@@ -3,9 +3,9 @@ import generateExchangeEirbmon from '../../middleWare/generateExchangeEirbmon';
 import { LOAD_EIRBMON_SUCCESS } from '../../constants/action-types';
 
 export default function checkInitAccount(data) {
-    return (dispatch, getState, api) => api.post(generateExchangeEirbmon(), data)
+    return (dispatch, getState, api) => api.put(generateExchangeEirbmon(), data)
         .then((res) => {
-           
+           console.log(res);
             return Promise.resolve(res);
         })
         .catch((err) => {
