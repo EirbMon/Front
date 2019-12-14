@@ -116,6 +116,12 @@ class Game extends React.Component {
             const { dispatch } = this.props;
             console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id,"pour compte ",this.state.owner_id);
 
+            this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
+            .then(response=>{
+                this.setState({eirbmon_id: null});
+                console.log("Bonjour dans le contract :o !");
+            });
+
             dispatch(mongoAccess.UpdateCatchEirbmon({id_eirbmon_blockchain: this.state.eirbmon_id, owner_id:this.state.owner_id})).then(
                 (initEirb) => {
                     console.log("Bonjour index.js GAME: initEirb:");
@@ -127,11 +133,6 @@ class Game extends React.Component {
                 }
             );
 
-            this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
-            .then(response=>{
-                this.setState({eirbmon_id: null});
-                console.log("Bonjour dans le contract :o !");
-            });
     }
 
     render() {
