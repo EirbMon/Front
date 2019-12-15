@@ -38,14 +38,14 @@ const Accueil = ({ classes, accountInfo }) => (
                     Bienvenue sur le jeu Eirbmon ! 
                 </h1>
                 <p>L'objectif du projet Eirbmon était de créer un jeu ludique et exploitant la technologie
-                     blockchain. Eirbmon est développé par une équipe de 7 élèves-ingénieurs de l'Enseirb-Matmeca 
-                     <br/>-Cognet Damien, manager du projet
-                     <br/>-Atia Abdessamad
-                     <br/>-Deville Jean-Charles
-                     <br/>-Malay Valérian
-                     <br/>-Martin Lila
-                     <br/>-Micouin--Jorda David
-                     <br/>-Rajaona Jean
+                     blockchain. Eirbmon est développé par une équipe de 7 élèves-ingénieurs de l'Enseirb-Matmeca :
+                     <br/> - Cognet Damien, manager du projet
+                     <br/> - Atia Abdessamad
+                     <br/> - Deville Jean-Charles
+                     <br/> - Malay Valérian
+                     <br/> - Martin Lila
+                     <br/> - Micouin--Jorda David
+                     <br/> - Rajaona Jean
                 </p>
                 <p>
                     Eirbmon est un jeu en ligne où l'objectif est de collecter, échanger et faire combattre
