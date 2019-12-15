@@ -74,6 +74,7 @@ class Game extends React.Component {
 
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.owner_id, 6)).then(
             (initEirb) => {
+                console.log(initEirb);
                 this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
             },
             (err) => {
