@@ -52,7 +52,7 @@ function getStepContent(step) {
   }
 }
 
-export default function VerticalLinearStepper() {
+export default function VerticalLinearStepper({handleModalState}) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -116,7 +116,7 @@ export default function VerticalLinearStepper() {
           <Button onClick={handleReset} className={classes.button}>
             Recommencer le tutorial
           </Button>
-          <Button onClick={handleReset} className={classes.button}>
+          <Button onClick={handleModalState} className={classes.button}  variant="contained" color="primary">
             Terminer
           </Button>
         </Paper>
