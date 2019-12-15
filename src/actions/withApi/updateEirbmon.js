@@ -6,7 +6,6 @@ export default function updateEirbmon(data) {
     return (dispatch, getState, api) => api.put(generateGetEirbmonUrl(), data)
         .then(
             (res) => {
-                console.log(res);
                 dispatch({
                     type: LOAD_EIRBMON_SUCCESS,
                     payload: res,

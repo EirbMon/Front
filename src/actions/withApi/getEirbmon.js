@@ -17,7 +17,6 @@ export default function getEirbmon(eirbmon_id) {
                 if (eirbmon_id === null)
                     return Promise.reject("Aucun eirbmon a attrapé n'été trouvé, eirbmon_id = null");
                 
-                console.log(Promise.resolve(res));
                 return Promise.resolve(res);
             })
         .catch((err) => {
