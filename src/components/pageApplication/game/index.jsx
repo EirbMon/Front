@@ -122,7 +122,7 @@ class Game extends React.Component {
                 console.log("Bonjour dans le contract :o !");
             });
 
-            dispatch(mongoAccess.UpdateCatchEirbmon({idInBlockchain: this.state.eirbmon_id,owner_id:this.state.owner_id})).then(
+            dispatch(mongoAccess.UpdateCatchEirbmon({id_eirbmon_blockchain: this.state.eirbmon_id, owner_id:this.state.owner_id})).then(
                 (initEirb) => {
                     console.log("Bonjour index.js GAME: initEirb:");
                     console.log(initEirb);
@@ -132,6 +132,7 @@ class Game extends React.Component {
                     console.error(err);
                 }
             );
+
     }
 
     render() {

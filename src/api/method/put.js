@@ -16,15 +16,19 @@ export default function put(url, data) {
         headers: new Headers(headers),
         method: 'PUT',
         body: JSON.stringify(data),
-    })
+        })
         .then((res) => {
             console.log("Bonjour PUT REPONSE");
-            console.log("reponse: " + res);
-            if (200 === res.status || 201 === res.status) {
+
+            if (200 === res.status || 201 === res.status || 204 === res.status ) {
                 return res.json();
             }
 
             return Promise.reject(res.status);
+        })
+        .then(json=>{
+            console.log(json)
+            return json;
         })
         .catch((err) => {console.log("Bonjour PUT ERR " + err);});
 }

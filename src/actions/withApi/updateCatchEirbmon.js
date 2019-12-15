@@ -6,10 +6,14 @@ export default function updateCatchEirbmon(data) {
     console.log(data);
     return (dispatch, getState, api) => api.put(generateUpdateCatchEirbmonUrl(), data)
         .then((res) => {
+            console.log('update cactch')
+            console.log(res)
             dispatch({
                 type: SUCCESS_OCCURS,
                 payload: res,
             });
+            return Promise.resolve(res);
+
         })
         .catch((err) => {
             dispatch({
