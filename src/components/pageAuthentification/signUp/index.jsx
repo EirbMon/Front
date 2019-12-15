@@ -1,5 +1,5 @@
 import { flowRight } from 'lodash/fp';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -13,7 +13,9 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Stepper from './stepper/index';
+
 
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
@@ -52,6 +54,10 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    modal: {
+        marginBottom: '5%',
+        margin: '5%'
+    }
 }));
 
 const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
@@ -118,91 +124,96 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
     };
 
     return (
-        <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        S'inscrire à Eirbmon
-                    </Typography>
-                    <form className={classes.form} onSubmit={(e) => signUpFunction(e, form)}>
-                        <TextField
-                            id="name"
-                            name="name"
-                            label="Nom utilisateur"
-                            value={form.name}
-                            onChange={updateField}
-                            margin="normal"
-                            variant="outlined"
-                            fullWidth
-                            required
-                            autoFocus
-                        />
-                        <TextField
-                            id="email"
-                            name="email"
-                            label="Email de l'utilisateur"
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            autoComplete="email"
-                            value={form.email}
-                            onChange={updateField}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Mot de passe"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={form.password}
-                            onChange={updateField}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="passwordCheck"
-                            label="Vérification mot de passe"
-                            type="password"
-                            id="passwordCheck"
-                            autoComplete="current-password"
-                            value={form.passwordCheck}
-                            onChange={updateField}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            S'inscrire
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-
-                            </Grid>
-                            <Grid item>
-                                <Button onClick={() => history.push('/login')} size="small">
-                                    {"Se connecter"}
+        <div>
+            <Grid container component="main" className={classes.root}>
+                <CssBaseline />
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            S'inscrire à Eirbmon
+                        </Typography>
+                        <form className={classes.form} onSubmit={(e) => signUpFunction(e, form)}>
+                            <TextField
+                                id="name"
+                                name="name"
+                                label="Nom utilisateur"
+                                value={form.name}
+                                onChange={updateField}
+                                margin="normal"
+                                variant="outlined"
+                                fullWidth
+                                required
+                                autoFocus
+                            />
+                            <TextField
+                                id="email"
+                                name="email"
+                                label="Email de l'utilisateur"
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                autoComplete="email"
+                                value={form.email}
+                                onChange={updateField}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Mot de passe"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                value={form.password}
+                                onChange={updateField}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="passwordCheck"
+                                label="Vérification mot de passe"
+                                type="password"
+                                id="passwordCheck"
+                                autoComplete="current-password"
+                                value={form.passwordCheck}
+                                onChange={updateField}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                S'inscrire
                                 </Button>
+                            <Grid container>
+                                <Grid item xs>
+
+                                </Grid>
+                                <Grid item>
+                                    <Button onClick={() => history.push('/login')} size="small">
+                                        {"Se connecter"}
+                                    </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                </Grid>
             </Grid>
-        </Grid>
+            <Modal open className={classes.modal}>
+                <Stepper/>
+            </Modal>
+        </div>
     );
 };
 
