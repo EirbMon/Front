@@ -4,7 +4,6 @@ const login = process.env.REACT_APP_LOGIN;
 const password = process.env.REACT_APP_PASSWORD;
 
 export default function put(url, data) {
-    console.log("Bonjour PUT ENVOIE url : " + url);
     const headers = {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
@@ -18,8 +17,6 @@ export default function put(url, data) {
         body: JSON.stringify(data),
         })
         .then((res) => {
-            console.log("Bonjour PUT REPONSE");
-
             if (200 === res.status || 201 === res.status || 204 === res.status ) {
                 return res.json();
             }
@@ -27,7 +24,6 @@ export default function put(url, data) {
             return Promise.reject(res.status);
         })
         .then(json=>{
-            console.log(json)
             return json;
         })
         .catch((err) => {console.log("Bonjour PUT ERR " + err);});
