@@ -50,7 +50,7 @@ class Game extends React.Component {
             }
             else if (message === "end_combat"){
                 console.log("End of the combat by the user");
-                //this.onUpdateEirbmon
+                this.onEndCombat();
             }
             else{
                 console.log("Receiving: " + message);
@@ -104,6 +104,19 @@ class Game extends React.Component {
                 this.setState({eirbmon_id: initEirb[0].idInBlockchain});
                 this.unityContent.send('CombatManager', 'GenerateOrphelin', JSON.stringify(initEirb));
 
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    onEndCombat() {
+
+        const { dispatch } = this.props;
+        dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id, available: true})).then(
+            (initEirb) => {
+                console.log(initEirb);
             },
             (err) => {
                 console.error(err);
