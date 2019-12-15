@@ -45,8 +45,12 @@ class Game extends React.Component {
                 this.onCatchEirbmon();
             }
             else if (message === "eirbmon_skills"){
-                console.log("Send Eirbmon Skills list when the game start");
+                console.log("Send Eirbmon Skills list to the game");
                 this.onSendEirmobSkill();
+            }
+            else if (message === "end_combat"){
+                console.log("End of the combat by the user");
+                //this.onUpdateEirbmon
             }
             else{
                 console.log("Receiving: " + message);
@@ -112,21 +116,23 @@ class Game extends React.Component {
             const { dispatch } = this.props;
             console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id,"pour compte ",this.state.owner_id);
 
-            dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id,owner_id:this.state.owner_id})).then(
-                (initEirb) => {
-                    console.log(initEirb);
+            this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
+            .then(response=>{
+                this.setState({eirbmon_id: null});
+                console.log("Bonjour dans le contract :o !");
+            });
 
-                    this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
-                    .then(response=>{
-                        this.setState({eirbmon_id: null});
-                        this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
-                    });
-                    
+            dispatch(mongoAccess.UpdateCatchEirbmon({id_eirbmon_blockchain: this.state.eirbmon_id, owner_id:this.state.owner_id})).then(
+                (initEirb) => {
+                    console.log("Bonjour index.js GAME: initEirb:");
+                    console.log(initEirb);
+                    this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
                 },
                 (err) => {
                     console.error(err);
                 }
             );
+
     }
 
     render() {

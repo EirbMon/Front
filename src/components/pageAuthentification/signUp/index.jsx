@@ -60,8 +60,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
-    getBlockchainInfo, getOwnerEirbmon, updateMongoEirbmonFromBlockchain }) => {
+const SignUp = ({ history, signUp, dispatch,displayMessage, setAccountInfo,
+    getBlockchainInfo, checkInitAccount}) => {
 
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -88,41 +88,36 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                     const accountAddress = res.accounts[0];
                     const contract = res.contract;
                     Object.assign(user, { owner_id: accountAddress });
-                    contract.methods.initAccount().send({ from: accountAddress })
-                        .then(
-                            () => {
-                                sessionStorage.setItem('accountAddress', accountAddress);
-                                setAccountInfo(accountAddress);
-
-                                instanciateContract.then(() => {
-                                    getBlockchainInfo({
-                                        owner_id: accountAddress,
-                                        contract: contract,
-                                    });
-                                    updateMongoEirbmonFromBlockchain()
-                                        .then(
-                                            () => {
-                                                getOwnerEirbmon(accountAddress);
-                                                signUp(generateSignUpUrl, { ...user })
-                                                    .then(() => {
-                                                        const jwt = getJwt();
-                                                        if (jwt) {
-                                                            history.push('/profil');
-                                                        }
-                                                    });
-                                            },
-                                            (error) => {
-                                                console.error(error);
-                                            })
+                    //execute metamask transaction
+                    contract.methods.initAccount().send({ from: accountAddress }).
+                        then(res => {
+                            //store blockchain data
+                            sessionStorage.setItem('accountAddress', accountAddress);
+                            setAccountInfo(accountAddress);
+                            instanciateContract.then(res => {
+                                getBlockchainInfo({
+                                    owner_id:  accountAddress,
+                                    contract: contract,
                                 });
-                            },
-                            (err) => {
-                                console.error(err);
+                            });
+                            //update mongodb
+                            checkInitAccount({ owner_id:  accountAddress}).then(()=>{
+                                signUp(generateSignUpUrl, { ...user })
+                                .then(() => {
+                                    const jwt = getJwt();
+                                    if (jwt) {
+                                        history.push('/profil');
+                                    }
+                                })
                             })
-                })
-        };
-    };
-
+                        });
+                },
+                (err) => {
+                    console.error(err)
+                }
+            )
+            }}
+            
     return (
         <div>
             <Grid container component="main" className={classes.root}>
@@ -233,11 +228,11 @@ SignUp.propTypes = {
 export default flowRight([
     withRouter,
     withStyles(useStyles),
-    connect(null, {
+    connect(
+        null, {
         getBlockchainInfo: mongoAccess.GetBlockchainInfo,
-        getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        updateMongoEirbmonFromBlockchain: mongoAccess.UpdateMongoEirbmonFromBlockchain,
         setAccountInfo: reducerAcces.SetAccountInfo,
+        checkInitAccount: mongoAccess.CheckInitAccount,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,
     }),
