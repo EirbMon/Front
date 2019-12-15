@@ -11,6 +11,9 @@ import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
 import CheckInitAccount from './checkInitAccount'
 import ExchageEirbmons from './exchangeEirbmons'
+import GetKey from './getKey'
+import UpdateKey from './updateKey'
+
 export default {
     GetEirbmon,
     GetOwnerEirbmon,
@@ -24,5 +27,7 @@ export default {
     UpdateMongoEirbmonFromBlockchain,
     UpdateCatchEirbmon,
     GetAllSkills,
-    CheckInitAccount
+    CheckInitAccount,
+    GetKey,
+    UpdateKey,
 };

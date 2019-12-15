@@ -14,6 +14,7 @@ class Game extends React.Component {
         this.state = {
             messageUnity: '',
             owner_id: null,
+            key: null,
             contract: null,
             eirbmon_id: null,
             orphean_id: '0x0000000000000000000000000000000000000000',
@@ -22,6 +23,10 @@ class Game extends React.Component {
         this.onEnterInCombat = this.onEnterInCombat.bind(this);
         this.onCatchEirbmon = this.onCatchEirbmon.bind(this);
 
+        this.GetAvailableKey = this.GetAvailableKey.bind(this);
+        this.UpdateKeyToOwner = this.UpdateKeyToOwner.bind(this);
+        this.UpdateKeyToAvailable = this.UpdateKeyToAvailable.bind(this);
+        
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
             'BuildInfo/Build/UnityLoader.js',
@@ -68,6 +73,40 @@ class Game extends React.Component {
             console.log(this.props);
         });
     }
+
+
+    // Récupère une seule clé qui est disponible et la rend directement indisponible pour ne pas que d'autre personne l'utilise en même temps. 
+    GetAvailableKey() {
+        const { dispatch } = this.props ;
+        dispatch(mongoAccess.GetKey()).then(
+            (data) => {
+                console.log(data);
+                this.setState({ key: data.key });
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    // Si la personne a réussi et confirme l'inscription, on rajoute le owner_id pour la clef et la remet en indisponible.
+    UpdateKeyToOwner() {
+        const { dispatch } = this.props ;
+        dispatch(mongoAccess.UpdateKey({ key: this.state.key, available: false, owner_id: this.state.owner_id })).then(
+            (data) => {console.log("UpdateKey, Success inscription");console.error(data);},
+            (err) => {console.error(err);}
+        );
+    }
+
+    // Si la personne a cancel l'inscription ou fail l'inscription, on remet la clef a disponible.
+    UpdateKeyToAvailable() {
+        const { dispatch } = this.props ;
+        dispatch(mongoAccess.UpdateKey({ key: this.state.key, available: true })).then(
+            (data) => {console.log("UpdateKey, Inscription failed");console.error(data);},
+            (err) => {console.error(err);}
+        );
+    }
+
 
     onRefreshMyInventory() {
         const { dispatch } = this.props ;
@@ -160,6 +199,8 @@ class Game extends React.Component {
                 </div>
                 Message from unity :
                 {messageUnity}
+                < br/>
+                Key : {this.state.key}
             </Page>
         );
     }
