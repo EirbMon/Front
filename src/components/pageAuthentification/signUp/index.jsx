@@ -1,5 +1,5 @@
 import { flowRight } from 'lodash/fp';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -13,7 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Stepper from './stepper/index';
+import { Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
 
 import getJwt from '../../../functions/getJwt';
 import mongoAccess from '../../../actions/withApi/index';
@@ -22,6 +23,7 @@ import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -52,10 +54,14 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    modal: {
+        margin: '2%',
+        overflow: 'hidden'
+    }
 }));
 
-const SignUp = ({ history, signUp, dispatch,displayMessage, setAccountInfo,
-    getBlockchainInfo, checkInitAccount}) => {
+const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
+    getBlockchainInfo, checkInitAccount }) => {
 
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -63,6 +69,11 @@ const SignUp = ({ history, signUp, dispatch,displayMessage, setAccountInfo,
         email: '',
         password: '',
         passwordCheck: '',
+    });
+
+    const [modalState, setModalState] = useState({
+        openTuto: false,
+        openAskTuto: true
     });
 
     const updateField = (e) => {
@@ -85,24 +96,27 @@ const SignUp = ({ history, signUp, dispatch,displayMessage, setAccountInfo,
                     //execute metamask transaction
                     contract.methods.initAccount().send({ from: accountAddress }).
                         then(res => {
+                            console.log('ok1')
                             //store blockchain data
                             sessionStorage.setItem('accountAddress', accountAddress);
                             setAccountInfo(accountAddress);
                             instanciateContract.then(res => {
                                 getBlockchainInfo({
-                                    owner_id:  accountAddress,
+                                    owner_id: accountAddress,
                                     contract: contract,
                                 });
                             });
                             //update mongodb
-                            checkInitAccount({ owner_id:  accountAddress}).then(()=>{
+                            checkInitAccount({ owner_id: accountAddress }).then(() => {
+                                console.log('ok2')
                                 signUp(generateSignUpUrl, { ...user })
-                                .then(() => {
-                                    const jwt = getJwt();
-                                    if (jwt) {
-                                        history.push('/profil');
-                                    }
-                                })
+                                    .then(() => {
+                                        console.log('lol');
+                                        const jwt = getJwt();
+                                        if (jwt) {
+                                            history.push('/profil');
+                                        }
+                                    })
                             })
                         });
                 },
@@ -110,94 +124,149 @@ const SignUp = ({ history, signUp, dispatch,displayMessage, setAccountInfo,
                     console.error(err)
                 }
             )
-            }}
-            
-    return (
-        <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        S'inscrire à Eirbmon
-                    </Typography>
-                    <form className={classes.form} onSubmit={(e) => signUpFunction(e, form)}>
-                        <TextField
-                            id="name"
-                            name="name"
-                            label="Nom utilisateur"
-                            value={form.name}
-                            onChange={updateField}
-                            margin="normal"
-                            variant="outlined"
-                            fullWidth
-                            required
-                            autoFocus
-                        />
-                        <TextField
-                            id="email"
-                            name="email"
-                            label="Email de l'utilisateur"
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            autoComplete="email"
-                            value={form.email}
-                            onChange={updateField}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Mot de passe"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={form.password}
-                            onChange={updateField}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="passwordCheck"
-                            label="Vérification mot de passe"
-                            type="password"
-                            id="passwordCheck"
-                            autoComplete="current-password"
-                            value={form.passwordCheck}
-                            onChange={updateField}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            S'inscrire
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
+        }
+    }
 
-                            </Grid>
-                            <Grid item>
-                                <Button onClick={() => history.push('/login')} size="small">
-                                    {"Se connecter"}
+    const handleModalState = (modalName = '') => {
+
+        if (modalName === "tuto") {
+            setModalState({
+                openTuto: !modalState.openTuto,
+                openAskTuto: false
+            })
+        }
+        else if (modalName === "askTuto") {
+            setModalState({
+                openAskTuto: !modalState.openAskTuto,
+                openTuto: false
+            })
+        } else {
+            setModalState({
+                openTuto: false,
+                openAskTuto: false
+            })
+        }
+
+    }
+
+    return (
+        <div>
+            <Grid container component="main" className={classes.root}>
+                <CssBaseline />
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            S'inscrire à Eirbmon
+                        </Typography>
+                        <form className={classes.form} onSubmit={(e) => signUpFunction(e, form)}>
+                            <TextField
+                                id="name"
+                                name="name"
+                                label="Nom utilisateur"
+                                value={form.name}
+                                onChange={updateField}
+                                margin="normal"
+                                variant="outlined"
+                                fullWidth
+                                required
+                                autoFocus
+                            />
+                            <TextField
+                                id="email"
+                                name="email"
+                                label="Email de l'utilisateur"
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                autoComplete="email"
+                                value={form.email}
+                                onChange={updateField}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Mot de passe"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                value={form.password}
+                                onChange={updateField}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="passwordCheck"
+                                label="Vérification mot de passe"
+                                type="password"
+                                id="passwordCheck"
+                                autoComplete="current-password"
+                                value={form.passwordCheck}
+                                onChange={updateField}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                S'inscrire
                                 </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Button onClick={() => handleModalState("tuto")} size="small">
+                                        {"Tutoriel"}
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button onClick={() => history.push('/login')} size="small">
+                                        {"Se connecter"}
+                                    </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                </Grid>
             </Grid>
-        </Grid>
+
+            <Dialog open={modalState.openAskTuto} onClose={() => handleModalState()}>
+                <DialogTitle className={classes.large}> Installation de Metamask Necessaire ! </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Pour utiliser l'application Eirbmon, l'utilisation de metamask est necessaire.
+                        Ainsi un tutoriel est disponible pour vous guider lors de son installation.
+                        Si vous avez déja metamask de configuré, vous pouvez passer ce tutoriel.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => handleModalState("tuto")} color="primary">
+                        Continuer
+                    </Button>
+                    <Button onClick={() => handleModalState()} color="secondary">
+                        Passer
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog fullWidth={true} maxWidth='xl' open={modalState.openTuto}
+                onClose={() => handleModalState()} className={classes.modal}>
+                <Stepper
+                    handleModalState={()=>handleModalState()}
+                />
+            </Dialog>
+
+
+        </div>
     );
 };
 
@@ -207,7 +276,7 @@ SignUp.propTypes = {
         form: PropTypes.string,
         container: PropTypes.string,
         page: PropTypes.string,
-    }).isRequired,
+    }),
     history: PropTypes.shape({
         push: PropTypes.func,
     }),

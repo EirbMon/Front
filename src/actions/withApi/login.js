@@ -11,17 +11,24 @@ export default function login(link, user) {
                 const err = 'errorPassword';
                 throw err;
             }
-            else if (res.token && res.owner_id.toLowerCase() === user.owner_id.toLowerCase()) {
-                sessionStorage.setItem('token', res.token);
-                sessionStorage.setItem('name', res.name);
-                sessionStorage.setItem('email', res.email);
+            else if (res.token && res.owner_id) {
 
-                dispatch({
-                    type: SUCCESS_OCCURS,
-                    payload: 'connected',
-                });
+                if (res.owner_id.toLowerCase() === user.owner_id.toLowerCase()) {
+                    sessionStorage.setItem('token', res.token);
+                    sessionStorage.setItem('name', res.name);
+                    sessionStorage.setItem('email', res.email);
 
-                return Promise.resolve();
+                    dispatch({
+                        type: SUCCESS_OCCURS,
+                        payload: 'connected',
+                    });
+
+                    return Promise.resolve();
+                } else {
+                    const err = 404;
+                    throw err
+                }
+
             } else {
                 const err = 404;
                 throw err;
