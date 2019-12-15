@@ -12,6 +12,7 @@ import thunk from 'redux-thunk';
 import Game from './components/pageApplication/game';
 import ExchangeEirbmon from './components/pageApplication/exchangeEirbmon';
 import Eirbdex from './components/pageApplication/eirbdex';
+import Accueil from './components/pageAccueil';
 import Login from './components/pageAuthentification/login';
 import Connect from './components/pageAuthentification/connectBlockchain';
 import SignUp from './components/pageAuthentification/signUp';
@@ -39,7 +40,8 @@ ReactDOM.render(
                 <SnackbarProvider>
                     <Snackbar>
                         <Switch>
-                            <Route path="/" exact component={Login} />
+                            <Route path="/" exact component={Accueil} />
+                            <Route path="/accueil" exact component={Accueil} />
                             <Route path="/unity" component={Game} />
                             <Route path="/login" component={Login} />
                             <Route path="/connect" component={Connect} />

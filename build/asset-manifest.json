@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9e4e86c5.chunk.css",
+    "main.js": "/static/js/main.c5507cf0.chunk.js",
+    "main.js.map": "/static/js/main.c5507cf0.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.a96b69ff.js",
+    "runtime-main.js.map": "/static/js/runtime-main.a96b69ff.js.map",
+    "static/js/2.d545c413.chunk.js": "/static/js/2.d545c413.chunk.js",
+    "static/js/2.d545c413.chunk.js.map": "/static/js/2.d545c413.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.b7f859294a54141b0e05b4cda901bb64.js": "/precache-manifest.b7f859294a54141b0e05b4cda901bb64.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.9e4e86c5.chunk.css.map": "/static/css/main.9e4e86c5.chunk.css.map",
+    "static/media/LogoEirbmon2.png": "/static/media/LogoEirbmon2.a6c8f131.png",
+    "static/media/pikachu-inverse.jpg": "/static/media/pikachu-inverse.e9a7941f.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a96b69ff.js",
+    "static/js/2.d545c413.chunk.js",
+    "static/css/main.9e4e86c5.chunk.css",
+    "static/js/main.c5507cf0.chunk.js"
+  ]
+}
