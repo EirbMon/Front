@@ -168,8 +168,9 @@ class Game extends React.Component {
 
     onCatchEirbmon() {
 
+            
             const { dispatch } = this.props;
-            console.log("L'ID du Eirbmon capturé est: " + this.state.eirbmon_id,"pour compte ",this.state.owner_id);
+            console.log("L'ID du Eirbmon capturé est : " + this.state.eirbmon_id,"pour compte ",this.state.owner_id);
 
             this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
             .then(response=>{
