@@ -324,6 +324,6 @@ export default flowRight([
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,
         getKey: mongoAccess.GetKey,
-        updateKey: mongoAccess.updateKey,
+        updateKey: mongoAccess.UpdateKey,
     }),
 ])(SignUp);
