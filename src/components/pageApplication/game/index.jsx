@@ -173,10 +173,7 @@ class Game extends React.Component {
 
             this.state.contract.methods.catchEirbmon(this.state.eirbmon_id).send({ from: this.state.owner_id })
             .then(response=>{
-                this.setState({eirbmon_id: null});
-            });
-
-            dispatch(mongoAccess.UpdateCatchEirbmon({id_eirbmon_blockchain: this.state.eirbmon_id, owner_id:this.state.owner_id})).then(
+                dispatch(mongoAccess.UpdateCatchEirbmon({id_eirbmon_blockchain: this.state.eirbmon_id, owner_id:this.state.owner_id})).then(
                 (initEirb) => {
                     console.log("Eirbmon Catched: ");
                     console.log(initEirb);
@@ -186,6 +183,8 @@ class Game extends React.Component {
                     console.error(err);
                 }
             );
+            this.setState({eirbmon_id: null});
+            });
 
     }
 
