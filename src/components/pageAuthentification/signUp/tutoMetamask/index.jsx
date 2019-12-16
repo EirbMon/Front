@@ -29,11 +29,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-var pages = {
-  'Installer Metamask': <InstallMetamask />,
-  'Configurer Metamask': <ConfigMetamask />,
-  'Importer votre compte de bêta testeur': <ImportAccount />
-}
 
 function getSteps() {
   return ['Installer Metamask', 'Configurer Metamask', 'Importer votre compte de bêta testeur'];
@@ -52,10 +47,16 @@ function getStepContent(step) {
   }
 }
 
-export default function VerticalLinearStepper({handleModalState}) {
+export default function TutoMetamask({handleModalState, keyCode}) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
+
+  var pages = {
+    'Installer Metamask': <InstallMetamask />,
+    'Configurer Metamask': <ConfigMetamask />,
+    'Importer votre compte de bêta testeur': <ImportAccount keyCode={keyCode}/>
+  }
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -80,7 +81,6 @@ export default function VerticalLinearStepper({handleModalState}) {
               {pages[label]}
               <div className={classes.actionsContainer}>
                 <Grid container
-                  container
                   direction="row"
                   justify="flex-end"
                   alignItems="center"

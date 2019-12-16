@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import Stepper from './stepper/index';
+import TutoMetamask from './tutoMetamask/index';
 import { Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
 
 import getJwt from '../../../functions/getJwt';
@@ -23,6 +23,7 @@ import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
+import { resolve } from 'url';
 
 
 const useStyles = makeStyles(theme => ({
@@ -61,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
-    getBlockchainInfo, checkInitAccount }) => {
+    getBlockchainInfo, checkInitAccount, getKey, updateKey }) => {
 
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -75,6 +76,13 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
         openTuto: false,
         openAskTuto: true
     });
+
+    const [key, setKey] = useState({
+        owner_id: '',
+        code: '',
+        available: true
+    })
+
 
     const updateField = (e) => {
         setValues({
@@ -95,37 +103,51 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                     Object.assign(user, { owner_id: accountAddress });
                     //execute metamask transaction
                     contract.methods.initAccount().send({ from: accountAddress }).
-                        then(res => {
-                            console.log('ok1')
-                            //store blockchain data
-                            sessionStorage.setItem('accountAddress', accountAddress);
-                            setAccountInfo(accountAddress);
-                            instanciateContract.then(res => {
-                                getBlockchainInfo({
-                                    owner_id: accountAddress,
-                                    contract: contract,
+                        then(
+                            res => {
+                                console.log('ok1')
+                                //store blockchain data
+                                sessionStorage.setItem('accountAddress', accountAddress);
+                                setAccountInfo(accountAddress);
+                                instanciateContract.then(res => {
+                                    getBlockchainInfo({
+                                        owner_id: accountAddress,
+                                        contract: contract,
+                                    });
                                 });
+                                //update mongodb
+                                checkInitAccount({ owner_id: accountAddress }).then(() => {
+                                    console.log('ok2')
+                                    signUp(generateSignUpUrl, { ...user })
+                                        .then(() => {
+                                            updateKey({ key: key.code, available: false, owner_id: accountAddress }).then(
+                                                () => {
+                                                    console.log('lol');
+                                                    const jwt = getJwt();
+                                                    if (jwt) {
+                                                        history.push('/profil');
+                                                    }
+                                                }
+                                            )
+                                        })
+                                })
                             });
-                            //update mongodb
-                            checkInitAccount({ owner_id: accountAddress }).then(() => {
-                                console.log('ok2')
-                                signUp(generateSignUpUrl, { ...user })
-                                    .then(() => {
-                                        console.log('lol');
-                                        const jwt = getJwt();
-                                        if (jwt) {
-                                            history.push('/profil');
-                                        }
-                                    })
-                            })
-                        });
-                },
+                }
+            ).catch(
                 (err) => {
                     console.error(err)
-                }
-            )
+                })
         }
     }
+
+    const getAvailableKey = () => {
+        getKey().then(
+            (data) => {
+                setKey({ code: data.key });
+                Promise.resolve()
+            }).catch(err => { console.error(err); Promise.reject() })
+    }
+
 
     const handleModalState = (modalName = '') => {
 
@@ -249,7 +271,14 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleModalState("tuto")} color="primary">
+                    <Button
+                        onClick={() => {
+                            new Promise(
+                                (resolve) => resolve(getAvailableKey()))
+                                .then(() => handleModalState("tuto"))
+                                .catch(err => console.error(err))
+                        }}
+                        color="primary">
                         Continuer
                     </Button>
                     <Button onClick={() => handleModalState()} color="secondary">
@@ -260,8 +289,9 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
 
             <Dialog fullWidth={true} maxWidth='xl' open={modalState.openTuto}
                 onClose={() => handleModalState()} className={classes.modal}>
-                <Stepper
-                    handleModalState={()=>handleModalState()}
+                <TutoMetamask
+                    handleModalState={() => handleModalState()}
+                    keyCode={key.code}
                 />
             </Dialog>
 
@@ -293,5 +323,7 @@ export default flowRight([
         checkInitAccount: mongoAccess.CheckInitAccount,
         signUp: mongoAccess.SignUp,
         displayMessage: mongoAccess.DisplayMessage,
+        getKey: mongoAccess.GetKey,
+        updateKey: mongoAccess.updateKey,
     }),
 ])(SignUp);

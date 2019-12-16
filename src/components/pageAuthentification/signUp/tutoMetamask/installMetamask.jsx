@@ -53,13 +53,11 @@ export default function InstallMetamask() {
             setExpandPanel({ name: panel });
         }
     }
-    console.log(expandPanel.name)
     return (
         <div className={classes.root}>
             <br />
             {metamaskLink.map(
                 (browser, i) => {
-                    console.log(browser);
                     return (
                         <ExpansionPanel key={i} expanded={expandPanel.name === browser.name}
                             TransitionProps={{ unmountOnExit: true }}
@@ -76,7 +74,7 @@ export default function InstallMetamask() {
 
                             </ExpansionPanelSummary>
 
-                            <ExpansionPanelDetails className="infospanel" className={classes.detailPanel}>
+                            <ExpansionPanelDetails className={classes.detailPanel}>
                                 <Grid
                                     container
                                     direction="column"
