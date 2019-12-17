@@ -2,11 +2,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Unity, { UnityContent } from 'react-unity-webgl';
 import { connect } from 'react-redux';
-
 import mongoAccess from '../../../actions/withApi/index';
-
 import Page from '../../utils/layout/index';
 import instanciateContract from '../../../functions/instanciateContract';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = (theme) => ({
+    tableWrapper: {
+        overflowX: 'visible',
+        overflowY: 'visible',
+        //padding: -theme.spacing(3),
+        //margin: '-50px -50px -50px -50px',
+        width: '100%',
+        //height: '94vh'
+        height: 'calc(100vh - 48px)'
+    },
+});
 
 class Game extends React.Component {
     constructor(props) {
@@ -19,6 +30,7 @@ class Game extends React.Component {
             eirbmon_id: null,
             orphean_id: '0x0000000000000000000000000000000000000000',
         };
+        withStyles(styles);
         this.onRefreshMyInventory = this.onRefreshMyInventory.bind(this);
         this.onEnterInCombat = this.onEnterInCombat.bind(this);
         this.onCatchEirbmon = this.onCatchEirbmon.bind(this);
@@ -153,27 +165,21 @@ class Game extends React.Component {
 
     render() {
         const { messageUnity } = this.state;
+        const classes = this.props.classes;
+
 
         return (
             <Page currentPage="Jeux">
-                <div>
+                <div className={classes.tableWrapper} >
                     <Unity unityContent={this.unityContent} />
                 </div>
-                Message from unity :
-                {messageUnity}
             </Page>
         );
     }
 }
 
-//function select(state){
-//    return {
-//        accountInfo: state.accountInfo,
-//    };
-//}
-
 Game.propTypes = {
     dispatch: PropTypes.func,
 };
 
-export default connect(null, null)(Game);
+export default connect(null, null)(withStyles(styles)(Game));

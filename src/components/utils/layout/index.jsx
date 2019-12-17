@@ -17,9 +17,10 @@ import Layout from './layout';
 const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'auto',
-        padding: theme.spacing(3),
-        maxWidth: 1200,
-        margin: '50px auto 0 auto',
+        overflowY: 'hidden',
+        //padding: theme.spacing(3),
+        //maxWidth: 1200,
+        margin: '48px auto 0 auto',
     },
 });
 
