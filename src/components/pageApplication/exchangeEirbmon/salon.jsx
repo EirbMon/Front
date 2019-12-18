@@ -93,7 +93,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
 
     channel.bind('client-exchangeMade', () => {
         console.log('Echange a eu lieu');
-        history.push('/eirbdex');
+        //history.push('/eirbdex');
     });
 
     const leaveChannel = () => {
