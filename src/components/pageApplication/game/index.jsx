@@ -41,6 +41,11 @@ class Game extends React.Component {
         );
 
         this.unityContent.on('DoInteraction', (message) => {
+
+            console.log(message);
+            var object = JSON.parse(message);
+            console.log(object);
+
             if (message === "user_pokemon"){
                 console.log("Refresh my Eirbmons Inventory");
                 this.onRefreshMyInventory();
@@ -63,7 +68,11 @@ class Game extends React.Component {
             }
             else if (message === "end_combat"){
                 console.log("End of the combat by the user");
-                this.onEndCombat();
+                this.onEndCombatOrphelin();
+            }
+            else if (object.message === "end_combat"){
+                console.log("End of the combat by the user");
+                this.onEndCombat(object);
             }
             else{
                 console.log("Receiving: " + message);
@@ -125,9 +134,10 @@ class Game extends React.Component {
         );
     }
 
-    onEndCombat() {
+    onEndCombatOrphelin() {
 
         const { dispatch } = this.props;
+
         dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id, available: true})).then(
             (initEirb) => {
                 console.log("End of the FIGHT: ");
@@ -137,6 +147,24 @@ class Game extends React.Component {
                 console.error(err);
             }
         );
+    }
+
+    onEndCombat(object) {
+
+        const { dispatch } = this.props;
+        var N = object.length;
+
+        for (let i=0; i<N; i++){
+        dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
+            (initEirb) => {
+                console.log("End of the FIGHT: ");
+                console.log(initEirb);
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+        }
     }
 
 
