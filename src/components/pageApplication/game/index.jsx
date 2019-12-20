@@ -40,11 +40,12 @@ class Game extends React.Component {
             'BuildInfo/Build/UnityLoader.js',
         );
 
-        this.unityContent.on('DoInteraction', (message) => {
+        this.unityContent.on('DoInteraction', (req) => {
 
-            console.log(message);
-            var object = JSON.parse(message);
-            console.log(object);
+            console.log(req);
+
+            var object = JSON.parse(req);
+            var message = object.message;
 
             if (message === "user_pokemon"){
                 console.log("Refresh my Eirbmons Inventory");
@@ -66,12 +67,12 @@ class Game extends React.Component {
                 console.log("Send Eirbmon Skills list to the game");
                 this.onSendEirmobSkill();
             }
-            else if (message === "end_combat"){
-                console.log("End of the combat by the user");
+            else if (message === "end_combat_orphelin"){
+                console.log("Set Orphelin to available");
                 this.onEndCombatOrphelin();
             }
-            else if (object.message === "end_combat"){
-                console.log("End of the combat by the user");
+            else if (message === "end_combat"){
+                console.log("End fight: Update Eirbmons HP & LVL");
                 this.onEndCombat(object);
             }
             else{
@@ -96,7 +97,6 @@ class Game extends React.Component {
 
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.owner_id, 6)).then(
             (initEirb) => {
-                console.log("My Eirbmon List: ");
                 console.log(initEirb);
                 this.unityContent.send('Dresser(Local)', 'RetrievePokemonList', JSON.stringify(initEirb));
             },
@@ -140,8 +140,6 @@ class Game extends React.Component {
 
         dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: this.state.eirbmon_id, available: true})).then(
             (initEirb) => {
-                console.log("End of the FIGHT: ");
-                console.log(initEirb);
             },
             (err) => {
                 console.error(err);
@@ -154,10 +152,11 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         var N = object.length;
 
+        console.log("Number of eirbmons updated: " + N);
+
         for (let i=0; i<N; i++){
         dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
             (initEirb) => {
-                console.log("End of the FIGHT: ");
                 console.log(initEirb);
             },
             (err) => {
