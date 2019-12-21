@@ -9,10 +9,11 @@ import GetBlockchainInfo from './getBlockchainInfo';
 import UpdateMongoEirbmonFromBlockchain from './updateMongoEirbmonFromBlockchain';
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
-import CheckInitAccount from './checkInitAccount'
-import ExchageEirbmons from './exchangeEirbmons'
-import GetKey from './getKey'
-import UpdateKey from './updateKey'
+import CheckInitAccount from './checkInitAccount';
+import ExchageEirbmons from './exchangeEirbmons';
+import GetKey from './getKey';
+import UpdateKey from './updateKey';
+import GetEvolution from './getEvolution';
 
 export default {
     GetEirbmon,
@@ -30,4 +31,5 @@ export default {
     CheckInitAccount,
     GetKey,
     UpdateKey,
+    GetEvolution,
 };

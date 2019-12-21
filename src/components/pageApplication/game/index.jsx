@@ -34,6 +34,10 @@ class Game extends React.Component {
         this.onRefreshMyInventory = this.onRefreshMyInventory.bind(this);
         this.onEnterInCombat = this.onEnterInCombat.bind(this);
         this.onCatchEirbmon = this.onCatchEirbmon.bind(this);
+        this.onSendEirmobSkill = this.onSendEirmobSkill.bind(this);
+        this.onEndCombatOrphelin = this.onEndCombatOrphelin.bind(this);
+        this.onEndCombat = this.onEndCombat.bind(this);
+        this.onEvolve = this.onEvolve.bind(this);
         
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
@@ -48,6 +52,9 @@ class Game extends React.Component {
             var message = object.message;
 
             if (message === "user_pokemon"){
+                console.log("OnEvolve");
+                this.onEvolve();
+
                 console.log("Refresh my Eirbmons Inventory");
                 this.onRefreshMyInventory();
             }
@@ -104,6 +111,36 @@ class Game extends React.Component {
                 console.error(err);
             }
         );
+    }
+
+    onEvolve() {
+        const { dispatch } = this.props;
+        var id_eirbmon = 19; // C'est un de mes eirbmon, a modifier à souhait pour les tests avec un PUT http://localhost:4000/api/eirbmon/.
+        console.log("L'ID du Eirbmon a évolué est : ");
+        dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
+            (eirbdex) => {
+                if (eirbdex.evolution == "0"){
+                    console.log('The eirbmon is already at its max evolution, there is no evolution above, it cannnot evolve.');
+                    return;
+                }
+                if (eirbdex.lvl < 100){
+                    console.log('The eirbmon is not lv100, you cannnot evolve it');
+                    return;
+                }
+                else{
+                    console.log('New eirbmon type : ' + eirbdex.evolution);
+                    //this.state.contract.methods.evolveEirbmon(id_eirbmon).send({ type: eirbdex.evolution, evolve: eirbdex.evolve+1, level: 0 })
+                    //.then(response=>{
+                        dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
+                            (initEirb) => {console.log("Eirbmon evolution :"); console.log(initEirb);},
+                            (err) => {console.error(err);}
+                        );
+                    //});
+                }
+            },
+            (err) => {console.error(err);}
+        );
+
     }
 
     onSendEirmobSkill() {
