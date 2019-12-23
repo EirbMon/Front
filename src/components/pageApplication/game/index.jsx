@@ -115,10 +115,11 @@ class Game extends React.Component {
 
     onEvolve() {
         const { dispatch } = this.props;
-        var id_eirbmon = 19; // C'est un de mes eirbmon, a modifier à souhait pour les tests avec un PUT http://localhost:4000/api/eirbmon/.
+        var id_eirbmon = 5; // C'est un de mes eirbmon, a modifier à souhait pour les tests avec un PUT http://localhost:4000/api/eirbmon/.
         console.log("L'ID du Eirbmon a évolué est : ");
         dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
             (eirbdex) => {
+                console.log(eirbdex);
                 if (eirbdex.evolution == "0"){
                     console.log('The eirbmon is already at its max evolution, there is no evolution above, it cannnot evolve.');
                     return;
@@ -129,13 +130,13 @@ class Game extends React.Component {
                 }
                 else{
                     console.log('New eirbmon type : ' + eirbdex.evolution);
-                    //this.state.contract.methods.evolveEirbmon(id_eirbmon).send({ type: eirbdex.evolution, evolve: eirbdex.evolve+1, level: 0 })
-                    //.then(response=>{
+                    this.state.contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: this.state.owner_id })
+                    .then(response=>{
                         dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
                             (initEirb) => {console.log("Eirbmon evolution :"); console.log(initEirb);},
                             (err) => {console.error(err);}
                         );
-                    //});
+                    });
                 }
             },
             (err) => {console.error(err);}
