@@ -7,6 +7,7 @@ import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
 import GetBlockchainInfo from './getBlockchainInfo';
 import UpdateMongoEirbmonFromBlockchain from './updateMongoEirbmonFromBlockchain';
+import UpdateMongoFromBlockchain from './updateMongoFromBlockchain';
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
 import CheckInitAccount from './checkInitAccount';
@@ -26,6 +27,7 @@ export default {
     CheckToken,
     GetBlockchainInfo,
     UpdateMongoEirbmonFromBlockchain,
+    UpdateMongoFromBlockchain,
     UpdateCatchEirbmon,
     GetAllSkills,
     CheckInitAccount,

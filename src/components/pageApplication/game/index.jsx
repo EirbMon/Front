@@ -132,7 +132,8 @@ class Game extends React.Component {
                     console.log('New eirbmon type : ' + eirbdex.evolution);
                     this.state.contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: this.state.owner_id })
                     .then(response=>{
-                        dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
+                        //dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
+                        dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
                             (initEirb) => {console.log("Eirbmon evolution :"); console.log(initEirb);},
                             (err) => {console.error(err);}
                         );

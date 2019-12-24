@@ -1,5 +1,5 @@
 const apiUrl = process.env.REACT_APP_APIURL;
 
-const generateUpdateMongoEirbmonFromBlockchainUrl = () => (`${apiUrl}/api/eirbmon/update`);
+const generateUpdateMongoEirbmonFromBlockchainUrl = (idInBlockchain) => (`${apiUrl}/api/eirbmon/bc/${idInBlockchain}`);
 
 export default generateUpdateMongoEirbmonFromBlockchainUrl;

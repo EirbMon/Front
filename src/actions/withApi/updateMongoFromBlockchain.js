@@ -1,8 +1,8 @@
 import { SUCCESS_OCCURS, ERROR_OCCURS } from '../../constants/action-types';
-import generateUpdateMongoEirbmonFromBlockchainUrl from '../../middleWare/generateUpdateMongoEirbmonFromBlockchainUrl';
+import generateUpdateMongoFromBlockchainUrl from '../../middleWare/generateUpdateMongoFromBlockchainUrl';
 
-export default function updateMongoEirbmonFromBlockchain(id_eirbmon) {
-    return (dispatch, getState, api) => api.get(generateUpdateMongoEirbmonFromBlockchainUrl(id_eirbmon))
+export default function updateMongoFromBlockchain() {
+    return (dispatch, getState, api) => api.get(generateUpdateMongoFromBlockchainUrl())
         .then((res) => {
             dispatch({
                 type: SUCCESS_OCCURS,
