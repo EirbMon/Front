@@ -42,7 +42,7 @@ const Accueil = ({ classes, accountInfo }) => (
                      <br/> - Cognet Damien, manager du projet
                      <br/> - Atia Abdessamad
                      <br/> - Deville Jean-Charles
-                     <br/> - Malay Valérian
+                     <br/> - Malay Valentin
                      <br/> - Martin Lila
                      <br/> - Micouin--Jorda David
                      <br/> - Rajaona Jean
