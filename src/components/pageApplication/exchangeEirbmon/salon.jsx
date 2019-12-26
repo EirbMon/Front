@@ -107,15 +107,45 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
     };
 
     const confirmerEchange = () => {
+        console.log("hisEirbmon",hisEirbmon);
+        console.log("hisChoose",hisChoose);
         if (pokemon === myEirbmon) {
             alert('Selectionner un pokémon');
-        } else {
+        }else if(pokemon === hisEirbmon){
+            alert('Attendre le choix de lautre joueur');    
+        } 
+        else {
             setMyChoose(!myChoose);
             channel.trigger('client-choose', { choose: !myChoose });
+            if (!hisChoose && !myChoose) {
+                console.log({
+                    "Mon id": sessionStorage.getItem('accountAddress'),
+                    "Son id": hisAccountAddress,
+                    "Son pokemon": hisEirbmon.id,
+                    "Mon pokemon": myEirbmon.id
+                });
+    
+                //execute metamask transaction
+                blockchain.blockchain.contract.methods.exchangeMyEirbmonTo( myEirbmon.id,hisEirbmon.id)
+                .send({ from: sessionStorage.getItem('accountAddress') })
+                .then(resp=>{
+                    //request bac server to update mongo database 
+                    exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
+                                                            id_eirbmon_blockchain_2: myEirbmon.id,
+                                                            owner_id_1: hisAccountAddress,
+                                                            owner_id_2: blockchain.blockchain.owner_id});                
+                    console.log('Echange a eu lieu');
+                    channel.trigger('client-exchangeMade', {}); // Callback function possible
+                    });
+            }
+           
         }
     };
 
     useEffect(() => {
+        console.log("useEffect hisEirbmon",hisEirbmon);
+        console.log(" useEffect  hisChoose",hisChoose);
+        
         if (hisChoose && myChoose) {
             console.log({
                 "Mon id": sessionStorage.getItem('accountAddress'),
@@ -125,7 +155,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
             });
 
             //execute metamask transaction
-            blockchain.blockchain.contract.methods.transferEirbmon(hisEirbmon.id, hisAccountAddress, myEirbmon.id, blockchain.blockchain.owner_id)
+            blockchain.blockchain.contract.methods.exchangeMyEirbmonTo( myEirbmon.id,hisEirbmon.id)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp=>{
                 //request bac server to update mongo database 
@@ -137,6 +167,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
                 channel.trigger('client-exchangeMade', {}); // Callback function possible
                 });
         }
+        
     }, [myChoose]);
 
     return (

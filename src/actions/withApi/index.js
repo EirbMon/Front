@@ -7,12 +7,14 @@ import DisplayMessage from './displayMessage';
 import CheckToken from './checkToken';
 import GetBlockchainInfo from './getBlockchainInfo';
 import UpdateMongoEirbmonFromBlockchain from './updateMongoEirbmonFromBlockchain';
+import UpdateMongoFromBlockchain from './updateMongoFromBlockchain';
 import UpdateCatchEirbmon from './updateCatchEirbmon';
 import GetAllSkills from './getAllSkills';
-import CheckInitAccount from './checkInitAccount'
-import ExchageEirbmons from './exchangeEirbmons'
-import GetKey from './getKey'
-import UpdateKey from './updateKey'
+import CheckInitAccount from './checkInitAccount';
+import ExchageEirbmons from './exchangeEirbmons';
+import GetKey from './getKey';
+import UpdateKey from './updateKey';
+import GetEvolution from './getEvolution';
 
 export default {
     GetEirbmon,
@@ -25,9 +27,11 @@ export default {
     CheckToken,
     GetBlockchainInfo,
     UpdateMongoEirbmonFromBlockchain,
+    UpdateMongoFromBlockchain,
     UpdateCatchEirbmon,
     GetAllSkills,
     CheckInitAccount,
     GetKey,
     UpdateKey,
+    GetEvolution,
 };
