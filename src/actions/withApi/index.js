@@ -15,12 +15,14 @@ import ExchageEirbmons from './exchangeEirbmons';
 import GetKey from './getKey';
 import UpdateKey from './updateKey';
 import GetEvolution from './getEvolution';
+import CreateUserChatkit from './createChatkitUser'
 
 export default {
     GetEirbmon,
     GetOwnerEirbmon,
     UpdateEirbmon,
     ExchageEirbmons,
+    CreateUserChatkit,
     Login,
     SignUp,
     DisplayMessage,

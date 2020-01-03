@@ -21,6 +21,7 @@
     "@material-ui/icons": "^4.2.1",
     "@material-ui/lab": "^4.0.0-alpha.23",
     "@material-ui/pickers": "^3.2.4",
+    "@pusher/chatkit-client": "^1.13.3",
     "babel-loader": "^8.0.6",
     "classnames": "^2.2.6",
     "compass-mixins": "^0.12.10",

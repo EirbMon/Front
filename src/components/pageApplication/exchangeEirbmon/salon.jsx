@@ -9,8 +9,10 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
-import mongoAccess from '../../../actions/withApi/index';
+import ReactDOM from 'react-dom';
 
+import mongoAccess from '../../../actions/withApi/index';
+import ChatScreen from '../../utils/chat';
 import SelectEirbmonModal from './selectEirbmonModal';
 import Informations from './informations';
 import SalonClosed from './salonClosed';
@@ -46,7 +48,13 @@ const pokemon = {
     date: '---',
 };
 
-const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatch, setSalon, salon, exchageEirbmons }) => {
+const chatChannelId = {
+    salon1: "aa6f7236-38f6-47ec-989c-4b3d0f0c6d56",
+    salon2: "0102edfe-76fe-4c1e-893c-069c0283d4b5",
+    salon3: "1b3b6e22-9d72-4224-8f84-0bcebe60659d"
+}
+
+const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSalon, salon, exchageEirbmons }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
@@ -55,7 +63,15 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
+    const [portalEl, setPortalEl] = useState(document.getElementById('drawer-chat'));
 
+    var refreshId = setInterval(() => {
+        if (document.getElementById('drawer-chat')) {
+            setPortalEl(document.getElementById('drawer-chat'))
+            clearInterval(refreshId);
+            return 0
+        }
+    }, 100);
 
     channel.bind('pusher:subscription_succeeded', (members) => {
         setSpinner(false);
@@ -107,13 +123,11 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
     };
 
     const confirmerEchange = () => {
-        console.log("hisEirbmon",hisEirbmon);
-        console.log("hisChoose",hisChoose);
         if (pokemon === myEirbmon) {
             alert('Selectionner un pokémon');
-        }else if(pokemon === hisEirbmon){
-            alert('Attendre le choix de lautre joueur');    
-        } 
+        } else if (pokemon === hisEirbmon) {
+            alert('Attendre le choix de lautre joueur');
+        }
         else {
             setMyChoose(!myChoose);
             channel.trigger('client-choose', { choose: !myChoose });
@@ -124,28 +138,27 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
                     "Son pokemon": hisEirbmon.id,
                     "Mon pokemon": myEirbmon.id
                 });
-    
+
                 //execute metamask transaction
-                blockchain.blockchain.contract.methods.exchangeMyEirbmonTo( myEirbmon.id,hisEirbmon.id)
-                .send({ from: sessionStorage.getItem('accountAddress') })
-                .then(resp=>{
-                    //request bac server to update mongo database 
-                    exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
-                                                            id_eirbmon_blockchain_2: myEirbmon.id,
-                                                            owner_id_1: hisAccountAddress,
-                                                            owner_id_2: blockchain.blockchain.owner_id});                
-                    console.log('Echange a eu lieu');
-                    channel.trigger('client-exchangeMade', {}); // Callback function possible
+                blockchain.blockchain.contract.methods.exchangeMyEirbmonTo(myEirbmon.id, hisEirbmon.id)
+                    .send({ from: sessionStorage.getItem('accountAddress') })
+                    .then(resp => {
+                        //request bac server to update mongo database 
+                        exchageEirbmons({
+                            id_eirbmon_blockchain_1: hisEirbmon.id,
+                            id_eirbmon_blockchain_2: myEirbmon.id,
+                            owner_id_1: hisAccountAddress,
+                            owner_id_2: blockchain.blockchain.owner_id
+                        });
+                        console.log('Echange a eu lieu');
+                        channel.trigger('client-exchangeMade', {}); // Callback function possible
                     });
             }
-           
+
         }
     };
 
     useEffect(() => {
-        console.log("useEffect hisEirbmon",hisEirbmon);
-        console.log(" useEffect  hisChoose",hisChoose);
-        
         if (hisChoose && myChoose) {
             console.log({
                 "Mon id": sessionStorage.getItem('accountAddress'),
@@ -155,19 +168,21 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
             });
 
             //execute metamask transaction
-            blockchain.blockchain.contract.methods.exchangeMyEirbmonTo( myEirbmon.id,hisEirbmon.id)
-            .send({ from: sessionStorage.getItem('accountAddress') })
-            .then(resp=>{
-                //request bac server to update mongo database 
-                exchageEirbmons({  id_eirbmon_blockchain_1: hisEirbmon.id,
-                                                        id_eirbmon_blockchain_2: myEirbmon.id,
-                                                        owner_id_1: hisAccountAddress,
-                                                        owner_id_2: blockchain.blockchain.owner_id});                
-                console.log('Echange a eu lieu');
-                channel.trigger('client-exchangeMade', {}); // Callback function possible
+            blockchain.blockchain.contract.methods.exchangeMyEirbmonTo(myEirbmon.id, hisEirbmon.id)
+                .send({ from: sessionStorage.getItem('accountAddress') })
+                .then(resp => {
+                    //request bac server to update mongo database 
+                    exchageEirbmons({
+                        id_eirbmon_blockchain_1: hisEirbmon.id,
+                        id_eirbmon_blockchain_2: myEirbmon.id,
+                        owner_id_1: hisAccountAddress,
+                        owner_id_2: blockchain.blockchain.owner_id
+                    });
+                    console.log('Echange a eu lieu');
+                    channel.trigger('client-exchangeMade', {}); // Callback function possible
                 });
         }
-        
+
     }, [myChoose]);
 
     return (
@@ -217,6 +232,12 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain,channel, dispatc
                 </div>
             ) : null}
             {!spinner && !displaySalon ? <SalonClosed leaveChannel={leaveChannel} /> : null}
+            {portalEl ? (
+                ReactDOM.createPortal(
+                    <ChatScreen chatChannel={chatChannelId[salon]} />,
+                    portalEl,
+                )
+            ) : null}
         </Fragment>
     );
 };
@@ -241,11 +262,11 @@ export default flowRight([
     withRouter,
     withStyles(styles),
     connect((state, props) => ({
-            pusher: state.pusher.pusher,
-            channel: state.pusher.pusher.subscribe(`presence-${props.salon}`),
-            blockchain: state.blockchain,
-            // mongoAccess: state,
-    }),  {
+        pusher: state.pusher.pusher,
+        channel: state.pusher.pusher.subscribe(`presence-${props.salon}`),
+        blockchain: state.blockchain,
+        // mongoAccess: state,
+    }), {
         exchageEirbmons: mongoAccess.ExchageEirbmons
     }),
     lifecycle({
