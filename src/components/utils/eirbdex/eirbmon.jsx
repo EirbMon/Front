@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import PropTypes from 'prop-types';
 import React from 'react';
-import image from '../../../scss/images/pikachu-inverse.jpg';
+import images from '../../../scss/images/eirbmon/index';
 
 const styles = () => ({
     container: {
@@ -40,9 +40,49 @@ const styles = () => ({
     },
 });
 
-const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
+const Eirbmon = ({name, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;
     const dateTitle = `Date de capture : ${date}`;
+    var monImage;
+
+    switch(name) {
+        case 'Carabaffe':
+            monImage = images['carabaffe'];
+            break;
+        case 'Carapuce':
+            monImage = images['carapuce'];
+            break;
+        case 'Dracaufeu':
+            monImage = images['dracaufeu'];
+            break;
+        case 'Pikachu':
+            monImage = images['pikachu'];
+            break;
+        case 'Raichu':
+            monImage = images['raichu'];
+            break;
+        case 'Reptincelle':
+            monImage = images['reptincelle'];
+            break;
+        case 'Roucarnage':
+            monImage = images['roucarnage'];
+            break;
+        case 'Roucoul':
+            monImage = images['roucoul'];
+            break;
+        case 'Roucoups':
+            monImage = images['roucoups'];
+            break;
+        case 'Salameche':
+            monImage = images['salameche'];
+            break;
+        case 'Tortank':
+            monImage = images['tortank'];
+            break;
+        default:
+            monImage = images['pikachu'];
+            break;
+        }
 
     return (
         <Grid
@@ -57,7 +97,7 @@ const Eirbmon = ({ name, level, xp, attack, date, filiere, pv, classes }) => {
                 </Typography>
                 <CardMedia
                     className={classes.media}
-                    image={image}
+                    image={monImage}
                     title="Test"
                 />
                 <CardContent>
