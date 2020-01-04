@@ -45,7 +45,6 @@ const Eirbmon = ({name, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;
     const dateTitle = `Date de capture : ${date}`;
      var monImage = choisirImage(name)
-
     return (
         <Grid
             container
@@ -68,16 +67,22 @@ const Eirbmon = ({name, level, xp, attack, date, filiere, pv, classes }) => {
                     </Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={6}>
-                            <Paper className={classes.paper}>{xp}</Paper>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Paper className={classes.paper}>{attack}</Paper>
-                        </Grid>
-                        <Grid item xs={6}>
                             <Paper className={classes.paper}>{filiere}</Paper>
                         </Grid>
                         <Grid item xs={6}>
-                            <Paper className={classes.paper}>{pv}</Paper>
+                            <Paper className={classes.paper}>attaque 1 : {attack[0]}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>attaque 2 : {attack[1]}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>attaque 3 : {attack[2]}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>lvl: {level}</Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.paper}>pv: {pv}</Paper>
                         </Grid>
                     </Grid>
                 </CardContent>
