@@ -1,19 +1,18 @@
 import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
-import ReactDOM from 'react-dom';
 
 import Page from '../../utils/layout/index';
 import isEmpty from '../../../functions/isEmpty';
-import Button from '@material-ui/core/Button';
 import reducerAcces from '../../../actions/withReducerOnly';
+import ChatPortal from '../../utils/chat/chatPortal';
 import Salon from './salon';
-import ChatScreen from '../../utils/chat';
 
 const styles = () => ({
     selectSalon: {
@@ -32,14 +31,6 @@ const styles = () => ({
 
 const ExchangeEirbmon = ({ classes, pusher }) => {
     const [salon, setSalon] = useState(null);
-    const [portalEl, setPortalEl] = useState(document.getElementById('drawer-chat'));
-    var refreshId = setInterval(() => {
-        if (document.getElementById('drawer-chat')) {
-            setPortalEl(document.getElementById('drawer-chat'))
-            clearInterval(refreshId);
-            return 0
-        }
-    }, 100);
 
     const changeSalon = (salon) => {
         setSalon(salon);
@@ -73,11 +64,8 @@ const ExchangeEirbmon = ({ classes, pusher }) => {
             {!isEmpty(pusher) ? (
                 salon ? <Salon salon={salon} setSalon={setSalon} /> : listSalon()
             ) : null}
-            {portalEl && !salon ? (
-                ReactDOM.createPortal(
-                    <ChatScreen chatChannel="70922fc5-3e1e-4330-ad62-4a301c07853c" />,
-                    portalEl,
-                )
+            {!salon ? (
+                <ChatPortal salon="salonGlobal" />
             ) : null}
         </Page>
     );

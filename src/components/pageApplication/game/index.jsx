@@ -6,9 +6,8 @@ import mongoAccess from '../../../actions/withApi/index';
 import Page from '../../utils/layout/index';
 import instanciateContract from '../../../functions/instanciateContract';
 import { withStyles } from '@material-ui/core/styles';
-import ReactDOM from 'react-dom';
 
-import ChatScreen from '../../utils/chat';
+import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = (theme) => ({
     tableWrapper: {
@@ -31,8 +30,7 @@ class Game extends React.Component {
             key: null,
             contract: null,
             eirbmon_id: null,
-            orphean_id: '0x0000000000000000000000000000000000000000',
-            portalEl: null
+            orphean_id: '0x0000000000000000000000000000000000000000'
         };
         withStyles(styles);
         this.onRefreshMyInventory = this.onRefreshMyInventory.bind(this);
@@ -211,8 +209,6 @@ class Game extends React.Component {
 
 
     onCatchEirbmon() {
-
-
         const { dispatch } = this.props;
         console.log("L'ID du Eirbmon capturé est : " + this.state.eirbmon_id, "pour compte ", this.state.owner_id);
 
@@ -230,33 +226,18 @@ class Game extends React.Component {
                 );
                 this.setState({ eirbmon_id: null });
             });
-
     }
 
     render() {
         const { messageUnity } = this.state;
         const classes = this.props.classes;
-        const portalEl = document.getElementById('drawer-chat');
-
-        var refreshId = setInterval(() => {
-            if (document.getElementById('drawer-chat')) {
-                this.setState({ portalEl: document.getElementById('drawer-chat') })
-                clearInterval(refreshId);
-                return 0
-            }
-        }, 100);
 
         return (
             <Page currentPage="Jeux">
+                <ChatPortal salon="salonGlobal" />
                 <div className={classes.tableWrapper} >
                     <Unity unityContent={this.unityContent} />
                 </div>
-                {portalEl ? (
-                    ReactDOM.createPortal(
-                        <ChatScreen chatChannel="70922fc5-3e1e-4330-ad62-4a301c07853c" />,
-                        portalEl,
-                    )
-                ) : null}
             </Page>
         );
     }

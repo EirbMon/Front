@@ -2,13 +2,12 @@ import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
 
 import Page from '../../utils/layout/index';
-import ChatScreen from '../../utils/chat';
+import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = () => ({
     form: {
@@ -31,17 +30,9 @@ const styles = () => ({
     },
 });
 
-const Profil = ({ classes, accountInfo }) => {
-    const [portalEl, setPortalEl] = useState(document.getElementById('drawer-chat'));
-    var refreshId = setInterval(() => {
-        if (document.getElementById('drawer-chat')) {
-            setPortalEl(document.getElementById('drawer-chat'))
-            clearInterval(refreshId);
-            return 0
-        }
-    }, 100);
-
-    return <Page currentPage="Profil">
+const Profil = ({ classes, accountInfo }) => (
+    <Page currentPage="Profil">
+        <ChatPortal salon="salonGlobal" />
         <div className={classes.page}>
             <div className={classes.container}>
                 <TextField
@@ -73,14 +64,8 @@ const Profil = ({ classes, accountInfo }) => {
                 />
             </div>
         </div>
-        {portalEl ? (
-            ReactDOM.createPortal(
-                <ChatScreen chatChannel="70922fc5-3e1e-4330-ad62-4a301c07853c" />,
-                portalEl,
-            )
-        ) : null}
     </Page>
-}
+)
 
 Profil.propTypes = {
     classes: PropTypes.shape({

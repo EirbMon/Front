@@ -9,8 +9,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
-import ReactDOM from 'react-dom';
 
+import ChatPortal from '../../utils/chat/chatPortal';
 import mongoAccess from '../../../actions/withApi/index';
 import ChatScreen from '../../utils/chat';
 import SelectEirbmonModal from './selectEirbmonModal';
@@ -63,15 +63,6 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
-    const [portalEl, setPortalEl] = useState(document.getElementById('drawer-chat'));
-
-    var refreshId = setInterval(() => {
-        if (document.getElementById('drawer-chat')) {
-            setPortalEl(document.getElementById('drawer-chat'))
-            clearInterval(refreshId);
-            return 0
-        }
-    }, 100);
 
     channel.bind('pusher:subscription_succeeded', (members) => {
         setSpinner(false);
@@ -187,6 +178,7 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
 
     return (
         <Fragment>
+            <ChatPortal salon={salon} />
             {spinner ? (
                 <div className={classNames(classes.spinner)}>
                     <CircularProgress size={200} />
@@ -232,12 +224,6 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
                 </div>
             ) : null}
             {!spinner && !displaySalon ? <SalonClosed leaveChannel={leaveChannel} /> : null}
-            {portalEl ? (
-                ReactDOM.createPortal(
-                    <ChatScreen chatChannel={chatChannelId[salon]} />,
-                    portalEl,
-                )
-            ) : null}
         </Fragment>
     );
 };
