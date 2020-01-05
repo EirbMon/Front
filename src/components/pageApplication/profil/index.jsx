@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Page from '../../utils/layout/index';
+import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = () => ({
     form: {
@@ -31,6 +32,7 @@ const styles = () => ({
 
 const Profil = ({ classes, accountInfo }) => (
     <Page currentPage="Profil">
+        <ChatPortal salon="salonGlobal" />
         <div className={classes.page}>
             <div className={classes.container}>
                 <TextField
@@ -63,7 +65,7 @@ const Profil = ({ classes, accountInfo }) => (
             </div>
         </div>
     </Page>
-);
+)
 
 Profil.propTypes = {
     classes: PropTypes.shape({
@@ -74,7 +76,7 @@ Profil.propTypes = {
 
 export default flowRight([
     withRouter,
-    connect((state)=>({
+    connect((state) => ({
         accountInfo: state.accountInfo
     })),
     withStyles(styles),

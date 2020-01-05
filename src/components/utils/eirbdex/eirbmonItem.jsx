@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import image from '../../../scss/images/pikachu-inverse.jpg';
+import choisirImage from './choisirImage';
+
 
 const styles = () => ({
     card: {
@@ -39,7 +40,7 @@ const styles = () => ({
 
 const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
     const levelTitle = `Niveau ${level}`;
-
+    var monImage = choisirImage(name)
     return (
         <Grid
             container
@@ -58,7 +59,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
                     </Typography>
                     <CardMedia
                         className={classes.media}
-                        image={image}
+                        image={monImage}
                         title={name}
                     />
                     <Typography component="h1" align="center">

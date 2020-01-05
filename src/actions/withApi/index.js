@@ -18,12 +18,14 @@ import GetEvolution from './getEvolution';
 import GetMyEirbmonsOnSale from './getMyEirbmonsOnSale';
 import GetAllEirbmonsOnSale from './getAllEirbmonsOnSale';
 import PutEirbmonOnSale from './putEirbmonOnSale';
+import CreateUserChatkit from './createChatkitUser'
 
 export default {
     GetEirbmon,
     GetOwnerEirbmon,
     UpdateEirbmon,
     ExchageEirbmons,
+    CreateUserChatkit,
     Login,
     SignUp,
     DisplayMessage,

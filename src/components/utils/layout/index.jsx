@@ -18,8 +18,8 @@ const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'hidden',
-        //padding: theme.spacing(3),
-        //maxWidth: 1200,
+        padding: theme.spacing(3),
+        maxWidth: 1200,
         margin: '48px auto 0 auto',
     },
 });

@@ -22,6 +22,7 @@ import reducerAcces from '../../../actions/withReducerOnly/index';
 import instanciateContract from '../../../functions/instanciateContract';
 
 import generateSignUpUrl from '../../../middleWare/generateSignUpUrl';
+import generateCreateUserChatkitUrl from '../../../middleWare/generateCreateUserChatkitUrl';
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
 import { resolve } from 'url';
 
@@ -62,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
-    getBlockchainInfo, checkInitAccount, getKey, updateKey }) => {
+    getBlockchainInfo, checkInitAccount, getKey, updateKey, createUserChatkit }) => {
 
     const classes = useStyles();
     const [form, setValues] = useState({
@@ -118,14 +119,13 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                                 });
                                 //update mongodb
                                 checkInitAccount({ owner_id: accountAddress }).then(() => {
-                                    console.log('ok2')
                                     signUp(generateSignUpUrl, { ...user })
                                         .then(() => {
                                             updateKey({ key: key.code, available: false, owner_id: accountAddress }).then(
                                                 () => {
-                                                    console.log('lol');
                                                     const jwt = getJwt();
                                                     if (jwt) {
+                                                        createUserChatkit(generateCreateUserChatkitUrl, { 'username': user.email })
                                                         history.push('/profil');
                                                     }
                                                 }
@@ -326,5 +326,6 @@ export default flowRight([
         displayMessage: mongoAccess.DisplayMessage,
         getKey: mongoAccess.GetKey,
         updateKey: mongoAccess.UpdateKey,
+        createUserChatkit: mongoAccess.CreateUserChatkit,
     }),
 ])(SignUp);
