@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { AppBar, Typography, IconButton, Drawer, Toolbar, List, Divider } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import { IconButton } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 
 const styles = () => ({
@@ -32,15 +32,18 @@ class SendMessageForm extends Component {
     onSubmite(e) {
         e.preventDefault()
         this.props.onSubmite(this.state.text)
+        this.setState({
+            text: '',
+        })
     }
 
     render() {
         return (
             <div className={this.props.classes.content}>
                 <form onSubmit={this.onSubmite}>
-                    <TextField label="Message" variant="outlined" onChange={this.onChange} />
+                    <TextField label="Message" variant="outlined" onChange={this.onChange} value={this.state.text}/>
                     <IconButton color="inherit" aria-label="ExitToAppIcon" type="submit">
-                        <ExitToAppIcon />
+                        <SendIcon />
                     </IconButton>
                 </form>
             </div>

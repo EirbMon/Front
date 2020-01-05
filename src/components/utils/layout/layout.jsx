@@ -80,20 +80,20 @@ const Layout = ({ currentPage, classes, history }) => {
                         <Menu />
                     </IconButton>
                     {currentPage}
-                    <IconButton color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
-                        <ExitToAppIcon />
-                    </IconButton>
                     <Typography variant="h6" color="inherit" className={classes.apptitle}>
                         <img src="LogoEirbmon.png" alt="logo" height="30px" className={classes.logo} />
                         Eirbmon
                     </Typography>
                     <IconButton
                         color="inherit"
-                        edge="end" 
+                        edge="end"
                         aria-label="open drawer"
                         onClick={handleDrawerOpenChat}
                     >
                         <ChatBubbleIcon />
+                    </IconButton>
+                    <IconButton color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
+                        <ExitToAppIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>

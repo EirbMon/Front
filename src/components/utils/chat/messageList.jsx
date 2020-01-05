@@ -22,11 +22,27 @@ const styles = () => ({
 class MessageList extends Component {
     constructor(props) {
         super(props)
+        this.listRef = React.createRef();
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        if (prevProps.messages.length < this.props.messages.length) {
+            const list = this.listRef.current;
+            return list.scrollHeight - list.scrollTop;
+        }
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (snapshot !== null) {
+            const list = this.listRef.current;
+            list.scrollTop = list.scrollHeight - snapshot;
+        }
     }
 
     render() {
         return (
-            <div className={this.props.classes.container}>
+            <div className={this.props.classes.container} ref={this.listRef}>
                 {this.props.messages.map((message, index) => (
                     <Card key={index} className={this.props.classes.card}>
                         <CardContent className={this.props.classes.content}>
@@ -37,9 +53,7 @@ class MessageList extends Component {
                                 {message.text}
                             </Typography>
                         </CardContent>
-
                     </Card>
-
                 ))}
             </div>
         )
