@@ -45,6 +45,7 @@ const Layout = ({ currentPage, classes, history }) => {
                         <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
                         <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" />
                         <ItemLayout page="exchangeEirbmon" primary="Echange" secondary="Echanger vos eirbmons" />
+                        <ItemLayout page="eirbmonsStore" primary="Boutique" secondary="Acheter ou vender vos eirbmons" />
                     </List>
                 </div>
             </Drawer>

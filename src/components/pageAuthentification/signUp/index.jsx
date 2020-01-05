@@ -100,6 +100,7 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                 (res) => {
                     const accountAddress = res.accounts[0];
                     const contract = res.contract;
+                    console.log(accountAddress);
                     Object.assign(user, { owner_id: accountAddress });
                     //execute metamask transaction
                     contract.methods.initAccount().send({ from: accountAddress }).

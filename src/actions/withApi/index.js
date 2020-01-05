@@ -15,6 +15,9 @@ import ExchageEirbmons from './exchangeEirbmons';
 import GetKey from './getKey';
 import UpdateKey from './updateKey';
 import GetEvolution from './getEvolution';
+import GetMyEirbmonsOnSale from './getMyEirbmonsOnSale';
+import GetAllEirbmonsOnSale from './getAllEirbmonsOnSale';
+import PutEirbmonOnSale from './putEirbmonOnSale';
 
 export default {
     GetEirbmon,
@@ -34,4 +37,7 @@ export default {
     GetKey,
     UpdateKey,
     GetEvolution,
+    GetMyEirbmonsOnSale,
+    GetAllEirbmonsOnSale,
+    PutEirbmonOnSale
 };

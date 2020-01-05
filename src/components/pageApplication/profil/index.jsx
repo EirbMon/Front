@@ -54,7 +54,7 @@ const Profil = ({ classes, accountInfo }) => (
                 <TextField
                     name="username"
                     label="Numéro de compte"
-                    value={accountInfo.accountUrl || 'Unknown'}
+                    value={accountInfo.accountUrl ? accountInfo.accountUrl.toLowerCase() : 'Unknown'}
                     margin="normal"
                     variant="outlined"
                     disabled

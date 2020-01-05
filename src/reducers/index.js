@@ -7,6 +7,7 @@ import accountInfo from './accountInfo';
 import eirbmonsInfos from './eirbmonsInfos';
 import pusher from './pusher';
 import blockchain from './blockchain';
+import loading from './loading';
 
 export default (history) => combineReducers({
     router: connectRouter(history),
@@ -16,4 +17,5 @@ export default (history) => combineReducers({
     eirbmonsInfos,
     pusher,
     blockchain,
+    loading,
 });

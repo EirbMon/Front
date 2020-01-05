@@ -17,6 +17,7 @@ import Login from './components/pageAuthentification/login';
 import Connect from './components/pageAuthentification/connectBlockchain';
 import SignUp from './components/pageAuthentification/signUp';
 import Profil from './components/pageApplication/profil';
+import EirbmonsStore from './components/pageApplication/eirbmonsStore';
 import Snackbar from './components/utils/snackbar';
 import reducers from './reducers';
 import API from './api';
@@ -49,6 +50,7 @@ ReactDOM.render(
                             <Route path="/profil" component={Profil} />
                             <Route path="/eirbdex" exact component={Eirbdex} />
                             <Route path="/exchangeEirbmon" exact component={ExchangeEirbmon} />
+                            <Route path="/EirbmonsStore" exact component={EirbmonsStore}></Route>
                         </Switch>
                     </Snackbar>
                 </SnackbarProvider>
