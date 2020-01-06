@@ -244,10 +244,14 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
                                 className={classes.submit}
                             >
                                 S'inscrire
-                                </Button>
+                            </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Button onClick={() => handleModalState("tuto")} size="small">
+                                    <Button onClick={() => {
+                                        new Promise((resolve) => resolve(getAvailableKey()))
+                                            .then(() => handleModalState("tuto"))
+                                            .catch(err => console.error(err))}}
+                                        size="small">
                                         {"Tutoriel"}
                                     </Button>
                                 </Grid>
@@ -297,7 +301,7 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
             </Dialog>
 
 
-        </div>
+        </div >
     );
 };
 

@@ -9,10 +9,11 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import { Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import { Dialog, Paper, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
 
-import image from '../../../scss/images/pikachu-inverse.jpg';
+import setImage from '../../utils/eirbdex/choisirImage';
 
 import mongoAccess from '../../../actions/withApi';
 
@@ -39,14 +40,22 @@ const useStyles = makeStyles(theme => ({
     level: {
         margin: '10 10 0 0',
     },
-
+    paper: {
+        textAlign: 'center',
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
 }));
 
-function EirbmonsList({ eirbmonsList, showDetail, action, putEirbmonOnSale }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
     const classes = useStyles();
-    let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false)
+    let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
+    let [eirbmonDetail, setEirbmonDetail] = useState(null);
 
-    function showDetail() {
+    function showDetail(eirbmonInfo) {
+        console.log(eirbmonInfo)
+        setEirbmonDetail(eirbmonInfo);
+        console.log(eirbmonDetail)
         setOpenEirbmonDetail(true);
     }
 
@@ -63,9 +72,9 @@ function EirbmonsList({ eirbmonsList, showDetail, action, putEirbmonOnSale }) {
     }
 
     function buttonAction(action, eirbmon) {
-        
-        switch(action){
-            case 'buy':{
+
+        switch (action) {
+            case 'buy': {
                 return <Button size="small" color="primary" onClick={() => buyEirbmon()} style={{ marginLeft: 20 }} > Acheter </Button>
             }
 
@@ -82,52 +91,116 @@ function EirbmonsList({ eirbmonsList, showDetail, action, putEirbmonOnSale }) {
     return (
 
         <div>
-    
-                <Grid container spacing={2} className={classes.eirbmon} >
-                    {
-                        eirbmonsList.map(
-                            (eirbmon, index) => {
-                                const name = eirbmon.name;
-                                
 
-                                return (
-                                    <Grid
-                                        item
-                                        key={index}
-                                    >
+            <Grid container spacing={2} className={classes.eirbmon} >
+                {eirbmonsList ?
 
-                                        <Card className={classes.card}>
-                                            <Typography component="p" align="right" className={classes.level}>
-                                                {`Niveau 0`}
-                                            </Typography>
-                                            <CardMedia
-                                                className={classes.media}
-                                                image={image}
-                                                title={name}
-                                            />
-                                            <Typography component="h1" align="center">
-                                                {name}
-                                            </Typography>
-                                        </Card>
-                                        <Card style={{ width: "180px" }}>
-                                            <CardActions>
-                                                <Button size="small" color="primary" onClick={() => showDetail()}>
-                                                    Voir
-                                                </Button>
-                                                {buttonAction(action,eirbmon)}
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>
-                                )
-                            }
-                        )
-                    }
-                </Grid>
+                    eirbmonsList.length > 0 &&
 
-                <Dialog open={openEirbmonDetail} onClose={() => setOpenEirbmonDetail(false)}>
-                    lol
-                </Dialog>
-        
+                    eirbmonsList.map(
+                        (eirbmon, index) => {
+                            const name = eirbmon.name;
+
+
+                            return (
+                                <Grid
+                                    item
+                                    key={index}
+                                >
+
+                                    <Card className={classes.card}>
+                                        <Typography component="p" align="right" className={classes.level}>
+                                            {`Niveau 0`}
+                                        </Typography>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={setImage(eirbmon.type)}
+                                            title={name}
+                                        />
+                                        <Typography component="h1" align="center">
+                                            {name}
+                                        </Typography>
+                                    </Card>
+                                    <Card style={{ width: "180px" }}>
+                                        <CardActions>
+                                            <Button size="small" color="primary" onClick={() => showDetail(eirbmon)}>
+                                                Voir
+                                            </Button>
+                                            {buttonAction(action, eirbmon)}
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            )
+                        }
+                    )
+                    :
+                    "Aucun eirbmons"
+                }
+            </Grid>
+
+
+            <Dialog open={openEirbmonDetail} onClose={() => setOpenEirbmonDetail(false)}>
+
+                {eirbmonDetail &&
+
+                    <Grid
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="center"
+                    >
+
+
+                        <DialogTitle>
+
+                            {eirbmonDetail.name}
+
+                        </DialogTitle>
+
+                        <img
+                            className={classes.media}
+                            src={setImage(eirbmonDetail.type)}
+                        />
+
+                        <DialogContent style={{ height: 200 }}>
+                            <Grid container spacing={3}>
+
+
+                                <Grid item xs={6}>
+                                    <Paper className={classes.paper}>Niveau: {eirbmonDetail.lvl}</Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper className={classes.paper}>Filière: {eirbmonDetail.field}</Paper>
+                                </Grid>
+
+
+
+                                <Grid item xs={12}>
+                                    <Paper className={classes.paper}>Pv: {eirbmonDetail.hp}</Paper>
+                                </Grid>
+
+
+
+
+                                <Grid item xs={6}>
+                                    <Paper className={classes.paper}>Attaque 1 : {eirbmonDetail.skills_id[0]}</Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper className={classes.paper}>Attaque 2 : {eirbmonDetail.skills_id[1]}</Paper>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Paper className={classes.paper}>Attaque 3 : {eirbmonDetail.skills_id[2]}</Paper>
+                                </Grid>
+
+
+
+                            </Grid>
+                        </DialogContent>
+                    </Grid>
+                }
+
+            </Dialog>
+
         </div>
 
     );
