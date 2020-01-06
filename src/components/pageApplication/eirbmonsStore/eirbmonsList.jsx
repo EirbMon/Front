@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function EirbmonsList({ eirbmonsList, showDetail, action, putEirbmonOnSale }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
     const classes = useStyles();
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false)
 
