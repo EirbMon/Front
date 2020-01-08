@@ -23,6 +23,7 @@ import reducerAcces from '../../../actions/withReducerOnly/index';
 import mongoAccess from '../../../actions/withApi/index';
 
 import generateloginUrl from '../../../middleWare/generateLoginUrl';
+import generateCreateUserChatkitUrl from '../../../middleWare/generateCreateUserChatkitUrl';
 
 import logoEirbmon from '../../../scss/images/LogoEirbmon2.png';
 import instanciateContract from '../../../functions/instanciateContract';
@@ -118,6 +119,7 @@ const Login = ({ history, dispatch }) => {
                     () => {
                         const jwt = getJwt();
                         if (jwt) {
+                            dispatch(mongoAccess.CreateUserChatkit(generateCreateUserChatkitUrl, { 'username': user.email }))
                             history.push('/profil');
                         }
                     })
@@ -210,5 +212,5 @@ Login.propTypes = {
 export default flowRight([
     withRouter,
     withStyles(useStyles),
-    connect(),
+    connect(null, null),
 ])(Login);

@@ -12,7 +12,6 @@ export default function login(link, user) {
                 throw err;
             }
             else if (res.token && res.owner_id) {
-
                 if (res.owner_id.toLowerCase() === user.owner_id.toLowerCase()) {
                     sessionStorage.setItem('token', res.token);
                     sessionStorage.setItem('name', res.name);

@@ -1,6 +1,7 @@
 import { flowRight } from 'lodash/fp';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
@@ -9,8 +10,8 @@ import { lifecycle } from 'recompose';
 
 import Page from '../../utils/layout/index';
 import isEmpty from '../../../functions/isEmpty';
-import Button from '@material-ui/core/Button';
 import reducerAcces from '../../../actions/withReducerOnly';
+import ChatPortal from '../../utils/chat/chatPortal';
 import Salon from './salon';
 
 const styles = () => ({
@@ -59,10 +60,12 @@ const ExchangeEirbmon = ({ classes, pusher }) => {
                         </Typography>
                     </div>
                 </div>
-
             ) : null}
             {!isEmpty(pusher) ? (
                 salon ? <Salon salon={salon} setSalon={setSalon} /> : listSalon()
+            ) : null}
+            {!salon ? (
+                <ChatPortal salon="salonGlobal" />
             ) : null}
         </Page>
     );

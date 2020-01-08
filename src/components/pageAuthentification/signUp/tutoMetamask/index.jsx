@@ -47,7 +47,7 @@ function getStepContent(step) {
   }
 }
 
-export default function TutoMetamask({handleModalState, keyCode}) {
+export default function TutoMetamask({ handleModalState, keyCode }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -55,7 +55,7 @@ export default function TutoMetamask({handleModalState, keyCode}) {
   var pages = {
     'Installer Metamask': <InstallMetamask />,
     'Configurer Metamask': <ConfigMetamask />,
-    'Importer votre compte de bêta testeur': <ImportAccount keyCode={keyCode}/>
+    'Importer votre compte de bêta testeur': <ImportAccount keyCode={keyCode} />
   }
 
   const handleNext = () => {
@@ -112,11 +112,14 @@ export default function TutoMetamask({handleModalState, keyCode}) {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>Félicitation ! Vous êtes enfin prêt à découvrir le monde merveilleux de EirbMon</Typography>
+          <Typography>
+            Félicitation ! Vous êtes enfin prêt à découvrir le monde merveilleux de EirbMon
+            mais n'oubliez pas de réactualiser votre naviguateur pour mettre à jour vos modifications !
+          </Typography>
           <Button onClick={handleReset} className={classes.button}>
             Recommencer le tutorial
           </Button>
-          <Button onClick={handleModalState} className={classes.button}  variant="contained" color="primary">
+          <Button onClick={handleModalState} className={classes.button} variant="contained" color="primary">
             Terminer
           </Button>
         </Paper>

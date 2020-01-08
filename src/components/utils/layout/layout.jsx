@@ -1,13 +1,17 @@
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Typography, IconButton, Drawer, Toolbar, List } from '@material-ui/core';
+import { AppBar, Typography, IconButton, Drawer, Toolbar, List, Divider } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import ItemLayout from './itemLayout';
 import disconnect from '../../../functions/disconnect';
+
+const drawerWidth = 400;
 
 const styles = () => ({
     root: {
@@ -31,10 +35,32 @@ const styles = () => ({
     logo: {
         marginRight: '5px',
     },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
 });
 
 const Layout = ({ currentPage, classes, history }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const [openChat, setOpenChat] = React.useState(false);
+
+    const handleDrawerOpenChat = () => {
+        setOpenChat(true);
+    };
+
+    const handleDrawerCloseChat = () => {
+        setOpenChat(false);
+    };
 
     return (
         <div>
@@ -45,6 +71,7 @@ const Layout = ({ currentPage, classes, history }) => {
                         <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
                         <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" />
                         <ItemLayout page="exchangeEirbmon" primary="Echange" secondary="Echanger vos eirbmons" />
+                        <ItemLayout page="eirbmonsStore" primary="Boutique" secondary="Acheter ou vender vos eirbmons" />
                     </List>
                 </div>
             </Drawer>
@@ -58,11 +85,36 @@ const Layout = ({ currentPage, classes, history }) => {
                         <img src="LogoEirbmon.png" alt="logo" height="30px" className={classes.logo} />
                         Eirbmon
                     </Typography>
-                    <IconButton className={classes.disconnectionButton} color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
+                    <IconButton
+                        color="inherit"
+                        edge="end"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpenChat}
+                    >
+                        <ChatBubbleIcon />
+                    </IconButton>
+                    <IconButton color="inherit" aria-label="ExitToAppIcon" onClick={() => disconnect(history)}>
                         <ExitToAppIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
+            <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="right"
+                open={openChat}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={handleDrawerCloseChat}>
+                        <ArrowForwardIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                <div id="drawer-chat" />
+            </Drawer>
         </div>
     );
 };

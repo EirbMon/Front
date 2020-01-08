@@ -18,8 +18,8 @@ const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'hidden',
-        //padding: theme.spacing(3),
-        //maxWidth: 1200,
+        padding: theme.spacing(3),
+        maxWidth: 1200,
         margin: '48px auto 0 auto',
     },
 });
@@ -48,7 +48,7 @@ export default flowRight([
     withRouter,
     withStyles(styles),
     connect((state) => ({
-        accountAddress: state.accountAddress,
+        accountInfo: state.accountInfo,
     }),
         {
             setAccountInfo: reducerAcces.SetAccountInfo,
@@ -59,17 +59,17 @@ export default flowRight([
     lifecycle({
         componentWillMount() {
             const jwt = getJwt();
-            const { checkToken, history, getOwnerEirbmon, setAccountInfo, getBlockchainInfo } = this.props;
+            const { checkToken, history, getOwnerEirbmon, setAccountInfo, getBlockchainInfo, accountInfo } = this.props;
 
-            checkToken(generateCheckTokenUrl, { token: jwt })
-                .then((res) => {
-                    if (403 === res) {
-                        history.push('/login');
-                    }
-                });
+            // checkToken(generateCheckTokenUrl, { token: jwt })
+            //     .then((res) => {
+            //         if (403 === res) {
+            //             history.push('/login');
+            //         }
+            //     });
 
-            const accountAddress = sessionStorage.getItem('accountAddress');
-            if (accountAddress && !accountAddress.accountUrl) {
+            if (!accountInfo.accountUrl) {
+                const accountAddress = sessionStorage.getItem('accountAddress');
                 setAccountInfo(accountAddress);
                 getOwnerEirbmon(accountAddress);
                 instanciateContract.then(res => {

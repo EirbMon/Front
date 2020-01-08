@@ -4,6 +4,7 @@ const login = process.env.REACT_APP_LOGIN;
 const password = process.env.REACT_APP_PASSWORD;
 
 export default function put(url, data) {
+    
     const headers = {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
