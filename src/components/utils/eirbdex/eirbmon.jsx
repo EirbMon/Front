@@ -70,13 +70,13 @@ const Eirbmon = ({name, level, xp, attack, date, filiere, pv, classes }) => {
                             <Paper className={classes.paper}>{filiere}</Paper>
                         </Grid>
                         <Grid item xs={6}>
-                            <Paper className={classes.paper}>attaque 1 : {attack[0]}</Paper>
+                            <Paper className={classes.paper}>attaque 1 : {attack[0].name}</Paper>
                         </Grid>
                         <Grid item xs={6}>
-                            <Paper className={classes.paper}>attaque 2 : {attack[1]}</Paper>
+                            <Paper className={classes.paper}>attaque 2 : {attack[1].name}</Paper>
                         </Grid>
                         <Grid item xs={6}>
-                            <Paper className={classes.paper}>attaque 3 : {attack[2]}</Paper>
+                            <Paper className={classes.paper}>attaque 3 : {attack[2].name}</Paper>
                         </Grid>
                         <Grid item xs={6}>
                             <Paper className={classes.paper}>lvl: {level}</Paper>

@@ -62,7 +62,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                 adress: myEirbmon.owner_id,
                 level: myEirbmon.lvl,
                 filiere: myEirbmon.field,
-                attack: myEirbmon.skills_id,
+                attack: myEirbmon.skills,
                 pv: myEirbmon.hp,
             }
         }
