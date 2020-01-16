@@ -56,6 +56,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
     const [eirbmon, setEirbmon] = useState(null);
     const eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
+            console.log(myEirbmon);
             return {
                 id: myEirbmon._id,
                 name: myEirbmon.name,

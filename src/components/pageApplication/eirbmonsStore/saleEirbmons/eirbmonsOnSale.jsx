@@ -48,7 +48,7 @@ function EirbmonsOnSale({eirbmonsOnSale}) {
                     />
                 </ListItem>
     
-                <ListItem style={{overflow: 'auto', height:'68vh'}}>
+                <ListItem style={{overflow: 'auto', height:'auto'}}>
                     <EirbmonsList
                         eirbmonsList={eirbmonsOnSale}
                         action='sale'

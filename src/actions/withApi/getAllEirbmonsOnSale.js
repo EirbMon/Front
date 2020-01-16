@@ -6,7 +6,7 @@ export default function getAllEirbmonsOnSale() {
     return (dispatch, getState, api) => api.get(generateGetAllEirbmonsOnSaleUrl())
     .then(
         (res) => {
-            
+            console.log(res);
             return Promise.resolve(res);
         })
     .catch((err) => {

@@ -19,7 +19,6 @@ const styles = (theme) => ({
         overflowX: 'auto',
         overflowY: 'hidden',
         padding: theme.spacing(3),
-        maxWidth: 1200,
         margin: '48px auto 0 auto',
     },
 });
@@ -61,12 +60,12 @@ export default flowRight([
             const jwt = getJwt();
             const { checkToken, history, getOwnerEirbmon, setAccountInfo, getBlockchainInfo, accountInfo } = this.props;
 
-            // checkToken(generateCheckTokenUrl, { token: jwt })
-            //     .then((res) => {
-            //         if (403 === res) {
-            //             history.push('/login');
-            //         }
-            //     });
+            checkToken(generateCheckTokenUrl, { token: jwt })
+                .then((res) => {
+                    if (403 === res) {
+                        history.push('/login');
+                    }
+                });
 
             if (!accountInfo.accountUrl) {
                 const accountAddress = sessionStorage.getItem('accountAddress');

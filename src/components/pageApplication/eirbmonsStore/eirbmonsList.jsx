@@ -12,6 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Dialog, Paper, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 import setImage from '../../utils/eirbdex/choisirImage';
 
@@ -19,7 +20,7 @@ import mongoAccess from '../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
     eirbmon: {
-        marginTop: 10,
+        marginTop: 50,
         marginLeft: 10,
         width: 'auto',
         height: '500px',
@@ -49,14 +50,20 @@ const useStyles = makeStyles(theme => ({
 
 function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
     const classes = useStyles();
+    console.log(eirbmonsList);
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
     let [eirbmonDetail, setEirbmonDetail] = useState(null);
+    let [eirbmonToSale, setEirbmonToSale] = useState(false);
 
     function showDetail(eirbmonInfo) {
         console.log(eirbmonInfo)
         setEirbmonDetail(eirbmonInfo);
         console.log(eirbmonDetail)
         setOpenEirbmonDetail(true);
+    }
+
+    function startSaleProcess() {
+        setEirbmonToSale(true);
     }
 
     function saleMyEirbmon(eirbmonId) {
@@ -79,7 +86,7 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
             }
 
             case 'mine': {
-                return <Button size="small" color="primary" onClick={() => saleMyEirbmon(eirbmon.idInBlockchain)} style={{ marginLeft: 20 }} > Vendre </Button>
+                return <Button size="small" color="primary" onClick={() => startSaleProcess() /*saleMyEirbmon(eirbmon.idInBlockchain)*/} style={{ marginLeft: 20 }} > Vendre </Button>
             }
 
             case 'sale': {
@@ -139,9 +146,10 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
             </Grid>
 
 
-            <Dialog open={openEirbmonDetail} onClose={() => setOpenEirbmonDetail(false)}>
+            {eirbmonDetail &&
+                <Dialog open={openEirbmonDetail} onClose={() => setOpenEirbmonDetail(false)}>
 
-                {eirbmonDetail &&
+
 
                     <Grid
                         container
@@ -197,8 +205,30 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
                             </Grid>
                         </DialogContent>
                     </Grid>
-                }
 
+
+                </Dialog>
+            }
+
+            <Dialog open={eirbmonToSale} onClose={()=>{setEirbmonToSale(false)}}>
+                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        To subscribe to this website, please enter your email address here. We will send updates
+                        occasionally.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Email Address"
+                        type="email"
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+
+                </DialogActions>
             </Dialog>
 
         </div>

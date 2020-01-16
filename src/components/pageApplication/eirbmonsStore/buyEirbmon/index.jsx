@@ -26,7 +26,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function BuyEirbmon({eirbmonsOnSale, allEirbmonsOnSale}) {
+function BuyEirbmon({ allEirbmonsOnSale }) {
+    console.log(allEirbmonsOnSale);
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -61,19 +62,17 @@ function BuyEirbmon({eirbmonsOnSale, allEirbmonsOnSale}) {
 
 export default flowRight([
     connect(
-        (state) => ({
-            eirbmonsOnSale: state.eirbmonsInfos.eirbmons,
-        })
+        null
         ,
         {
             getAllEirbmonsOnSale: mongoAccess.GetAllEirbmonsOnSale,
         }),
     lifecycle({
         componentDidMount() {
-            const { getAllEirbmonsOnSale} = this.props;
+            const { getAllEirbmonsOnSale } = this.props;
             getAllEirbmonsOnSale().then(
                 (allEirbmonsOnSale) => {
-                    this.setState({allEirbmonsOnSale: allEirbmonsOnSale})
+                    this.setState({ allEirbmonsOnSale: [allEirbmonsOnSale] })
                 }
             );
         }
