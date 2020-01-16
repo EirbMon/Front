@@ -12,7 +12,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Dialog, Paper, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import setImage from '../../utils/eirbdex/choisirImage';
 
@@ -86,7 +89,7 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
             }
 
             case 'mine': {
-                return <Button size="small" color="primary" onClick={() => startSaleProcess() /*saleMyEirbmon(eirbmon.idInBlockchain)*/} style={{ marginLeft: 20 }} > Vendre </Button>
+                return <Button size="small" color="primary" onClick={() => { setEirbmonDetail(eirbmon); startSaleProcess() /*saleMyEirbmon(eirbmon.idInBlockchain)*/ }} style={{ marginLeft: 20 }} > Vendre </Button>
             }
 
             case 'sale': {
@@ -210,26 +213,43 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
                 </Dialog>
             }
 
-            <Dialog open={eirbmonToSale} onClose={()=>{setEirbmonToSale(false)}}>
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send updates
-                        occasionally.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Email Address"
-                        type="email"
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
+            {eirbmonDetail &&
+                <Dialog open={eirbmonToSale} onClose={() => { setEirbmonToSale(false) }} maxWidth='sm' fullWidth>
+                    <DialogTitle id="form-dialog-title">Vente de {eirbmonDetail.name}</DialogTitle>
+                    <DialogContent style={{overflow: 'hidden'}}>
 
-                </DialogActions>
-            </Dialog>
+                        <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                                <DialogContentText>
+                                    Prix de référence
+                                </DialogContentText>
+
+                                <Input
+                                    id="standard-adornment-amount"
+                                    disabled
+                                    value={eirbmonDetail.value}
+                                    startAdornment={<InputAdornment position="start">ETH</InputAdornment>}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <DialogContentText>
+                                    Veuillez indiquer votre prix de vente
+                                </DialogContentText>
+
+                                <Input
+                                    id="standard-adornment-amount"
+                                    value={eirbmonDetail.value}
+                                    startAdornment={<InputAdornment position="start">ETH</InputAdornment>}
+                                />
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button>Valider</Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
 
         </div>
 
