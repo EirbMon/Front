@@ -20,7 +20,7 @@ import mongoAccess from '../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
     eirbmon: {
-        marginTop: 50,
+        marginTop: 10,
         marginLeft: 10,
         width: 'auto',
         height: '500px',
