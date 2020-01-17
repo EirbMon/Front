@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateEirbmonOwner, blockchain }) {
     const classes = useStyles();
     console.log(eirbmonsList);
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
@@ -67,30 +67,49 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
     }
 
     function saleMyEirbmon(eirbmonId) {
-        putEirbmonOnSale(eirbmonId)
-    }
+        blockchain.blockchain.contract.methods.ableSaleEirbmon(eirbmonId)
+        .send({ from: sessionStorage.getItem('accountAddress') })
+        .then(resp => {
+            console.log("resp",resp);
+            console.log("eirbmonId",eirbmonId);
 
-    function cancelEirbmonSelling() {
+            putEirbmonOnSale(eirbmonId)
+       }).catch(error=>console.log(error))   }
 
-    }
+    function cancelEirbmonSelling(eirbmonId) {
+        blockchain.blockchain.contract.methods.cancelEirbmonSelling(eirbmonId)
+        .send({ from: sessionStorage.getItem('accountAddress') })
+        .then(resp => {
+           // UpdateEirbmon(eirbmonId)
+       }).catch(error=>console.log(error))   }
 
-    function buyEirbmon() {
+    
 
-    }
+    function buyEirbmon(eirbmon) {
+        console.log("eirbmon",eirbmon);
+        const eirbmonId = eirbmon.idInBlockchain;  
+        const value = 1000000000000000000*eirbmon.value;
+        blockchain.blockchain.contract.methods.byEirbmon(eirbmonId)
+        .send({from: sessionStorage.getItem('accountAddress'),value: value})
+        .then(resp => {
+            console.log("resp",resp);
+            console.log("eirbmonId",eirbmonId);
+            updateEirbmonOwner(sessionStorage.getItem('accountAddress'),eirbmonId);
+       }).catch(error=>console.log(error))   }
 
     function buttonAction(action, eirbmon) {
 
         switch (action) {
             case 'buy': {
-                return <Button size="small" color="primary" onClick={() => buyEirbmon()} style={{ marginLeft: 20 }} > Acheter </Button>
+                return <Button size="small" color="primary" onClick={() => buyEirbmon(eirbmon)} style={{ marginLeft: 20 }} > Acheter </Button>
             }
 
             case 'mine': {
-                return <Button size="small" color="primary" onClick={() => startSaleProcess() /*saleMyEirbmon(eirbmon.idInBlockchain)*/} style={{ marginLeft: 20 }} > Vendre </Button>
+                return <Button size="small" color="primary" onClick={() => saleMyEirbmon(eirbmon.idInBlockchain)} style={{ marginLeft: 20 }} > Vendre </Button>
             }
 
             case 'sale': {
-                return <Button size="small" color="primary" onClick={() => cancelEirbmonSelling()} style={{ marginLeft: 20 }} > Annuler </Button>
+                return <Button size="small" color="primary" onClick={() => cancelEirbmonSelling(eirbmon.idInBlockchain)} style={{ marginLeft: 20 }} > Annuler </Button>
             }
         }
     }
@@ -102,10 +121,11 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
             <Grid container spacing={2} className={classes.eirbmon} >
                 {eirbmonsList ?
 
-                    eirbmonsList.length > 0 &&
+                    eirbmonsList[0]!=null && eirbmonsList.length > 0 &&
 
                     eirbmonsList.map(
                         (eirbmon, index) => {
+                            console.log("eirbmonsList.length",eirbmonsList.length);
                             const name = eirbmon.name;
 
 
@@ -237,8 +257,11 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale }) {
 }
 
 export default flowRight([
-    connect(
-        null, {
+    connect((state, props) => ({
+        blockchain: state.blockchain,
+        // mongoAccess: state,
+    }), {
         putEirbmonOnSale: mongoAccess.PutEirbmonOnSale,
+        updateEirbmonOwner: mongoAccess.UpdateEirbmonOwner
     }),
 ])(EirbmonsList);

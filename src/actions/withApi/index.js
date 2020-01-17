@@ -19,6 +19,7 @@ import GetMyEirbmonsOnSale from './getMyEirbmonsOnSale';
 import GetAllEirbmonsOnSale from './getAllEirbmonsOnSale';
 import PutEirbmonOnSale from './putEirbmonOnSale';
 import CreateUserChatkit from './createChatkitUser'
+import UpdateEirbmonOwner from './updateEirbmonOwner'
 
 export default {
     GetEirbmon,
@@ -41,5 +42,6 @@ export default {
     GetEvolution,
     GetMyEirbmonsOnSale,
     GetAllEirbmonsOnSale,
-    PutEirbmonOnSale
+    PutEirbmonOnSale,
+    UpdateEirbmonOwner
 };
