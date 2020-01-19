@@ -100,7 +100,7 @@ Eirbmon.propTypes = {
     name: PropTypes.string,
     level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     xp: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    attack: PropTypes.string,
+    attack: PropTypes.array,
     filiere: PropTypes.string,
     date: PropTypes.string,
     pv: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

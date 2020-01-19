@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Button from '@material-ui/core/Button';
 import choisirImage from './choisirImage';
 
 
@@ -54,6 +55,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
                 onClick={onClick}
             >
                 <Card className={classNames(classes.card, { [classes.selected]: isSelected })}>
+
                     <Typography component="p" align="right" className={classes.level}>
                         {levelTitle}
                     </Typography>
@@ -67,6 +69,9 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
                     </Typography>
                 </Card>
             </ButtonBase>
+            {level == 100 && <Button variant="contained" color="primary">
+                        Évoluer
+             </Button>}
         </Grid>
     );
 };
