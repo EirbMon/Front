@@ -20,7 +20,7 @@ import GetAllEirbmonsOnSale from './getAllEirbmonsOnSale';
 import PutEirbmonOnSale from './putEirbmonOnSale';
 import CreateUserChatkit from './createChatkitUser'
 import UpdateEirbmonOwner from './updateEirbmonOwner'
-
+import UpdateOneEirbmon from './updateOneEirbmon'
 export default {
     GetEirbmon,
     GetOwnerEirbmon,
@@ -43,5 +43,6 @@ export default {
     GetMyEirbmonsOnSale,
     GetAllEirbmonsOnSale,
     PutEirbmonOnSale,
-    UpdateEirbmonOwner
+    UpdateEirbmonOwner,
+    UpdateOneEirbmon
 };
