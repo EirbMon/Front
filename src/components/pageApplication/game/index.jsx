@@ -84,6 +84,10 @@ class Game extends React.Component {
                 console.log("End fight: Update Eirbmons HP & LVL");
                 this.onEndCombat(object);
             }
+            else if (message === "heal") {
+                console.log("Heal Eirbmon HP");
+                this.onHeal(object);
+            }
             else {
                 console.log("Receiving: " + message);
             }
@@ -197,6 +201,26 @@ class Game extends React.Component {
 
         for (let i = 0; i < N; i++) {
             console.log(object.pokemons[i].lvl);
+
+            dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
+                (initEirb) => {
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
+        }
+    }
+
+    onHeal(object) {
+
+        const { dispatch } = this.props;
+        var N = object.length;
+
+        console.log("Number of eirbmons updated: " + N);
+
+        for (let i = 0; i < N; i++) {
+            console.log(object.pokemons[i].idInBlockchain + " health: " + object.pokemons[i].current_health);
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
