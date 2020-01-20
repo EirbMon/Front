@@ -39,7 +39,7 @@ const styles = () => ({
     },
 });
 
-const EirbmonItem = ({ name, level, onClick, classes, isSelected }) => {
+const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
     const levelTitle = `Niveau ${level}`;
     var monImage = choisirImage(name)
     return (
