@@ -49,7 +49,7 @@ function MyEirbmons({ myEirbmons }) {
                     />
                 </ListItem>
 
-                <ListItem style={{overflow: 'auto', height:'68vh'}}>
+                <ListItem style={{overflow: 'auto',  position: 'abolute'}}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
                         action="mine"

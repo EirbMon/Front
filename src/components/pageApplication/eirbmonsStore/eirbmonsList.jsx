@@ -12,7 +12,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import { Dialog, Paper, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import setImage from '../../utils/eirbdex/choisirImage';
 
@@ -20,7 +23,7 @@ import mongoAccess from '../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
     eirbmon: {
-        marginTop: 50,
+        marginTop: 10,
         marginLeft: 10,
         width: 'auto',
         height: '500px',
@@ -105,7 +108,8 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
             }
 
             case 'mine': {
-                return <Button size="small" color="primary" onClick={() => saleMyEirbmon(eirbmon.idInBlockchain)} style={{ marginLeft: 20 }} > Vendre </Button>
+                return <Button size="small" color="primary" onClick={() => { setEirbmonDetail(eirbmon); startSaleProcess() /*saleMyEirbmon(eirbmon.idInBlockchain)*/ }} style={{ marginLeft: 20 }} > Vendre </Button>
+               // return <Button size="small" color="primary" onClick={() => saleMyEirbmon(eirbmon.idInBlockchain)} style={{ marginLeft: 20 }} > Vendre </Button>
             }
 
             case 'sale': {
@@ -207,17 +211,19 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
                                     <Paper className={classes.paper}>Pv: {eirbmonDetail.hp}</Paper>
                                 </Grid>
 
-
+                                <Grid item xs={12}>
+                                    <Paper className={classes.paper}> Attaques </Paper>
+                                </Grid>
 
 
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>Attaque 1 : {eirbmonDetail.skills_id[0]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[0]}</Paper>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>Attaque 2 : {eirbmonDetail.skills_id[1]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[1]}</Paper>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>Attaque 3 : {eirbmonDetail.skills_id[2]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[2]}</Paper>
                                 </Grid>
 
 
@@ -230,26 +236,44 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
                 </Dialog>
             }
 
-            <Dialog open={eirbmonToSale} onClose={()=>{setEirbmonToSale(false)}}>
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send updates
-                        occasionally.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Email Address"
-                        type="email"
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
+            {eirbmonDetail &&
+                <Dialog open={eirbmonToSale} onClose={() => { setEirbmonToSale(false) }} maxWidth='sm' fullWidth>
+                    <DialogTitle id="form-dialog-title">Vente de {eirbmonDetail.name}</DialogTitle>
+                    <DialogContent style={{overflow: 'hidden'}}>
 
-                </DialogActions>
-            </Dialog>
+                        <Grid container spacing={3}>
+                            <Grid item xs={6}>
+                                <DialogContentText>
+                                    Prix de référence
+                                </DialogContentText>
+
+                                <Input
+                                    id="standard-adornment-amount"
+                                    disabled
+                                    value={eirbmonDetail.value}
+                                    startAdornment={<InputAdornment position="start">ETH</InputAdornment>}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <DialogContentText>
+                                    Veuillez indiquer votre prix de vente
+                                </DialogContentText>
+
+                                <Input
+                                    id="standard-adornment-amount"
+                                    value={eirbmonDetail.price}
+                                    onChange={(price)=> {console.log(price.target.value); console.log(eirbmonDetail);setEirbmonDetail({...eirbmonDetail,price: +price.target.value})}}
+                                    startAdornment={<InputAdornment position="start">ETH</InputAdornment>}
+                                />
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => saleMyEirbmon(eirbmonDetail.idInBlockchain)}>Valider</Button>
+                    </DialogActions>
+                </Dialog>
+            }
+
 
         </div>
 

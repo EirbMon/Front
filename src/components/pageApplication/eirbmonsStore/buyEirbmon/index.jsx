@@ -48,7 +48,7 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
                             label={"Entrez un nom d'EirbMon"}
                         />
                     </ListItem>
-                    <ListItem style={{ overflow: 'auto', height: '75vh' }}>
+                    <ListItem style={{ overflow: 'auto',  position: 'abolute' }}>
                         <EirbmonsList
                             eirbmonsList={allEirbmonsOnSale}
                             action="buy"

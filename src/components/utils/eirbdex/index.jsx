@@ -58,7 +58,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
         myEirbmon => {
             console.log(myEirbmon);
             return {
-                id: myEirbmon._id,
+                id: myEirbmon.idInBlockchain,
                 name: myEirbmon.name,
                 adress: myEirbmon.owner_id,
                 level: myEirbmon.lvl,
@@ -95,6 +95,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                                     key={key}
                                     name={item.name}
                                     level={item.level}
+                                    id={item.id}
                                 />
                             );
                         }) : null}

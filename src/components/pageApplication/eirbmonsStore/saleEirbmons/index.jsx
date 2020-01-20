@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
     },
     box: {
         display:"flex",
+        position: "relative",
         width:"50%",
-        height:"85vh"
     },
 }));
 

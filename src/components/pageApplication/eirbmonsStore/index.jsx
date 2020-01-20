@@ -48,14 +48,14 @@ const useStyles = makeStyles(theme => ({
     marginRight: 10,
     marginTop: 10,
     backgroundColor: theme.palette.background.paper,
-    height: "90vh",
     display: 'flex',
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   fullwitdth: {
-    width: '100%'
+    width: '100%',
+    position: 'relative'
   }
 }));
 
