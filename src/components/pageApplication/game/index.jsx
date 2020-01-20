@@ -196,11 +196,10 @@ class Game extends React.Component {
         console.log("Number of eirbmons updated: " + N);
 
         for (let i = 0; i < N; i++) {
-            console.log(object.pokemons[i]);
+            console.log(object.pokemons[i].lvl);
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
-                    console.log(initEirb);
                 },
                 (err) => {
                     console.error(err);
