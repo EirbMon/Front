@@ -88,12 +88,16 @@ EirbmonItem.propTypes = {
         level: PropTypes.string,
         selected: PropTypes.string,
     }).isRequired,
+    id: PropTypes.string,
 };
 
 function onEvolve(id_eirbmon) {
-    const { dispatch } = this.props;
+
     console.log("L'ID du Eirbmon a évolué est : ");
-    dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
+
+    //const { dispatch } = this.props;
+
+    mongoAccess.GetEvolution(id_eirbmon).then(
         (eirbdex) => {
             console.log(eirbdex);
             if (eirbdex.evolution == "0") {
@@ -109,7 +113,7 @@ function onEvolve(id_eirbmon) {
                 this.state.contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: this.state.owner_id })
                     .then(response => {
                         //dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
-                        dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
+                        mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon).then(
                             (initEirb) => { console.log("Eirbmon evolution :"); console.log(initEirb); },
                             (err) => { console.error(err); }
                         );
