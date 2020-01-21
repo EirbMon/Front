@@ -39,7 +39,6 @@ class Game extends React.Component {
         this.onSendEirmobSkill = this.onSendEirmobSkill.bind(this);
         this.onEndCombatOrphelin = this.onEndCombatOrphelin.bind(this);
         this.onEndCombat = this.onEndCombat.bind(this);
-        this.onEvolve = this.onEvolve.bind(this);
 
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
@@ -54,9 +53,6 @@ class Game extends React.Component {
             var message = object.message;
 
             if (message === "user_pokemon") {
-                console.log("OnEvolve");
-                this.onEvolve();
-
                 console.log("Refresh my Eirbmons Inventory");
                 this.onRefreshMyInventory();
             }
