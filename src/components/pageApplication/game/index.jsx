@@ -217,7 +217,9 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         var N = object.length;
 
-        console.log("Number of eirbmons updated: " + N);
+        console.log(object);
+
+        console.log("Number of eirbmons healed: " + N);
 
         for (let i = 0; i < N; i++) {
             console.log(object.pokemons[i].idInBlockchain + " health: " + object.pokemons[i].current_health);
