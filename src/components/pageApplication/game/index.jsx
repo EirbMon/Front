@@ -222,7 +222,7 @@ class Game extends React.Component {
         console.log("Number of eirbmons healed: " + N);
 
         for (let i = 0; i < N; i++) {
-            console.log(object.pokemons[i].idInBlockchain + " health: " + object.pokemons[i].current_health);
+            console.log("id: " + object.pokemons[i].idInBlockchain + ",current_hp: " + object.pokemons[i].current_hp);
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
