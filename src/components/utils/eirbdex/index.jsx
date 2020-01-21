@@ -58,8 +58,8 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
     console.log('eirbmonsInfos:');
     console.log(eirbmonsInfos);
     console.log('eirbmons:');
-    console.log(eirbmons);
-    
+    console.log(eirbmonsInfos.eirbmons);
+
     const eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
             console.log(myEirbmon);
