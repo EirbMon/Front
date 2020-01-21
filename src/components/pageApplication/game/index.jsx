@@ -222,6 +222,7 @@ class Game extends React.Component {
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
+                    this.onRefreshMyInventory();
                 },
                 (err) => {
                     console.error(err);
