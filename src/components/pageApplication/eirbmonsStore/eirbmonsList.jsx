@@ -79,10 +79,23 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
             putEirbmonOnSale(eirbmonId)
        }).catch(error=>console.log(error))   }
 
+       function saleMyEirbmonWithPrice(eirbmon) {
+           console.log("eirbmon",eirbmon);
+        blockchain.blockchain.contract.methods.saleEirbmon(eirbmon.idInBlockchain,eirbmon.price/1000000000000000000)
+        .send({ from: sessionStorage.getItem('accountAddress') })
+        .then(resp => {
+            console.log("resp",resp);
+            console.log("eirbmon",eirbmon);
+
+            putEirbmonOnSale(eirbmon.idInBlockchain)
+       }).catch(error=>console.log(error))   }
+
+
     function cancelEirbmonSelling(eirbmonId) {
         blockchain.blockchain.contract.methods.cancelEirbmonSelling(eirbmonId)
         .send({ from: sessionStorage.getItem('accountAddress') })
         .then(resp => {
+            updateOneEirbmon(sessionStorage.getItem('accountAddress'),eirbmonId);
            // UpdateEirbmon(eirbmonId)
        }).catch(error=>console.log(error))   }
 
@@ -91,7 +104,8 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
     function buyEirbmon(eirbmon) {
         console.log("eirbmon",eirbmon);
         const eirbmonId = eirbmon.idInBlockchain;  
-        const value = 1000000000000000000*eirbmon.value;
+        // const value = 1000000000000000000*eirbmon.value;
+        const value = eirbmon.price;
         blockchain.blockchain.contract.methods.byEirbmon(eirbmonId)
         .send({from: sessionStorage.getItem('accountAddress'),value: value})
         .then(resp => {
@@ -261,15 +275,15 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
 
                                 <Input
                                     id="standard-adornment-amount"
-                                    value={eirbmonDetail.price}
-                                    onChange={(price)=> {console.log(price.target.value); console.log(eirbmonDetail);setEirbmonDetail({...eirbmonDetail,price: +price.target.value})}}
+                                    value={eirbmonDetail.price/1000000000000000000}
+                                    onChange={(price)=> {console.log("price",price.target.value); console.log(eirbmonDetail);setEirbmonDetail({...eirbmonDetail,price: +price.target.value*1000000000000000000})}}
                                     startAdornment={<InputAdornment position="start">ETH</InputAdornment>}
                                 />
                             </Grid>
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => saleMyEirbmon(eirbmonDetail.idInBlockchain)}>Valider</Button>
+                        <Button onClick={() => {saleMyEirbmonWithPrice(eirbmonDetail)}}>Valider</Button>
                     </DialogActions>
                 </Dialog>
             }
