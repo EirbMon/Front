@@ -60,7 +60,10 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
     console.log('eirbmons:');
     console.log(eirbmonsInfos.eirbmons);
 
-    const eirbmonsForm = eirbmonsInfos.eirbmons.map(
+    var eirbmonsForm = null;
+    
+    try{
+        eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
             console.log(myEirbmon);
             return {
@@ -74,6 +77,12 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
             }
         }
     )
+    } catch{
+        eirbmonsForm = eirbmonsInfos.eirbmons;
+    }
+
+    console.log(eirbmonsForm);
+
     return (
         <div className="mx-auto">
             <Paper className={classNames('mx-auto', classes.eirbdex)}>
