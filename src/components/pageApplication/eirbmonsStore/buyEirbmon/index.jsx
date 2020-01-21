@@ -72,7 +72,7 @@ export default flowRight([
             const { getAllEirbmonsOnSale } = this.props;
             getAllEirbmonsOnSale().then(
                 (allEirbmonsOnSale) => {
-                    this.setState({ allEirbmonsOnSale: [allEirbmonsOnSale] })
+                    this.setState({ allEirbmonsOnSale: allEirbmonsOnSale })
                 }
             );
         }
