@@ -113,13 +113,12 @@ export default function TutoMetamask({ handleModalState, keyCode }) {
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
           <Typography>
-            Félicitation ! Vous êtes enfin prêt à découvrir le monde merveilleux de EirbMon
-            mais n'oubliez pas de réactualiser votre naviguateur pour mettre à jour vos modifications !
+            Félicitation ! Vous êtes enfin prêt à découvrir le monde merveilleux de EirbMon !
           </Typography>
           <Button onClick={handleReset} className={classes.button}>
             Recommencer le tutorial
           </Button>
-          <Button onClick={handleModalState} className={classes.button} variant="contained" color="primary">
+          <Button onClick={()=>{handleModalState(); window.location.reload();}} className={classes.button} variant="contained" color="primary">
             Terminer
           </Button>
         </Paper>
