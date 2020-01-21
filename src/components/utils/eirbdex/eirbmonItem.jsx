@@ -76,7 +76,15 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                     contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id })
                         .then(response => {
                             dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
-                                (initEirb) => { console.log("Eirbmon evolution :"); console.log(initEirb); },
+                                (initEirb) => { 
+                                console.log("Eirbmon evolution :"); 
+                                console.log(initEirb); 
+
+                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1}).then(
+                                    (initEirb) => { console.log("Eirbmon LVL RESET :"); console.log(initEirb); },
+                                    (err) => { console.error(err); }
+                                ));    
+                            },
                                 (err) => { console.error(err); }
                             );
                         });
