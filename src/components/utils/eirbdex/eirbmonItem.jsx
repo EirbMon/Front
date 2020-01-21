@@ -44,6 +44,7 @@ const styles = () => ({
 
 const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }) => {
 
+
     function onEvolve(id_eirbmon) {
 
         console.log("L'ID du Eirbmon a évolué est : ");
@@ -75,7 +76,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
     }
 
     const Evolution = (id) => {
-        onEvolve(id).then()
+        onEvolve(id);
     };
 
     const levelTitle = `Niveau ${level}`;
