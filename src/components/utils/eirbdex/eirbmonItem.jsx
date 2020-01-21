@@ -42,7 +42,7 @@ const styles = () => ({
     },
 });
 
-const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
+const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }) => {
 
     function onEvolve(id_eirbmon) {
 
@@ -114,6 +114,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
 EirbmonItem.propTypes = {
     name: PropTypes.string,
     level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    id: PropTypes.string,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
     classes: PropTypes.shape({
@@ -123,7 +124,7 @@ EirbmonItem.propTypes = {
         level: PropTypes.string,
         selected: PropTypes.string,
     }).isRequired,
-    id: PropTypes.string,
+    eirbmonitem: PropTypes.func,
 };
 
 
