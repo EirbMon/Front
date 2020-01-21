@@ -73,7 +73,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                 }
                 else {
                     console.log('New eirbmon type : ' + eirbdex.evolution);
-                    this.state.contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: this.state.owner_id })
+                    contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id })
                         .then(response => {
                             dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
                                 (initEirb) => { console.log("Eirbmon evolution :"); console.log(initEirb); },
