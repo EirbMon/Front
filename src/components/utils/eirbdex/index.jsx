@@ -61,7 +61,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
     console.log(eirbmonsInfos.eirbmons);
 
     var eirbmonsForm = null;
-    
+
     try{
         eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
@@ -78,7 +78,16 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
         }
     )
     } catch{
-        eirbmonsForm = eirbmonsInfos.eirbmons;
+        eirbmonsForm = [{
+            id: eirbmonsInfos.eirbmons.idInBlockchain,
+            name: eirbmonsInfos.eirbmons.name,
+            adress: eirbmonsInfos.eirbmons.owner_id,
+            level: eirbmonsInfos.eirbmons.lvl,
+            filiere: eirbmonsInfos.eirbmons.field,
+            attack:eirbmonsInfos.eirbmons.skills,
+            pv: eirbmonsInfos.eirbmons.hp
+        }
+        ]
     }
 
     console.log(eirbmonsForm);
