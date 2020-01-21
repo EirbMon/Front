@@ -54,6 +54,12 @@ const styles = () => ({
 const Eirbdex = ({ classes, eirbmonsInfos }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
+
+    console.log('eirbmonsInfos:');
+    console.log(eirbmonsInfos);
+    console.log('eirbmons:');
+    console.log(eirbmons);
+    
     const eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
             console.log(myEirbmon);
