@@ -55,8 +55,8 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
 
         instanciateContract.then(
             (res) => {
-                owner_id = res.accounts[0],
-                contract = res.contract
+                owner_id = res.accounts[0];
+                contract = res.contract;
             }
         );
     
