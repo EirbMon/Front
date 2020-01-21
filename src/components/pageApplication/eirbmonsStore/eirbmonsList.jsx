@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateEirbmonOwner, blockchain }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon, blockchain }) {
     const classes = useStyles();
     console.log(eirbmonsList);
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
@@ -97,7 +97,7 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateEirbmonOwn
         .then(resp => {
             console.log("resp",resp);
             console.log("eirbmonId",eirbmonId);
-            updateEirbmonOwner(sessionStorage.getItem('accountAddress'),eirbmonId);
+            updateOneEirbmon(sessionStorage.getItem('accountAddress'),eirbmonId);
        }).catch(error=>console.log(error))   }
 
     function buttonAction(action, eirbmon) {
@@ -286,6 +286,6 @@ export default flowRight([
         // mongoAccess: state,
     }), {
         putEirbmonOnSale: mongoAccess.PutEirbmonOnSale,
-        updateEirbmonOwner: mongoAccess.UpdateEirbmonOwner
+        updateOneEirbmon: mongoAccess.UpdateOneEirbmon
     }),
 ])(EirbmonsList);
