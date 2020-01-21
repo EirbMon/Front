@@ -74,6 +74,10 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
         );
     }
 
+    const Evolution = (id) => {
+        onEvolve(id).then()
+    };
+
     const levelTitle = `Niveau ${level}`;
     var monImage = choisirImage(name)
 
@@ -104,7 +108,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                     </Typography>
                 </Card>
             </ButtonBase>
-            {level == 100 && <Button variant="contained" color="primary" onClick={() => onEvolve(id).then()}>
+            {level == 100 && <Button variant="contained" color="primary" onClick={() => Evolution(id) }>
                         Évoluer
              </Button>}
         </Grid>
