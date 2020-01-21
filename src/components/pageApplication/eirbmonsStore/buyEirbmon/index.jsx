@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
     box: {
         display: "flex",
-        height: "85vh"
+        position: "relative",
     },
 }));
 

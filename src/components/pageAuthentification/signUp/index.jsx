@@ -167,7 +167,7 @@ const SignUp = ({ history, signUp, displayMessage, setAccountInfo,
             setModalState({
                 openTuto: false,
                 openAskTuto: false
-            })
+            });
         }
 
     }
