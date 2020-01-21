@@ -15,6 +15,8 @@ import mongoAccess from '../../../actions/withApi/index';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import instanciateContract from '../../../functions/instanciateContract';
+
 const styles = () => ({
     card: {
         width: 150,
@@ -44,10 +46,19 @@ const styles = () => ({
 
 const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }) => {
 
+    var contract;
+    var owner_id;
 
     function onEvolve(id_eirbmon) {
 
         console.log("L'ID du Eirbmon a évolué est : ");
+
+        instanciateContract.then(
+            (res) => {
+                owner_id = res.accounts[0],
+                contract = res.contract
+            }
+        );
     
         dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
             (eirbdex) => {
