@@ -48,7 +48,7 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
                             label={"Entrez un nom d'EirbMon"}
                         />
                     </ListItem>
-                    <ListItem style={{ overflow: 'auto',  position: 'abolute' }}>
+                    <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                         <EirbmonsList
                             eirbmonsList={allEirbmonsOnSale}
                             action="buy"
@@ -62,16 +62,20 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
 
 export default flowRight([
     connect(
-        null
+        (state) => ({
+            accountAddress: state.accountInfo.accountUrl,
+        })
         ,
         {
             getAllEirbmonsOnSale: mongoAccess.GetAllEirbmonsOnSale,
         }),
     lifecycle({
         componentDidMount() {
-            const { getAllEirbmonsOnSale } = this.props;
+            const { getAllEirbmonsOnSale, accountAddress } = this.props;
             getAllEirbmonsOnSale().then(
-                (allEirbmonsOnSale) => {
+                (res) => {
+                    var allEirbmonsOnSale = [];
+                    allEirbmonsOnSale = res.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase()})
                     this.setState({ allEirbmonsOnSale: allEirbmonsOnSale })
                 }
             );

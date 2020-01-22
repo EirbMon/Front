@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({ myEirbmonsOnSale, eirbmonsOnSale }) {
+function EirbmonsOnSale({ myEirbmonsOnSale }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -49,7 +49,7 @@ function EirbmonsOnSale({ myEirbmonsOnSale, eirbmonsOnSale }) {
                 </ListItem>
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
-                        eirbmonsList={eirbmonsOnSale}
+                        eirbmonsList={myEirbmonsOnSale}
                         action='sale'
                     />
                 </ListItem>
@@ -63,7 +63,6 @@ export default flowRight([
     connect(
         (state) => ({
             accountAddress: state.accountInfo.accountUrl,
-            eirbmonsOnSale: state.eirbmonsInfos.eirbmons,
         })
         ,
         {
@@ -74,8 +73,7 @@ export default flowRight([
             const { accountAddress, getMyEirbmonsOnSale } = this.props;
             getMyEirbmonsOnSale(accountAddress)
                 .then(
-                    (res) => {
-                        console.log(res);
+                    (myEirbmonsOnSale) => {
                         this.setState({ myEirbmonsOnSale: myEirbmonsOnSale });
                     }
                 );

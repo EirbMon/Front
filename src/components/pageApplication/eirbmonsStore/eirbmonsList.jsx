@@ -138,65 +138,85 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
             <Grid container spacing={2} className={classes.eirbmon} >
                 {eirbmonsList ?
 
-                    eirbmonsList[0] != null && eirbmonsList.length > 0 &&
+                    eirbmonsList[0] != null && eirbmonsList.length > 0 ?
 
-                    eirbmonsList.map(
-                        (eirbmon, index) => {
-                            console.log("eirbmonsList.length", eirbmonsList.length);
-                            const name = eirbmon.name;
+                        eirbmonsList.map(
+                            (eirbmon, index) => {
+                                console.log("eirbmonsList.length", eirbmonsList.length);
+                                const name = eirbmon.name;
 
 
-                            return (
-                                <Grid
-                                    item
-                                    key={index}
-                                >
+                                return (
+                                    <Grid
+                                        item
+                                        key={index}
+                                    >
 
-                                    <Card className={classes.card}>
-                                        <Typography component="p" align="right" className={classes.level}>
-                                            {`Niveau 0`}
-                                        </Typography>
-                                        <CardMedia
-                                            className={classes.media}
-                                            image={setImage(eirbmon.type)}
-                                            title={name}
-                                        />
-                                        <Typography component="h1" align="center">
-                                            {name}
-                                        </Typography>
-                                    </Card>
-                                    {(action === 'buy' || action === 'sale') &&
                                         <Card className={classes.card}>
-                                            <Grid container spacing={3}>
-                                                <Grid item xs={6}>
-                                                    <Typography align="right" style={{ marginTop: 5 }}>
-                                                        {eirbmon.price / 1000000000000000000}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xs={2}>
-                                                    <CardMedia
-                                                        style={{ height: 30, width: 30 }}
-                                                        image={ethereumCoinImage}
-                                                    />
-                                                </Grid>
-                                            </Grid>
-
+                                            <Typography component="p" align="right" className={classes.level}>
+                                                {`Niveau 0`}
+                                            </Typography>
+                                            <CardMedia
+                                                className={classes.media}
+                                                image={setImage(eirbmon.type)}
+                                                title={name}
+                                            />
+                                            <Typography component="h1" align="center">
+                                                {name}
+                                            </Typography>
                                         </Card>
-                                    }
-                                    <Card style={{ width: "180px" }}>
-                                        <CardActions>
-                                            <Button size="small" color="primary" onClick={() => showDetail(eirbmon)}>
-                                                Voir
+
+                                        {(action === 'buy' || action === 'sale') &&
+                                            <Card className={classes.card}>
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={6}>
+                                                        <Typography align="right" style={{ marginTop: 5 }}>
+                                                            {eirbmon.price / 1000000000000000000}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={2}>
+                                                        <CardMedia
+                                                            style={{ height: 30, width: 30 }}
+                                                            image={ethereumCoinImage}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+                                            </Card>
+                                        }
+
+                                        <Card style={{ width: "180px" }}>
+                                            <CardActions>
+                                                <Button size="small" color="primary" onClick={() => showDetail(eirbmon)}>
+                                                    Voir
                                             </Button>
-                                            {buttonAction(action, eirbmon)}
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            )
-                        }
-                    )
+                                                {buttonAction(action, eirbmon)}
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                )
+                            }
+                        )
+                        :
+                        <Grid item xs={12}>
+                            <Card style={{ height: 150, position: "absolute", width: "100%", maxWidth: "80%" }}>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        Aucun Eirbmon en vente
+                                        </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     :
-                    "Aucun eirbmons"
+                    <Grid item xs={12}>
+                        <Card style={{ height: 150, position: "absolute", width: "100%", maxWidth: "80%" }}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    Aucun Eirbmon en vente
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 }
             </Grid>
 

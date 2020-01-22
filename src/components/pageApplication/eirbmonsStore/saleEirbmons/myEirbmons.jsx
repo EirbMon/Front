@@ -49,7 +49,7 @@ function MyEirbmons({ myEirbmons }) {
                     />
                 </ListItem>
 
-                <ListItem style={{overflow: 'auto',  position: 'abolute'}}>
+                <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
                         action="mine"
@@ -66,7 +66,6 @@ export default flowRight([
     connect(
         (state) => ({
             accountAddress: state.accountInfo.accountUrl,
-            myEirbmons: state.eirbmonsInfos.eirbmons,
         })
         ,
         {
@@ -75,7 +74,15 @@ export default flowRight([
     lifecycle({
         componentDidMount() {
             const { getOwnerEirbmon, accountAddress } = this.props;
-            getOwnerEirbmon(accountAddress);
+            getOwnerEirbmon(accountAddress)
+                .then(
+                    (res) => {
+                        var myEirbmons = [];
+                        myEirbmons = res.filter( (myEirbmon) => {return myEirbmon.canBeSelled === false} );
+                        this.setState({ myEirbmons: myEirbmons })
+                        
+                    }
+                );
         }
     }
     ),
