@@ -5,15 +5,15 @@ import { Typography, IconButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PropTypes from 'prop-types';
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { lifecycle } from 'recompose';
 
 import ChatPortal from '../../utils/chat/chatPortal';
 import mongoAccess from '../../../actions/withApi/index';
-import ChatScreen from '../../utils/chat';
 import SelectEirbmonModal from './selectEirbmonModal';
+import ExchangeOvered from './exchangeOvered';
 import Informations from './informations';
 import SalonClosed from './salonClosed';
 import Eirbmon from './eirbmon';
@@ -48,13 +48,7 @@ const pokemon = {
     date: '---',
 };
 
-const chatChannelId = {
-    salon1: "aa6f7236-38f6-47ec-989c-4b3d0f0c6d56",
-    salon2: "0102edfe-76fe-4c1e-893c-069c0283d4b5",
-    salon3: "1b3b6e22-9d72-4224-8f84-0bcebe60659d"
-}
-
-const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSalon, salon, exchageEirbmons }) => {
+const ExchangeEirbmon = ({ classes, pusher, blockchain, channel, setSalon, salon, exchageEirbmons }) => {
     const [myEirbmon, setMyEirbmon] = useState(pokemon);
     const [myChoose, setMyChoose] = useState(false);
     const [hisName, setHisName] = useState('undefined');
@@ -63,6 +57,9 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
     const [hisChoose, setHisChoose] = useState(false);
     const [displaySalon, setDisplaySalon] = useState(false);
     const [spinner, setSpinner] = useState(true);
+    const [success, setSuccess] = useState(false);
+    const [hisSuccess, setHisSuccess] = useState(null);
+    const [exchangeOvered, setExchangeOvered] = useState(false);
 
     channel.bind('pusher:subscription_succeeded', (members) => {
         setSpinner(false);
@@ -98,15 +95,12 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
 
     channel.bind('client-choose', (data) => setHisChoose(data.choose));
 
-    channel.bind('client-exchangeMade', () => {
-        console.log('Echange a eu lieu');
-        //history.push('/eirbdex');
-    });
+    channel.bind('client-exchangeMade', (data) => setHisSuccess(data.hisSuccess));
 
     const leaveChannel = () => {
         pusher.unsubscribe(`presence-${salon}`);
         setSalon(null);
-    }
+    };
 
     const updateMyForm = (eirbmon) => {
         setMyEirbmon(eirbmon);
@@ -118,73 +112,49 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
             alert('Selectionner un pokémon');
         } else if (pokemon === hisEirbmon) {
             alert('Attendre le choix de lautre joueur');
-        }
-        else {
+        } else {
             setMyChoose(!myChoose);
             channel.trigger('client-choose', { choose: !myChoose });
-            if (!hisChoose && !myChoose) {
-                console.log({
-                    "Mon id": sessionStorage.getItem('accountAddress'),
-                    "Son id": hisAccountAddress,
-                    "Son pokemon": hisEirbmon.id,
-                    "Mon pokemon": myEirbmon.id
-                });
-
-                //execute metamask transaction
-                blockchain.blockchain.contract.methods.exchangeMyEirbmonTo(myEirbmon.id, hisEirbmon.id)
-                    .send({ from: sessionStorage.getItem('accountAddress') })
-                    .then(resp => {
-                        //request bac server to update mongo database 
-                        exchageEirbmons({
-                            id_eirbmon_blockchain_1: hisEirbmon.id,
-                            id_eirbmon_blockchain_2: myEirbmon.id,
-                            owner_id_1: hisAccountAddress,
-                            owner_id_2: blockchain.blockchain.owner_id
-                        });
-                        console.log('Echange a eu lieu');
-                        channel.trigger('client-exchangeMade', {}); // Callback function possible
-                    });
-            }
-
         }
     };
 
     useEffect(() => {
         if (hisChoose && myChoose) {
-            console.log({
-                "Mon id": sessionStorage.getItem('accountAddress'),
-                "Son id": hisAccountAddress,
-                "Son pokemon": hisEirbmon.id,
-                "Mon pokemon": myEirbmon.id
-            });
-
-            //execute metamask transaction
             blockchain.blockchain.contract.methods.exchangeMyEirbmonTo(myEirbmon.id, hisEirbmon.id)
                 .send({ from: sessionStorage.getItem('accountAddress') })
-                .then(resp => {
-                    //request bac server to update mongo database 
+                .then(() => {
                     exchageEirbmons({
                         id_eirbmon_blockchain_1: hisEirbmon.id,
                         id_eirbmon_blockchain_2: myEirbmon.id,
                         owner_id_1: hisAccountAddress,
-                        owner_id_2: blockchain.blockchain.owner_id
+                        owner_id_2: blockchain.blockchain.owner_id,
                     });
-                    console.log('Echange a eu lieu');
-                    channel.trigger('client-exchangeMade', {}); // Callback function possible
+                    channel.trigger('client-exchangeMade', null);
+                })
+                .then(() => {
+                    setSuccess(true);
+                    setDisplaySalon(false);
+                    setExchangeOvered(true);
+                    channel.trigger('client-exchangeMade', { hisSuccess: true });
+                })
+                .catch(() => {
+                    setSuccess(false);
+                    setDisplaySalon(false);
+                    setExchangeOvered(true);
+                    channel.trigger('client-exchangeMade', { hisSuccess: false });
                 });
         }
-
-    }, [myChoose]);
+    }, [myChoose, hisChoose]);
 
     return (
-        <Fragment>
+        <>
             <ChatPortal salon={salon} />
             {spinner ? (
                 <div className={classNames(classes.spinner)}>
                     <CircularProgress size={200} />
                 </div>
             ) : null}
-            {!spinner && displaySalon ? (
+            {!spinner && displaySalon && !exchangeOvered ? (
                 <div>
                     <div className="row">
                         <div className="col-6">
@@ -223,8 +193,9 @@ const ExchangeEirbmon = ({ classes, history, pusher, blockchain, channel, setSal
                     ) : null}
                 </div>
             ) : null}
-            {!spinner && !displaySalon ? <SalonClosed leaveChannel={leaveChannel} /> : null}
-        </Fragment>
+            {!spinner && !displaySalon && !exchangeOvered ? <SalonClosed leaveChannel={leaveChannel} /> : null}
+            {!spinner && !displaySalon && exchangeOvered ? <ExchangeOvered leaveChannel={leaveChannel} success={success} hisSuccess={hisSuccess} /> : null}
+        </>
     );
 };
 
@@ -253,12 +224,12 @@ export default flowRight([
         blockchain: state.blockchain,
         // mongoAccess: state,
     }), {
-        exchageEirbmons: mongoAccess.ExchageEirbmons
+        exchageEirbmons: mongoAccess.ExchageEirbmons,
     }),
     lifecycle({
         componentWillMount() {
             const { channel } = this.props;
-            if (channel.subscribed === false) {
+            if (false === channel.subscribed) {
                 channel.subscribe();
                 channel.unbind('pusher:subscription_error'); // should not unbind in here
             }
