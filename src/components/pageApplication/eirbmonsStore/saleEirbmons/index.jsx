@@ -20,7 +20,7 @@ export default function SellEirbmons() {
     const classes = useStyles();
     let [refresh, setRefresh] = useState(true);
 
-    function refresh(){
+    function refreshState(){
         setRefresh(!refresh);
     }
 
@@ -34,7 +34,7 @@ export default function SellEirbmons() {
 
             <Box className={classes.box} marginLeft="20px">
                 <EirbmonsOnSale 
-                    refresh={refres()}
+                    refresh={refreshState()}
                 />
             </Box>
         </div>
