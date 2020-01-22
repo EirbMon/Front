@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({eirbmonsOnSale}) {
+function EirbmonsOnSale({ myEirbmonsOnSale, eirbmonsOnSale }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -42,12 +42,12 @@ function EirbmonsOnSale({eirbmonsOnSale}) {
                     </ListItemAvatar>
                     <TextField
                         value={search}
-                        onChange={(e)=>{setSearchValue(e.target.value)}}
+                        onChange={(e) => { setSearchValue(e.target.value) }}
                         className={classes.root}
                         label={"Entrez un nom d'EirbMon"}
                     />
                 </ListItem>
-                <ListItem style={{overflow: 'auto', position: 'abolute'}}>
+                <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={eirbmonsOnSale}
                         action='sale'
@@ -71,8 +71,14 @@ export default flowRight([
         }),
     lifecycle({
         componentDidMount() {
-            const { accountAddress, getMyEirbmonsOnSale} = this.props;
-            getMyEirbmonsOnSale(accountAddress);
+            const { accountAddress, getMyEirbmonsOnSale } = this.props;
+            getMyEirbmonsOnSale(accountAddress)
+                .then(
+                    (res) => {
+                        console.log(res);
+                        this.setState({ myEirbmonsOnSale: myEirbmonsOnSale });
+                    }
+                );
         }
     }
     ),
