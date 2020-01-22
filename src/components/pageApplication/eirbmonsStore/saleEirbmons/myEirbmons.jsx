@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flowRight } from 'lodash/fp';
 import { connect } from 'react-redux';
 import { lifecycle } from 'recompose';
@@ -24,22 +24,27 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ myEirbmons, getOwnerEirbmon, accountAddress }) {
+function MyEirbmons({ getOwnerEirbmon, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
-    //let [componentRefresh, setComponentRefresh] = useState(false);
+    let [myEirbmons, setMyEirbmons] = useState([]);
+
+    useEffect(() => {
+        getOwnerEirbmon(accountAddress)
+            .then(
+                (myEirbmonsFromMongo) => {
+                    setMyEirbmons(myEirbmonsFromMongo.filter((myEirbmon) => { return myEirbmon.canBeSelled === false }))
+                }
+            );
+    }, []);
 
     function refresh() {
-        //setComponentRefresh(!componentRefresh);
         getOwnerEirbmon(accountAddress)
-        .then(
-            (res) => {
-                var myEirbmonsList = [];
-                myEirbmonsList = res.filter( (myEirbmon) => {return myEirbmon.canBeSelled === false} );
-                myEirbmons = myEirbmonsList ;
-                console.log("myEirbmons.js/refresh", myEirbmons);
-            }
-        );
+            .then(
+                (myEirbmonsFromMongo) => {
+                    setMyEirbmons(myEirbmonsFromMongo.filter((myEirbmon) => { return myEirbmon.canBeSelled === false }));
+                }
+            );
     }
 
     return (
@@ -86,20 +91,4 @@ export default flowRight([
         {
             getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
         }),
-    lifecycle({
-        componentDidMount() {
-            const { getOwnerEirbmon, accountAddress } = this.props;
-            getOwnerEirbmon(accountAddress)
-                .then(
-                    (res) => {
-                        console.log(res)
-                        var myEirbmons = [];
-                        myEirbmons = res.filter((myEirbmon) => { return myEirbmon.canBeSelled === false });
-                        this.setState({ myEirbmons: myEirbmons })
-
-                    }
-                );
-        }
-    }
-    ),
 ])(MyEirbmons);

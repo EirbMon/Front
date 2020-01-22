@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flowRight } from 'lodash/fp';
 import { connect } from 'react-redux';
 import { lifecycle } from 'recompose';
@@ -23,19 +23,27 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({ myEirbmonsOnSale, getMyEirbmonsOnSale, accountAddress }) {
+function EirbmonsOnSale({ getMyEirbmonsOnSale, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
-  //  let [componentState, setComponentState] = useState(false);
+    let [myEirbmonsOnSale, setmyEirbmonsOnSale] = useState([]);
 
-    function refresh(){
-       // setComponentState(!componentState);
+    useEffect(() => {
         getMyEirbmonsOnSale(accountAddress)
         .then(
-            (myEirbmons) => {
-                myEirbmonsOnSale = myEirbmons ;
+            (myEirbmonsOnSaleFromMongo) => {
+                setmyEirbmonsOnSale(myEirbmonsOnSaleFromMongo);
             }
         );
+    }, []);
+
+    function refresh() {
+        getMyEirbmonsOnSale(accountAddress)
+            .then(
+                (myEirbmonsOnSaleFromMongo) => {
+                    setmyEirbmonsOnSale(myEirbmonsOnSaleFromMongo);
+                }
+            );
     }
 
     return (
@@ -61,7 +69,7 @@ function EirbmonsOnSale({ myEirbmonsOnSale, getMyEirbmonsOnSale, accountAddress 
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmonsOnSale}
-                        refresh={() => {refresh()}}
+                        refresh={() => { refresh() }}
                         action='sale'
                     />
                 </ListItem>
@@ -80,16 +88,4 @@ export default flowRight([
         {
             getMyEirbmonsOnSale: mongoAccess.GetMyEirbmonsOnSale,
         }),
-    lifecycle({
-        componentDidMount() {
-            const { accountAddress, getMyEirbmonsOnSale } = this.props;
-            getMyEirbmonsOnSale(accountAddress)
-                .then(
-                    (myEirbmonsOnSale) => {
-                        this.setState({ myEirbmonsOnSale: myEirbmonsOnSale });
-                    }
-                );
-        }
-    }
-    ),
 ])(EirbmonsOnSale);
