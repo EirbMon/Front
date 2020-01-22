@@ -30,6 +30,23 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
     console.log(allEirbmonsOnSale);
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+    let [allEirbmonsOnSale, setAllEirbmonsOnSale] = useState([]);
+
+    useEffect(() => {
+        getAllEirbmonsOnSale().then(
+            (allEirbmonsOnSaleFromMongo) => {
+                setAllEirbmonsOnSale(allEirbmonsOnSaleFromMongo.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase() }))
+            }
+        );
+    }, []);
+
+    function refresh() {
+        getAllEirbmonsOnSale().then(
+            (allEirbmonsOnSaleFromMongo) => {
+                setAllEirbmonsOnSale(allEirbmonsOnSaleFromMongo.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase() }))
+            }
+        );
+    }
 
     return (
         <Box className={classes.box}>
@@ -51,6 +68,7 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
                     <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                         <EirbmonsList
                             eirbmonsList={allEirbmonsOnSale}
+                            refresh={() => { refresh() }}
                             action="buy"
                         />
                     </ListItem>
@@ -69,17 +87,4 @@ export default flowRight([
         {
             getAllEirbmonsOnSale: mongoAccess.GetAllEirbmonsOnSale,
         }),
-    lifecycle({
-        componentDidMount() {
-            const { getAllEirbmonsOnSale, accountAddress } = this.props;
-            getAllEirbmonsOnSale().then(
-                (res) => {
-                    var allEirbmonsOnSale = [];
-                    allEirbmonsOnSale = res.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase()})
-                    this.setState({ allEirbmonsOnSale: allEirbmonsOnSale })
-                }
-            );
-        }
-    }
-    ),
-])(BuyEirbmon);
+]) (BuyEirbmon);
