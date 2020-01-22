@@ -243,6 +243,7 @@ class Game extends React.Component {
                         console.log("Eirbmon Catched: ");
                         console.log(initEirb);
                         this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
+                        dispatch(mongoAccess.GetOwnerEirbmon(this.state.owner_id));
                     },
                     (err) => {
                         console.error(err);

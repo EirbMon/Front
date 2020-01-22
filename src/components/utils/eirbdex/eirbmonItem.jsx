@@ -51,7 +51,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
 
     function onEvolve(id_eirbmon) {
 
-        console.log("L'ID du Eirbmon a évolué est : ");
+        console.log("L'ID du Eirbmon a évolué est : " + id_eirbmon);
 
         instanciateContract.then(
             (res) => {
@@ -59,8 +59,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                 contract = res.contract;
             }
         );
-
-        console.log(owner_id);
+        dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
     
         dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
             (eirbdex) => {
@@ -75,18 +74,19 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                 }
                 else {
                     console.log('New eirbmon type : ' + eirbdex.evolution);
-                    contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id })
-                        .then(response => {
-                            dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
-                                (initEirb) => { 
-                                console.log("Eirbmon evolution :"); 
-                                console.log(initEirb); 
 
-                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1})).then(
-                                    (initEirb) => { 
-                                        console.log("Eirbmon LVL RESET :"); 
-                                        console.log(initEirb);
-                                        console.log(owner_id);
+                    // Evolution dans Blockchain
+                    contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id }).then(response => {
+
+                            dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
+
+                            // Evolution dans MongoDB
+                            dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then((initEirb) => { 
+
+                                // Reset du LVL   
+                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1})).then((initEirb) => { 
+
+                                        // Actualisation de la page Eirbdex
                                         dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
                                      },
                                     (err) => { console.error(err); }
