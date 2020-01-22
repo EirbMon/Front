@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ myEirbmons }) {
+function MyEirbmons({ myEirbmons, refresh }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
