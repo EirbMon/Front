@@ -15,7 +15,7 @@ const ExchangeOvered = ({ leaveChannel, success, hisSuccess }) => {
                 Vous pouvez visualiser l&apos;eirbmon que vous venez d&apos;obtenir dans votre Eirbdex
             </div>
         );
-    } if ((false === success && true === hisSuccess) || (true === success && false === hisSuccess)) {
+    } if ((false === success && true === hisSuccess) || (true === success && false === hisSuccess) || (false === success && false === hisSuccess)) {
         return (
             <div>
                 <Typography variant="h3" color="inherit">
