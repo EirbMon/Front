@@ -90,7 +90,8 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon
         blockchain.blockchain.contract.methods.cancelEirbmonSelling(eirbmonId)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp => {
-                putUnsaleEirbmon(eirbmonId);
+                //putUnsaleEirbmon(eirbmonId);
+                updateOneEirbmon(sessionStorage.getItem('accountAddress'), eirbmonId);
             }).catch(error => console.log(error))
     }
 
