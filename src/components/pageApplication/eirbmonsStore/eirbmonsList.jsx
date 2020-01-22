@@ -78,18 +78,18 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon
 
     function saleMyEirbmonWithPrice(eirbmon) {
         console.log("eirbmon", eirbmon);
-        blockchain.blockchain.contract.methods.saleEirbmon(eirbmon.idInBlockchain, eirbmon.price / 1000000000000000000)
-            .send({ from: sessionStorage.getItem('accountAddress') })
-            .then(resp => {
-                putEirbmonOnSale(eirbmon.idInBlockchain)
-                    .then(
-                        () => {
-                            refresh(sessionStorage.getItem('accountAddress'));
-                        }
-                    );
-            }).catch(error => console.log(error))
+        refresh(sessionStorage.getItem('accountAddress'));
+        // blockchain.blockchain.contract.methods.saleEirbmon(eirbmon.idInBlockchain, eirbmon.price / 1000000000000000000)
+        //     .send({ from: sessionStorage.getItem('accountAddress') })
+        //     .then(resp => {
+        //         putEirbmonOnSale(eirbmon.idInBlockchain)
+        //             .then(
+        //                 () => {
+        //                     refresh(sessionStorage.getItem('accountAddress'));
+        //                 }
+        //             );
+        //     }).catch(error => console.log(error))
     }
-
 
     function cancelEirbmonSelling(eirbmonId) {
         blockchain.blockchain.contract.methods.cancelEirbmonSelling(eirbmonId)

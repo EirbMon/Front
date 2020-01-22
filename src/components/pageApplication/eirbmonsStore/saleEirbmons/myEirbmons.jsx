@@ -27,14 +27,17 @@ const useStyles = makeStyles(theme => ({
 function MyEirbmons({ myEirbmons, getOwnerEirbmon, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+    //let [componentRefresh, setComponentRefresh] = useState(false);
 
-    function refresh(){
+    function refresh() {
+        //setComponentRefresh(!componentRefresh);
         getOwnerEirbmon(accountAddress)
         .then(
             (res) => {
                 var myEirbmonsList = [];
                 myEirbmonsList = res.filter( (myEirbmon) => {return myEirbmon.canBeSelled === false} );
                 myEirbmons = myEirbmonsList ;
+                console.log("myEirbmons.js/refresh", myEirbmons);
             }
         );
     }
@@ -63,7 +66,7 @@ function MyEirbmons({ myEirbmons, getOwnerEirbmon, accountAddress }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
-                        refresh={refresh()}
+                        refresh={() => { refresh() }}
                         action="mine"
                     />
                 </ListItem>
@@ -89,10 +92,11 @@ export default flowRight([
             getOwnerEirbmon(accountAddress)
                 .then(
                     (res) => {
+                        console.log(res)
                         var myEirbmons = [];
-                        myEirbmons = res.filter( (myEirbmon) => {return myEirbmon.canBeSelled === false} );
+                        myEirbmons = res.filter((myEirbmon) => { return myEirbmon.canBeSelled === false });
                         this.setState({ myEirbmons: myEirbmons })
-                        
+
                     }
                 );
         }

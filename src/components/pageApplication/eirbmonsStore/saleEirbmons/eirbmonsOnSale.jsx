@@ -26,8 +26,10 @@ const useStyles = makeStyles(theme => ({
 function EirbmonsOnSale({ myEirbmonsOnSale, getMyEirbmonsOnSale, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+  //  let [componentState, setComponentState] = useState(false);
 
     function refresh(){
+       // setComponentState(!componentState);
         getMyEirbmonsOnSale(accountAddress)
         .then(
             (myEirbmons) => {
@@ -59,7 +61,7 @@ function EirbmonsOnSale({ myEirbmonsOnSale, getMyEirbmonsOnSale, accountAddress 
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmonsOnSale}
-                        refresh={refresh()}
+                        refresh={() => {refresh()}}
                         action='sale'
                     />
                 </ListItem>
