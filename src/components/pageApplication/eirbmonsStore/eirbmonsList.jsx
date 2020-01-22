@@ -268,13 +268,13 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
 
 
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[0]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills[0].name}</Paper>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[1]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills[1].name}</Paper>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Paper className={classes.paper}>{eirbmonDetail.skills_id[2]}</Paper>
+                                    <Paper className={classes.paper}>{eirbmonDetail.skills[2].name}</Paper>
                                 </Grid>
 
 
