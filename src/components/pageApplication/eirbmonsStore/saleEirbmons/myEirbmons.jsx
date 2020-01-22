@@ -52,6 +52,7 @@ function MyEirbmons({ myEirbmons }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
+                        refresh={refresh}
                         action="mine"
                     />
                 </ListItem>

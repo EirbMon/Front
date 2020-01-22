@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({ myEirbmonsOnSale }) {
+function EirbmonsOnSale({ myEirbmonsOnSale, refresh }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -50,6 +50,7 @@ function EirbmonsOnSale({ myEirbmonsOnSale }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmonsOnSale}
+                        refresh={refresh}
                         action='sale'
                     />
                 </ListItem>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 
@@ -18,15 +18,24 @@ const useStyles = makeStyles(theme => ({
 
 export default function SellEirbmons() {
     const classes = useStyles();
+    let [refresh, setRefresh] = useState(true);
+
+    function refresh(){
+        setRefresh(!refresh);
+    }
 
     return (
         <div className={classes.root}>
             <Box className={classes.box}>
-                <MyEirbmons/>
+                <MyEirbmons
+                    refresh={refresh()}
+                />
             </Box>
 
             <Box className={classes.box} marginLeft="20px">
-                <EirbmonsOnSale />
+                <EirbmonsOnSale 
+                    refresh={refres()}
+                />
             </Box>
         </div>
     );
