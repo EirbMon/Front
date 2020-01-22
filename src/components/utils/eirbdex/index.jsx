@@ -54,7 +54,16 @@ const styles = () => ({
 const Eirbdex = ({ classes, eirbmonsInfos }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
-    const eirbmonsForm = eirbmonsInfos.eirbmons.map(
+
+    console.log('eirbmonsInfos:');
+    console.log(eirbmonsInfos);
+    console.log('eirbmons:');
+    console.log(eirbmonsInfos.eirbmons);
+
+    var eirbmonsForm = null;
+
+    try{
+        eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
             console.log(myEirbmon);
             return {
@@ -68,6 +77,21 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
             }
         }
     )
+    } catch{
+        eirbmonsForm = [{
+            id: eirbmonsInfos.eirbmons.idInBlockchain,
+            name: eirbmonsInfos.eirbmons.name,
+            adress: eirbmonsInfos.eirbmons.owner_id,
+            level: eirbmonsInfos.eirbmons.lvl,
+            filiere: eirbmonsInfos.eirbmons.field,
+            attack:eirbmonsInfos.eirbmons.skills,
+            pv: eirbmonsInfos.eirbmons.hp
+        }
+        ]
+    }
+
+    console.log(eirbmonsForm);
+
     return (
         <div className="mx-auto">
             <Paper className={classNames('mx-auto', classes.eirbdex)}>

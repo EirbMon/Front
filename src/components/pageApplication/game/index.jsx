@@ -39,7 +39,6 @@ class Game extends React.Component {
         this.onSendEirmobSkill = this.onSendEirmobSkill.bind(this);
         this.onEndCombatOrphelin = this.onEndCombatOrphelin.bind(this);
         this.onEndCombat = this.onEndCombat.bind(this);
-        this.onEvolve = this.onEvolve.bind(this);
 
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
@@ -54,9 +53,6 @@ class Game extends React.Component {
             var message = object.message;
 
             if (message === "user_pokemon") {
-                console.log("OnEvolve");
-                this.onEvolve();
-
                 console.log("Refresh my Eirbmons Inventory");
                 this.onRefreshMyInventory();
             }
@@ -222,10 +218,11 @@ class Game extends React.Component {
         console.log("Number of eirbmons healed: " + N);
 
         for (let i = 0; i < N; i++) {
-            console.log(object.pokemons[i].idInBlockchain + " health: " + object.pokemons[i].current_health);
+            console.log("id: " + object.pokemons[i].idInBlockchain + ",current_hp: " + object.pokemons[i].current_hp);
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
+                    this.onRefreshMyInventory();
                 },
                 (err) => {
                     console.error(err);
