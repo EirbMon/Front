@@ -59,7 +59,6 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                 contract = res.contract;
             }
         );
-        dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
     
         dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
             (eirbdex) => {
@@ -73,12 +72,13 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                     return;
                 }
                 else {
+
+                    dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
+                    
                     console.log('New eirbmon type : ' + eirbdex.evolution);
 
                     // Evolution dans Blockchain
                     contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id }).then(response => {
-
-                            dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
 
                             // Evolution dans MongoDB
                             dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then((initEirb) => { 

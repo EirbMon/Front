@@ -166,8 +166,8 @@ class Game extends React.Component {
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.orphean_id, 1)).then(
             (initEirb) => {
                 this.setState({ eirbmon_id: initEirb[0].idInBlockchain });
+                dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: initEirb[0].idInBlockchain, available: false })).then((initEirb) => {},(err) => {console.error(err);});
                 this.unityContent.send('CombatManager', 'GenerateOrphelin', JSON.stringify(initEirb));
-
             },
             (err) => {
                 console.error(err);
@@ -179,13 +179,7 @@ class Game extends React.Component {
 
         const { dispatch } = this.props;
 
-        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then(
-            (initEirb) => {
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});
     }
 
     onEndCombat(object) {
@@ -193,7 +187,7 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         var N = object.length;
 
-        console.log("Number of eirbmons updated: " + N);
+        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});        
 
         for (let i = 0; i < N; i++) {
             console.log(object.pokemons[i].lvl);
@@ -243,6 +237,7 @@ class Game extends React.Component {
                         console.log("Eirbmon Catched: ");
                         console.log(initEirb);
                         this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
+                        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});
                         dispatch(mongoAccess.GetOwnerEirbmon(this.state.owner_id));
                     },
                     (err) => {
