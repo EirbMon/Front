@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon, blockchain }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon, updateOneEirbmon, blockchain }) {
     const classes = useStyles();
     console.log(eirbmonsList);
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
@@ -96,7 +96,8 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
         blockchain.blockchain.contract.methods.cancelEirbmonSelling(eirbmonId)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp => {
-                updateOneEirbmon(sessionStorage.getItem('accountAddress'), eirbmonId);
+               // updateOneEirbmon(sessionStorage.getItem('accountAddress'), eirbmonId);
+               putUnsaleEirbmon(eirbmonId);
             }).catch(error => console.log(error))
     }
 
@@ -332,7 +333,7 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => { saleMyEirbmonWithPrice(eirbmonDetail) }}>Valider</Button>
+                        <Button onClick={() => { setEirbmonToSale(false); saleMyEirbmonWithPrice(eirbmonDetail) }}>Valider</Button>
                     </DialogActions>
                 </Dialog>
             }
@@ -348,6 +349,7 @@ export default flowRight([
         blockchain: state.blockchain,
     }), {
         putEirbmonOnSale: mongoAccess.PutEirbmonOnSale,
-        updateOneEirbmon: mongoAccess.UpdateOneEirbmon
+        updateOneEirbmon: mongoAccess.UpdateOneEirbmon,
+        putUnsaleEirbmon: mongoAccess.PutUnsaleEirbmon,
     }),
 ])(EirbmonsList);
