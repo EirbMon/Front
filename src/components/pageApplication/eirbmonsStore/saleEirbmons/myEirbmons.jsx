@@ -24,9 +24,20 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ myEirbmons }) {
+function MyEirbmons({ myEirbmons, getOwnerEirbmon, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+
+    function refresh(){
+        getOwnerEirbmon(accountAddress)
+        .then(
+            (res) => {
+                var myEirbmonsList = [];
+                myEirbmonsList = res.filter( (myEirbmon) => {return myEirbmon.canBeSelled === false} );
+                myEirbmons = myEirbmonsList ;
+            }
+        );
+    }
 
     return (
         <Paper className={classes.root} elevation={2}>
@@ -52,6 +63,7 @@ function MyEirbmons({ myEirbmons }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
+                        refresh={refresh()}
                         action="mine"
                     />
                 </ListItem>

@@ -68,20 +68,25 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon
         setEirbmonToSale(true);
     }
 
-    function saleMyEirbmon(eirbmonId) {
-        blockchain.blockchain.contract.methods.ableSaleEirbmon(eirbmonId)
-            .send({ from: sessionStorage.getItem('accountAddress') })
-            .then(resp => {
-                putEirbmonOnSale(eirbmonId)
-            }).catch(error => console.log(error))
-    }
+    // function saleMyEirbmon(eirbmonId) {
+    //     blockchain.blockchain.contract.methods.ableSaleEirbmon(eirbmonId)
+    //         .send({ from: sessionStorage.getItem('accountAddress') })
+    //         .then(resp => {
+    //             putEirbmonOnSale(eirbmonId)
+    //         }).catch(error => console.log(error))
+    // }
 
     function saleMyEirbmonWithPrice(eirbmon) {
         console.log("eirbmon", eirbmon);
         blockchain.blockchain.contract.methods.saleEirbmon(eirbmon.idInBlockchain, eirbmon.price / 1000000000000000000)
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp => {
-                putEirbmonOnSale(eirbmon.idInBlockchain);
+                putEirbmonOnSale(eirbmon.idInBlockchain)
+                    .then(
+                        () => {
+                            refresh(sessionStorage.getItem('accountAddress'));
+                        }
+                    );
             }).catch(error => console.log(error))
     }
 
@@ -91,7 +96,12 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon
             .send({ from: sessionStorage.getItem('accountAddress') })
             .then(resp => {
                 //putUnsaleEirbmon(eirbmonId);
-                updateOneEirbmon(sessionStorage.getItem('accountAddress'), eirbmonId);
+                updateOneEirbmon(sessionStorage.getItem('accountAddress'), eirbmonId)
+                    .then(
+                        () => {
+                            refresh(sessionStorage.getItem('accountAddress'));
+                        }
+                    );
             }).catch(error => console.log(error))
     }
 

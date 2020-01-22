@@ -23,9 +23,18 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({ myEirbmonsOnSale }) {
+function EirbmonsOnSale({ myEirbmonsOnSale, getMyEirbmonsOnSale, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+
+    function refresh(){
+        getMyEirbmonsOnSale(accountAddress)
+        .then(
+            (myEirbmons) => {
+                myEirbmonsOnSale = myEirbmons ;
+            }
+        );
+    }
 
     return (
         <Paper className={classes.root} elevation={2}>
@@ -50,6 +59,7 @@ function EirbmonsOnSale({ myEirbmonsOnSale }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmonsOnSale}
+                        refresh={refresh()}
                         action='sale'
                     />
                 </ListItem>
