@@ -20,22 +20,14 @@ export default function SellEirbmons() {
     const classes = useStyles();
     let [refresh, setRefresh] = useState(true);
 
-    function refreshState(){
-        setRefresh(!refresh);
-    }
-
     return (
         <div className={classes.root}>
             <Box className={classes.box}>
-                <MyEirbmons
-                    refresh={refresh()}
-                />
+                <MyEirbmons/>
             </Box>
 
             <Box className={classes.box} marginLeft="20px">
-                <EirbmonsOnSale 
-                    refresh={refreshState()}
-                />
+                <EirbmonsOnSale/>
             </Box>
         </div>
     );

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ myEirbmons, refresh }) {
+function MyEirbmons({ myEirbmons }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -52,7 +52,6 @@ function MyEirbmons({ myEirbmons, refresh }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
-                        refresh={refresh}
                         action="mine"
                     />
                 </ListItem>
