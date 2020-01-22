@@ -60,7 +60,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
             }
         );
 
-        console.log(owner_id);
+        console.log("owner id: " + owner_id);
     
         dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
             (eirbdex) => {
@@ -81,20 +81,20 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
                                 (initEirb) => { 
                                 console.log("Eirbmon evolution :"); 
                                 console.log(initEirb); 
-
-                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1}).then(
-                                    (initEirb) => { 
-                                        console.log("Eirbmon LVL RESET :"); 
-                                        console.log(initEirb);
-                                        console.log(owner_id);
-                                        dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
-                                     },
-                                    (err) => { console.error(err); }
-                                ));    
                             },
                                 (err) => { console.error(err); }
                             );
                         });
+
+                    dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1})
+                        .then((initEirb) => { 
+                                console.log("Eirbmon LVL RESET :"); 
+                                console.log(initEirb);
+                                console.log(owner_id);
+                                dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
+                             },
+                            (err) => { console.error(err); }
+                        ));    
                 }
             },
             (err) => { console.error(err); }
