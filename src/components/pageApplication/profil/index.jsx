@@ -9,7 +9,15 @@ import { connect } from 'react-redux';
 import Page from '../../utils/layout/index';
 import ChatPortal from '../../utils/chat/chatPortal';
 
-const styles = () => ({
+const styles = (theme) => ({
+
+    tableWrapper: {
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        padding: theme.spacing(3),
+        margin: '48px auto 0 auto',
+    },
+
     form: {
         display: 'inline',
     },

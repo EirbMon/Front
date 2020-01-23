@@ -14,12 +14,13 @@ import reducerAcces from '../../../actions/withReducerOnly';
 import ChatPortal from '../../utils/chat/chatPortal';
 import Salon from './salon';
 
-const styles = () => ({
+const styles = (theme) => ({
 
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'hidden',
-        padding: '24px',
+        padding: theme.spacing(3),
+        margin: '48px auto 0 auto',
     },
 
     selectSalon: {
