@@ -15,6 +15,13 @@ import ChatPortal from '../../utils/chat/chatPortal';
 import Salon from './salon';
 
 const styles = () => ({
+
+    tableWrapper: {
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        padding: '24px',
+    },
+
     selectSalon: {
         width: '300px',
         position: 'absolute',

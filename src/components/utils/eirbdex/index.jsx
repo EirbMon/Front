@@ -13,6 +13,13 @@ import Eirbmon from './eirbmon';
 import EirbmonItem from './eirbmonItem';
 
 const styles = () => ({
+
+    tableWrapper: {
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        padding: '24px',
+    },
+
     eirbdex: {
         backgroundColor: '#7398AE',
         width: '700px',

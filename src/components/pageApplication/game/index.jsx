@@ -13,7 +13,7 @@ const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'visible',
         overflowY: 'visible',
-        padding: '0px -24px -24px -24px',
+        padding: '24px 0px 0px 0px',
         margin: '-24px 0px 0px 0px',
         width: '100%',
         //height: '94vh'

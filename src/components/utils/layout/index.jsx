@@ -18,7 +18,7 @@ const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'auto',
         overflowY: 'hidden',
-        padding: '24px 24px 24px 24px',
+        //padding: theme.spacing(3),
         margin: '48px auto 0 auto',
     },
 });
