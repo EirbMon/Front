@@ -12,10 +12,10 @@ export default function getMyEirbmonsOnSale(owner_id, number = 0) {
                 
             })
         .catch((err) => {
-            dispatch({
-                type: ERROR_OCCURS,
-                payload: err,
-            });
+            // dispatch({
+            //     type: ERROR_OCCURS,
+            //     payload: err,
+            // });
             return Promise.reject(err);
         });
 }

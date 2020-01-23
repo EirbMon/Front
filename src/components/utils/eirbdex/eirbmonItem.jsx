@@ -84,7 +84,7 @@ const EirbmonItem = ({ name, type, level, onClick, classes, isSelected, id, disp
                             dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then((initEirb) => { 
 
                                 // Reset du LVL   
-                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1})).then((initEirb) => { 
+                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1, current_hp: initEirb.hp})).then((initEirb2) => { 
 
                                         // Actualisation de la page Eirbdex
                                         dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
@@ -92,7 +92,10 @@ const EirbmonItem = ({ name, type, level, onClick, classes, isSelected, id, disp
                                     (err) => { console.error(err); }
                                 );    
                             },
-                                (err) => { console.error(err); }
+                                (err) => { 
+                                 console.log('err contract evolve: '); 
+                                 console.error(err);
+                                 }
                             );
                         });
                 }

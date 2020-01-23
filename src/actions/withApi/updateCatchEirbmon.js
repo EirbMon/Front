@@ -12,9 +12,9 @@ export default function updateCatchEirbmon(data) {
 
         })
         .catch((err) => {
-            dispatch({
-                type: ERROR_OCCURS,
-                payload: err,
-            });
+            // dispatch({
+            //     type: ERROR_OCCURS,
+            //     payload: err,
+            // });
         });
 }

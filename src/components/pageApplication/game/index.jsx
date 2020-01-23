@@ -14,7 +14,7 @@ const styles = (theme) => ({
         overflowX: 'visible',
         overflowY: 'visible',
         //padding: -theme.spacing(3),
-        //margin: '-50px -50px -50px -50px',
+        margin: '-24px 0px 0px 0px',
         width: '100%',
         //height: '94vh'
         height: 'calc(100vh - 48px)'
