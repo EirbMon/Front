@@ -69,6 +69,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
             return {
                 id: myEirbmon.idInBlockchain,
                 name: myEirbmon.name,
+                type: myEirbmon.type,
                 adress: myEirbmon.owner_id,
                 level: myEirbmon.lvl,
                 filiere: myEirbmon.field,
@@ -81,6 +82,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
         eirbmonsForm = [{
             id: eirbmonsInfos.eirbmons.idInBlockchain,
             name: eirbmonsInfos.eirbmons.name,
+            type: eirbmonsInfos.eirbmons.type,
             adress: eirbmonsInfos.eirbmons.owner_id,
             level: eirbmonsInfos.eirbmons.lvl,
             filiere: eirbmonsInfos.eirbmons.field,
@@ -118,6 +120,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                                     }}
                                     key={key}
                                     name={item.name}
+                                    type={item.type}
                                     level={item.level}
                                     id={item.id}
                                 />
@@ -128,6 +131,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                     <div className={classNames('mx-auto', classes.selectedEirbmon)}>
                         <Eirbmon
                             name={eirbmon.name}
+                            type={eirbmon.type}
                             image={eirbmon.image}
                             level={eirbmon.level}
                             xp={eirbmon.xp}
