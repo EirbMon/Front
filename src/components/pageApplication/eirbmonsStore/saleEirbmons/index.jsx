@@ -12,10 +12,7 @@ import mongoAccess from '../../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
     tableWrapper: {
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        padding: theme.spacing(3),
-        margin: '48px auto 0 auto',
+        padding: '24px',
     },
     root: {
         display: 'flex',

@@ -12,13 +12,10 @@ import { connect } from 'react-redux';
 import Eirbmon from './eirbmon';
 import EirbmonItem from './eirbmonItem';
 
-const styles = (theme) => ({
+const styles = () => ({
 
     tableWrapper: {
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        padding: theme.spacing(3),
-        margin: '48px auto 0 auto',
+        padding: '24px',
     },
 
     eirbdex: {
