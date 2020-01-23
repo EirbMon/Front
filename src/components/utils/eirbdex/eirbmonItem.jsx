@@ -44,7 +44,7 @@ const styles = () => ({
     },
 });
 
-const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }) => {
+const EirbmonItem = ({ name, type, level, onClick, classes, isSelected, id, dispatch }) => {
 
     var contract;
     var owner_id;
@@ -106,7 +106,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id, dispatch }
     };
 
     const levelTitle = `Niveau ${level}`;
-    var monImage = choisirImage(name)
+    var monImage = choisirImage(type)
 
     return (
         <Grid
