@@ -50,6 +50,7 @@ const Eirbdex = ({ classes, setMyEirbmon, selectedEirbmonId, eirbmonsInfos }) =>
             return {
                 id: myEirbmon.idInBlockchain,
                 name: myEirbmon.name,
+                type: myEirbmon.type,
                 adress: myEirbmon.owner_id,
                 level: myEirbmon.lvl,
                 filiere: myEirbmon.field,
