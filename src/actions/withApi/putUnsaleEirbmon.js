@@ -24,10 +24,10 @@ export default function putEirbmonOnSale(eirbmmonIdBlockchain) {
                 dispatch({
                     type: LOADING_END,
                 })
-                dispatch({
-                    type: ERROR_OCCURS,
-                    payload: err,
-                });
+                // dispatch({
+                //     type: ERROR_OCCURS,
+                //     payload: err,
+                // });
                 return Promise.reject(err);
             });
     }
