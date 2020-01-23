@@ -92,7 +92,10 @@ const EirbmonItem = ({ name, type, level, onClick, classes, isSelected, id, disp
                                     (err) => { console.error(err); }
                                 );    
                             },
-                                (err) => { console.error('err contract evolve: '); console.error(err); dispatch(mongoAccess.GetOwnerEirbmon(owner_id)); }
+                                (err) => { 
+                                 console.log('err contract evolve: '); 
+                                 console.error(err);
+                                 }
                             );
                         });
                 }
