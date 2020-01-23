@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flowRight } from 'lodash/fp';
 import { connect } from 'react-redux';
-import { lifecycle } from 'recompose';
 
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -26,8 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function BuyEirbmon({ allEirbmonsOnSale }) {
-    console.log(allEirbmonsOnSale);
+function BuyEirbmon({ getAllEirbmonsOnSale, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
     let [allEirbmonsOnSale, setAllEirbmonsOnSale] = useState([]);

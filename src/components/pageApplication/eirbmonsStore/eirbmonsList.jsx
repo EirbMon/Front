@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, putUnsaleEirbmon, updateOneEirbmon, blockchain, refresh }) {
+function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon, blockchain, refresh }) {
     const classes = useStyles();
     console.log(eirbmonsList);
     let [openEirbmonDetail, setOpenEirbmonDetail] = useState(false);
