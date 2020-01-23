@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { flowRight } from 'lodash/fp';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -13,7 +11,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
 
-import mongoAccess from '../../../../actions/withApi';
 import EirbmonsList from '../eirbmonsList';
 
 const useStyles = makeStyles(theme => ({
@@ -22,28 +19,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({ getMyEirbmonsOnSale, accountAddress }) {
+export default function EirbmonsOnSale({ refresh, myEirbmonsOnSale }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
-    let [myEirbmonsOnSale, setmyEirbmonsOnSale] = useState([]);
 
-    useEffect(() => {
-        getMyEirbmonsOnSale(accountAddress)
-        .then(
-            (myEirbmonsOnSaleFromMongo) => {
-                setmyEirbmonsOnSale(myEirbmonsOnSaleFromMongo);
-            }
-        );
-    }, []);
-
-    function refresh() {
-        getMyEirbmonsOnSale(accountAddress)
-            .then(
-                (myEirbmonsOnSaleFromMongo) => {
-                    setmyEirbmonsOnSale(myEirbmonsOnSaleFromMongo);
-                }
-            );
-    }
+    console.log(myEirbmonsOnSale)
 
     return (
         <Paper className={classes.root} elevation={2}>
@@ -68,7 +48,7 @@ function EirbmonsOnSale({ getMyEirbmonsOnSale, accountAddress }) {
                 <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmonsOnSale}
-                        refresh={() => { refresh() }}
+                        refresh={()=>{refresh()}}
                         action='sale'
                     />
                 </ListItem>
@@ -77,14 +57,3 @@ function EirbmonsOnSale({ getMyEirbmonsOnSale, accountAddress }) {
         </Paper>
     );
 }
-
-export default flowRight([
-    connect(
-        (state) => ({
-            accountAddress: state.accountInfo.accountUrl,
-        })
-        ,
-        {
-            getMyEirbmonsOnSale: mongoAccess.GetMyEirbmonsOnSale,
-        }),
-])(EirbmonsOnSale);

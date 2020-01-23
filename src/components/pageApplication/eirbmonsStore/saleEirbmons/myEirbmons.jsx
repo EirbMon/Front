@@ -23,28 +23,9 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ getOwnerEirbmon, accountAddress }) {
+export default function MyEirbmons({ refresh, myEirbmons }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
-    let [myEirbmons, setMyEirbmons] = useState([]);
-
-    useEffect(() => {
-        getOwnerEirbmon(accountAddress)
-            .then(
-                (myEirbmonsFromMongo) => {
-                    setMyEirbmons(myEirbmonsFromMongo.filter((myEirbmon) => { return myEirbmon.canBeSelled === false }))
-                }
-            );
-    }, []);
-
-    function refresh() {
-        getOwnerEirbmon(accountAddress)
-            .then(
-                (myEirbmonsFromMongo) => {
-                    setMyEirbmons(myEirbmonsFromMongo.filter((myEirbmon) => { return myEirbmon.canBeSelled === false }));
-                }
-            );
-    }
 
     return (
         <Paper className={classes.root} elevation={2}>
@@ -80,14 +61,3 @@ function MyEirbmons({ getOwnerEirbmon, accountAddress }) {
         </Paper>
     );
 }
-
-export default flowRight([
-    connect(
-        (state) => ({
-            accountAddress: state.accountInfo.accountUrl,
-        })
-        ,
-        {
-            getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        }),
-])(MyEirbmons);
