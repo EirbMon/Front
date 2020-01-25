@@ -81,6 +81,8 @@ const Eirbdex = ({ classes, setMyEirbmon, selectedEirbmonId, eirbmonsInfos }) =>
                                 key={key}
                                 name={item.name}
                                 level={item.level}
+                                type={item.type}
+                                id={item.id}
                                 isSelected={item.id === selectedEirbmon}
                             />
                         );
