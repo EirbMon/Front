@@ -14,10 +14,6 @@ import EirbmonItem from './eirbmonItem';
 
 const styles = () => ({
 
-    tableWrapper: {
-        padding: '24px',
-    },
-
     eirbdex: {
         backgroundColor: '#7398AE',
         width: '700px',

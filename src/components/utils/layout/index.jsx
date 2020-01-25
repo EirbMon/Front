@@ -19,7 +19,7 @@ const styles = (theme) => ({
         overflowX: 'auto',
         overflowY: 'hidden',
         //padding: theme.spacing(3),
-        margin: '48px 0 0 0',
+        margin: '72px 24px 24px 24px',
     },
 });
 

@@ -11,9 +11,7 @@ import EirbmonsOnSale from './eirbmonsOnSale';
 import mongoAccess from '../../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
-    tableWrapper: {
-        padding: '24px',
-    },
+
     root: {
         display: 'flex',
     },

@@ -16,10 +16,6 @@ import Salon from './salon';
 
 const styles = () => ({
 
-    tableWrapper: {
-        padding: '24px',
-    },
-
     selectSalon: {
         width: '300px',
         position: 'absolute',

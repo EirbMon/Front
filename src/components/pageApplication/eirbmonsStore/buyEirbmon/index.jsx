@@ -17,9 +17,6 @@ import mongoAccess from '../../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
 
-    tableWrapper: {
-        padding: '24px',
-    },
     root: {
         width: "100%",
     },

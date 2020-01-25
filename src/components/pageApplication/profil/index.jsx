@@ -11,10 +11,6 @@ import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = () => ({
 
-    tableWrapper: {
-        padding: '24px',
-    },
-
     form: {
         display: 'inline',
     },
