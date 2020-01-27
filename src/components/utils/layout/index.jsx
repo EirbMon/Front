@@ -1,4 +1,5 @@
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles, createStyles } from '@material-ui/core/styles';
+
 import { flowRight } from 'lodash/fp';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,23 +20,33 @@ const styles = (theme) => ({
         overflowX: 'auto',
         overflowY: 'hidden',
         padding: theme.spacing(3),
-        margin: '48px auto 0 auto',
+        margin: '48px 0 0 0',
     },
 });
 
-const Page = ({ currentPage, classes, children }) => (
-    <div className="App">
-        <Layout currentPage={currentPage} />
-        <div className={classes.tableWrapper}>
-            {children}
+const useStyles = makeStyles((theme) => createStyles({
+    tableWrapper: {
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        padding: (props) => ('Jeux' !== props.currentPage ? theme.spacing(3) : '0 !important'),
+        margin: '48px 0 0 0',
+    },
+}));
+
+const Page = ({ currentPage, children }) => {
+    const classes = useStyles({ currentPage });
+
+    return (
+        <div className="App">
+            <Layout currentPage={currentPage} />
+            <div className={classes.tableWrapper}>
+                {children}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 Page.propTypes = {
-    classes: PropTypes.shape({
-        tableWrapper: PropTypes.string,
-    }).isRequired,
     children: PropTypes.node,
     currentPage: PropTypes.string,
     history: PropTypes.shape({
@@ -45,7 +56,7 @@ Page.propTypes = {
 
 export default flowRight([
     withRouter,
-    withStyles(styles),
+    // withStyles(styles),
     connect((state) => ({
         accountInfo: state.accountInfo,
     }),
@@ -71,7 +82,7 @@ export default flowRight([
                 const accountAddress = sessionStorage.getItem('accountAddress');
                 setAccountInfo(accountAddress);
                 getOwnerEirbmon(accountAddress);
-                instanciateContract.then(res => {
+                instanciateContract.then((res) => {
                     getBlockchainInfo({
                         owner_id: res.accounts[0],
                         contract: res.contract,

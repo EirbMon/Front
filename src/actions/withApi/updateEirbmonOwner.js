@@ -22,10 +22,10 @@ export default function updateEirbmonOwner(ownerId,eirbmonId) {
                 return Promise.resolve(res);
             })
         .catch((err) => {
-            dispatch({
-                type: ERROR_OCCURS,
-                payload: err,
-            });
+            // dispatch({
+            //     type: ERROR_OCCURS,
+            //     payload: err,
+            // });
             return Promise.reject(err);
         });
 }

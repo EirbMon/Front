@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import images from '../../../../scss/images/index';
+import images from '../../../../scss/images/tutorial/index';
 
 const useStyles = makeStyles(theme => ({
     root: {

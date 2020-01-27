@@ -13,9 +13,8 @@ const styles = (theme) => ({
     tableWrapper: {
         overflowX: 'visible',
         overflowY: 'visible',
-        //padding: -theme.spacing(3),
-        //margin: '-50px -50px -50px -50px',
         width: '100%',
+        margin: '-72px -24px -24px -24px',
         //height: '94vh'
         height: 'calc(100vh - 48px)'
     },
@@ -39,7 +38,6 @@ class Game extends React.Component {
         this.onSendEirmobSkill = this.onSendEirmobSkill.bind(this);
         this.onEndCombatOrphelin = this.onEndCombatOrphelin.bind(this);
         this.onEndCombat = this.onEndCombat.bind(this);
-        this.onEvolve = this.onEvolve.bind(this);
 
         this.unityContent = new UnityContent(
             'BuildInfo/Build/BuildInfo.json',
@@ -54,9 +52,6 @@ class Game extends React.Component {
             var message = object.message;
 
             if (message === "user_pokemon") {
-                console.log("OnEvolve");
-                this.onEvolve();
-
                 console.log("Refresh my Eirbmons Inventory");
                 this.onRefreshMyInventory();
             }
@@ -170,8 +165,8 @@ class Game extends React.Component {
         dispatch(mongoAccess.GetOwnerEirbmon(this.state.orphean_id, 1)).then(
             (initEirb) => {
                 this.setState({ eirbmon_id: initEirb[0].idInBlockchain });
+                dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: initEirb[0].idInBlockchain, available: false })).then((initEirb) => {},(err) => {console.error(err);});
                 this.unityContent.send('CombatManager', 'GenerateOrphelin', JSON.stringify(initEirb));
-
             },
             (err) => {
                 console.error(err);
@@ -183,13 +178,7 @@ class Game extends React.Component {
 
         const { dispatch } = this.props;
 
-        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then(
-            (initEirb) => {
-            },
-            (err) => {
-                console.error(err);
-            }
-        );
+        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});
     }
 
     onEndCombat(object) {
@@ -197,7 +186,7 @@ class Game extends React.Component {
         const { dispatch } = this.props;
         var N = object.length;
 
-        console.log("Number of eirbmons updated: " + N);
+        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});        
 
         for (let i = 0; i < N; i++) {
             console.log(object.pokemons[i].lvl);
@@ -222,10 +211,11 @@ class Game extends React.Component {
         console.log("Number of eirbmons healed: " + N);
 
         for (let i = 0; i < N; i++) {
-            console.log(object.pokemons[i].idInBlockchain + " health: " + object.pokemons[i].current_health);
+            console.log("id: " + object.pokemons[i].idInBlockchain + ",current_hp: " + object.pokemons[i].current_hp);
 
             dispatch(mongoAccess.UpdateEirbmon(object.pokemons[i])).then(
                 (initEirb) => {
+                    this.onRefreshMyInventory();
                 },
                 (err) => {
                     console.error(err);
@@ -246,6 +236,8 @@ class Game extends React.Component {
                         console.log("Eirbmon Catched: ");
                         console.log(initEirb);
                         this.unityContent.send('Dresser(Local)', 'CatchPokemon', JSON.stringify(initEirb));
+                        dispatch(mongoAccess.UpdateEirbmon({ idInBlockchain: this.state.eirbmon_id, available: true })).then((initEirb) => {},(err) => {console.error(err);});
+                        dispatch(mongoAccess.GetOwnerEirbmon(this.state.owner_id));
                     },
                     (err) => {
                         console.error(err);

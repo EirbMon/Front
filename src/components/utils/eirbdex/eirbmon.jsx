@@ -41,10 +41,10 @@ const styles = () => ({
     },
 });
 
-const Eirbmon = ({name, level, xp, attack, date, filiere, pv, classes }) => {
+const Eirbmon = ({name, type, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;
     const dateTitle = `Date de capture : ${date}`;
-     var monImage = choisirImage(name)
+     var monImage = choisirImage(type)
     return (
         <Grid
             container

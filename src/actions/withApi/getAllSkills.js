@@ -17,10 +17,6 @@ export default function getAllSkills(skills_id) {
                 return Promise.resolve(res);
             })
         .catch((err) => {
-            dispatch({
-                type: ERROR_OCCURS,
-                payload: err,
-            });
             return Promise.reject(err);
         });
 }

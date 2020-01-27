@@ -10,7 +10,12 @@ import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import choisirImage from './choisirImage';
+
 import mongoAccess from '../../../actions/withApi/index';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import instanciateContract from '../../../functions/instanciateContract';
 
 const styles = () => ({
     card: {
@@ -39,9 +44,73 @@ const styles = () => ({
     },
 });
 
-const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
+const EirbmonItem = ({ name, type, level, onClick, classes, isSelected, id, dispatch }) => {
+
+    var contract;
+    var owner_id;
+
+    function onEvolve(id_eirbmon) {
+
+        console.log("L'ID du Eirbmon a évolué est : " + id_eirbmon);
+
+        instanciateContract.then(
+            (res) => {
+                owner_id = res.accounts[0];
+                contract = res.contract;
+            }
+        );
+    
+        dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
+            (eirbdex) => {
+                console.log(eirbdex);
+                if (eirbdex.evolution == "0") {
+                    console.log('The eirbmon is already at its max evolution, there is no evolution above, it cannnot evolve.');
+                    return;
+                }
+                if (eirbdex.lvl < 100) {
+                    console.log('The eirbmon is not lv100, you cannnot evolve it');
+                    return;
+                }
+                else {
+
+                    dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
+                    
+                    console.log('New eirbmon type : ' + eirbdex.evolution);
+
+                    // Evolution dans Blockchain
+                    contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: owner_id }).then(response => {
+
+                            // Evolution dans MongoDB
+                            dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then((initEirb) => { 
+
+                                // Reset du LVL   
+                                dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, lvl: 1, current_hp: initEirb.hp})).then((initEirb2) => { 
+
+                                        // Actualisation de la page Eirbdex
+                                        dispatch(mongoAccess.GetOwnerEirbmon(owner_id));
+                                     },
+                                    (err) => { console.error(err); }
+                                );    
+                            },
+                                (err) => { 
+                                 console.log('err contract evolve: '); 
+                                 console.error(err);
+                                 }
+                            );
+                        });
+                }
+            },
+            (err) => { console.error(err); }
+        );
+    }
+
+    const Evolution = (id) => {
+        onEvolve(id);
+    };
+
     const levelTitle = `Niveau ${level}`;
-    var monImage = choisirImage(name)
+    var monImage = choisirImage(type)
+
     return (
         <Grid
             container
@@ -69,7 +138,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
                     </Typography>
                 </Card>
             </ButtonBase>
-            {level == 100 && <Button variant="contained" color="primary" onClick={() => onEvolve(id)}>
+            {level == 100 && <Button variant="contained" color="primary" onClick={() => Evolution(id) }>
                         Évoluer
              </Button>}
         </Grid>
@@ -79,6 +148,7 @@ const EirbmonItem = ({ name, level, onClick, classes, isSelected, id }) => {
 EirbmonItem.propTypes = {
     name: PropTypes.string,
     level: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    id: PropTypes.string,
     onClick: PropTypes.func,
     isSelected: PropTypes.bool,
     classes: PropTypes.shape({
@@ -88,38 +158,12 @@ EirbmonItem.propTypes = {
         level: PropTypes.string,
         selected: PropTypes.string,
     }).isRequired,
+    eirbmonitem: PropTypes.func,
 };
 
-function onEvolve(id_eirbmon) {
-    const { dispatch } = this.props;
-    console.log("L'ID du Eirbmon a évolué est : ");
-    dispatch(mongoAccess.GetEvolution(id_eirbmon)).then(
-        (eirbdex) => {
-            console.log(eirbdex);
-            if (eirbdex.evolution == "0") {
-                console.log('The eirbmon is already at its max evolution, there is no evolution above, it cannnot evolve.');
-                return;
-            }
-            if (eirbdex.lvl < 100) {
-                console.log('The eirbmon is not lv100, you cannnot evolve it');
-                return;
-            }
-            else {
-                console.log('New eirbmon type : ' + eirbdex.evolution);
-                this.state.contract.methods.evolveEirbmon(id_eirbmon, eirbdex.evolution).send({ from: this.state.owner_id })
-                    .then(response => {
-                        //dispatch(mongoAccess.UpdateEirbmon({idInBlockchain: id_eirbmon, type:eirbdex.evolution, evolve: eirbdex.evolve + 1, lvl: 0})).then(
-                        dispatch(mongoAccess.UpdateMongoEirbmonFromBlockchain(id_eirbmon)).then(
-                            (initEirb) => { console.log("Eirbmon evolution :"); console.log(initEirb); },
-                            (err) => { console.error(err); }
-                        );
-                    });
-            }
-        },
-        (err) => { console.error(err); }
-    );
-}
 
 export default flowRight([
+    withRouter,
+    connect(null, null),
     withStyles(styles),
 ])(EirbmonItem);

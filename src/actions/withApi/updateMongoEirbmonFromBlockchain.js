@@ -11,10 +11,10 @@ export default function updateMongoEirbmonFromBlockchain(id_eirbmon) {
             return Promise.resolve();
         })
         .catch((err) => {
-            dispatch({
-                type: ERROR_OCCURS,
-                payload: err,
-            });
+            // dispatch({
+            //     type: ERROR_OCCURS,
+            //     payload: err,
+            // });
             return Promise.reject(err);
         });
 }

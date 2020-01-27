@@ -15,6 +15,7 @@ import ChatPortal from '../../utils/chat/chatPortal';
 import Salon from './salon';
 
 const styles = () => ({
+
     selectSalon: {
         width: '300px',
         position: 'absolute',

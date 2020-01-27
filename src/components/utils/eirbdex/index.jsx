@@ -13,6 +13,7 @@ import Eirbmon from './eirbmon';
 import EirbmonItem from './eirbmonItem';
 
 const styles = () => ({
+
     eirbdex: {
         backgroundColor: '#7398AE',
         width: '700px',
@@ -54,12 +55,22 @@ const styles = () => ({
 const Eirbdex = ({ classes, eirbmonsInfos }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eirbmon, setEirbmon] = useState(null);
-    const eirbmonsForm = eirbmonsInfos.eirbmons.map(
+
+    console.log('eirbmonsInfos:');
+    console.log(eirbmonsInfos);
+    console.log('eirbmons:');
+    console.log(eirbmonsInfos.eirbmons);
+
+    var eirbmonsForm = null;
+
+    try{
+        eirbmonsForm = eirbmonsInfos.eirbmons.map(
         myEirbmon => {
             console.log(myEirbmon);
             return {
                 id: myEirbmon.idInBlockchain,
                 name: myEirbmon.name,
+                type: myEirbmon.type,
                 adress: myEirbmon.owner_id,
                 level: myEirbmon.lvl,
                 filiere: myEirbmon.field,
@@ -68,6 +79,22 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
             }
         }
     )
+    } catch{
+        eirbmonsForm = [{
+            id: eirbmonsInfos.eirbmons.idInBlockchain,
+            name: eirbmonsInfos.eirbmons.name,
+            type: eirbmonsInfos.eirbmons.type,
+            adress: eirbmonsInfos.eirbmons.owner_id,
+            level: eirbmonsInfos.eirbmons.lvl,
+            filiere: eirbmonsInfos.eirbmons.field,
+            attack:eirbmonsInfos.eirbmons.skills,
+            pv: eirbmonsInfos.eirbmons.hp
+        }
+        ]
+    }
+
+    console.log(eirbmonsForm);
+
     return (
         <div className="mx-auto">
             <Paper className={classNames('mx-auto', classes.eirbdex)}>
@@ -94,6 +121,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                                     }}
                                     key={key}
                                     name={item.name}
+                                    type={item.type}
                                     level={item.level}
                                     id={item.id}
                                 />
@@ -104,6 +132,7 @@ const Eirbdex = ({ classes, eirbmonsInfos }) => {
                     <div className={classNames('mx-auto', classes.selectedEirbmon)}>
                         <Eirbmon
                             name={eirbmon.name}
+                            type={eirbmon.type}
                             image={eirbmon.image}
                             level={eirbmon.level}
                             xp={eirbmon.xp}

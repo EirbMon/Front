@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flowRight } from 'lodash/fp';
 import { connect } from 'react-redux';
-import { lifecycle } from 'recompose';
 
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -17,19 +16,36 @@ import EirbmonsList from '../eirbmonsList';
 import mongoAccess from '../../../../actions/withApi';
 
 const useStyles = makeStyles(theme => ({
+
     root: {
         width: "100%",
     },
     box: {
         display: "flex",
-        height: "85vh"
+        position: "relative",
     },
 }));
 
-function BuyEirbmon({ allEirbmonsOnSale }) {
-    console.log(allEirbmonsOnSale);
+function BuyEirbmon({ getAllEirbmonsOnSale, accountAddress }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+    let [allEirbmonsOnSale, setAllEirbmonsOnSale] = useState([]);
+
+    useEffect(() => {
+        getAllEirbmonsOnSale().then(
+            (allEirbmonsOnSaleFromMongo) => {
+                setAllEirbmonsOnSale(allEirbmonsOnSaleFromMongo.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase() }))
+            }
+        );
+    }, []);
+
+    function refresh() {
+        getAllEirbmonsOnSale().then(
+            (allEirbmonsOnSaleFromMongo) => {
+                setAllEirbmonsOnSale(allEirbmonsOnSaleFromMongo.filter(eirbmon => { return eirbmon.owner_id !== accountAddress.toLowerCase() }))
+            }
+        );
+    }
 
     return (
         <Box className={classes.box}>
@@ -48,9 +64,10 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
                             label={"Entrez un nom d'EirbMon"}
                         />
                     </ListItem>
-                    <ListItem style={{ overflow: 'auto',  position: 'abolute' }}>
+                    <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                         <EirbmonsList
                             eirbmonsList={allEirbmonsOnSale}
+                            refresh={() => { refresh() }}
                             action="buy"
                         />
                     </ListItem>
@@ -62,20 +79,11 @@ function BuyEirbmon({ allEirbmonsOnSale }) {
 
 export default flowRight([
     connect(
-        null
+        (state) => ({
+            accountAddress: state.accountInfo.accountUrl,
+        })
         ,
         {
             getAllEirbmonsOnSale: mongoAccess.GetAllEirbmonsOnSale,
         }),
-    lifecycle({
-        componentDidMount() {
-            const { getAllEirbmonsOnSale } = this.props;
-            getAllEirbmonsOnSale().then(
-                (allEirbmonsOnSale) => {
-                    this.setState({ allEirbmonsOnSale: allEirbmonsOnSale })
-                }
-            );
-        }
-    }
-    ),
-])(BuyEirbmon);
+]) (BuyEirbmon);

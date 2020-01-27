@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { flowRight } from 'lodash/fp';
-import { connect } from 'react-redux';
-import { lifecycle } from 'recompose';
 
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -14,7 +11,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import Divider from '@material-ui/core/Divider';
 import { Paper } from '@material-ui/core';
 
-import mongoAccess from '../../../../actions/withApi';
 import EirbmonsList from '../eirbmonsList';
 
 const useStyles = makeStyles(theme => ({
@@ -23,9 +19,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EirbmonsOnSale({eirbmonsOnSale}) {
+export default function EirbmonsOnSale({ refresh, myEirbmonsOnSale }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
+
+    console.log(myEirbmonsOnSale)
 
     return (
         <Paper className={classes.root} elevation={2}>
@@ -42,14 +40,15 @@ function EirbmonsOnSale({eirbmonsOnSale}) {
                     </ListItemAvatar>
                     <TextField
                         value={search}
-                        onChange={(e)=>{setSearchValue(e.target.value)}}
+                        onChange={(e) => { setSearchValue(e.target.value) }}
                         className={classes.root}
                         label={"Entrez un nom d'EirbMon"}
                     />
                 </ListItem>
-                <ListItem style={{overflow: 'auto', position: 'abolute'}}>
+                <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
-                        eirbmonsList={eirbmonsOnSale}
+                        eirbmonsList={myEirbmonsOnSale}
+                        refresh={()=>{refresh()}}
                         action='sale'
                     />
                 </ListItem>
@@ -58,22 +57,3 @@ function EirbmonsOnSale({eirbmonsOnSale}) {
         </Paper>
     );
 }
-
-export default flowRight([
-    connect(
-        (state) => ({
-            accountAddress: state.accountInfo.accountUrl,
-            eirbmonsOnSale: state.eirbmonsInfos.eirbmons,
-        })
-        ,
-        {
-            getMyEirbmonsOnSale: mongoAccess.GetMyEirbmonsOnSale,
-        }),
-    lifecycle({
-        componentDidMount() {
-            const { accountAddress, getMyEirbmonsOnSale} = this.props;
-            getMyEirbmonsOnSale(accountAddress);
-        }
-    }
-    ),
-])(EirbmonsOnSale);

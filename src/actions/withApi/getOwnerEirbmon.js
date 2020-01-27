@@ -21,10 +21,10 @@ export default function getOwnerEirbmon(owner_id, number = 0) {
             return Promise.resolve(res);
         })
     .catch((err) => {
-        dispatch({
-            type: ERROR_OCCURS,
-            payload: err,
-        });
+        // dispatch({
+        //     type: ERROR_OCCURS,
+        //     payload: err,
+        // });
         return Promise.reject(err);
     });
 }

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { flowRight } from 'lodash/fp';
 import { connect } from 'react-redux';
-import { lifecycle } from 'recompose';
 
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -24,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-function MyEirbmons({ myEirbmons }) {
+export default function MyEirbmons({ refresh, myEirbmons }) {
     const classes = useStyles();
     let [search, setSearchValue] = useState('');
 
@@ -49,9 +48,10 @@ function MyEirbmons({ myEirbmons }) {
                     />
                 </ListItem>
 
-                <ListItem style={{overflow: 'auto',  position: 'abolute'}}>
+                <ListItem style={{ overflow: 'auto', position: 'abolute' }}>
                     <EirbmonsList
                         eirbmonsList={myEirbmons}
+                        refresh={() => { refresh() }}
                         action="mine"
                     />
                 </ListItem>
@@ -61,22 +61,3 @@ function MyEirbmons({ myEirbmons }) {
         </Paper>
     );
 }
-
-export default flowRight([
-    connect(
-        (state) => ({
-            accountAddress: state.accountInfo.accountUrl,
-            myEirbmons: state.eirbmonsInfos.eirbmons,
-        })
-        ,
-        {
-            getOwnerEirbmon: mongoAccess.GetOwnerEirbmon,
-        }),
-    lifecycle({
-        componentDidMount() {
-            const { getOwnerEirbmon, accountAddress } = this.props;
-            getOwnerEirbmon(accountAddress);
-        }
-    }
-    ),
-])(MyEirbmons);

@@ -10,6 +10,7 @@ import Page from '../../utils/layout/index';
 import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = () => ({
+
     form: {
         display: 'inline',
     },
