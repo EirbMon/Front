@@ -43,7 +43,6 @@ const styles = () => ({
 
 const Eirbmon = ({name, type, level, xp, attack, date, filiere, pv, classes }) => {
     const levelTitle = `Niveau ${level}`;
-    const dateTitle = `Date de capture : ${date}`;
      var monImage = choisirImage(type)
     return (
         <Grid
@@ -86,11 +85,6 @@ const Eirbmon = ({name, type, level, xp, attack, date, filiere, pv, classes }) =
                         </Grid>
                     </Grid>
                 </CardContent>
-                <CardActions>
-                    <Typography component="p" className={classes.bottomText}>
-                        {dateTitle}
-                    </Typography>
-                </CardActions>
             </Card>
         </Grid>
     );
