@@ -1,12 +1,16 @@
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Typography, IconButton, Drawer, Toolbar, List, Divider } from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
+import { Menu, AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import SyncAltIcon from '@material-ui/icons/SyncAlt';
+import ShopIcon from '@material-ui/icons/Shop';
 
 import ItemLayout from './itemLayout';
 import disconnect from '../../../functions/disconnect';
@@ -67,11 +71,11 @@ const Layout = ({ currentPage, classes, history }) => {
             <Drawer open={isOpen} onClose={() => setIsOpen(!isOpen)}>
                 <div tabIndex="0" role="button" onKeyPress={() => console.log('window')} onClick={() => setIsOpen(!isOpen)}>
                     <List component="nav">
-                        <ItemLayout page="unity" primary="Jeux" secondary="Eirbmon" />
-                        <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" />
-                        <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" />
-                        <ItemLayout page="exchangeEirbmon" primary="Echange" secondary="Echanger vos eirbmons" />
-                        <ItemLayout page="eirbmonsStore" primary="Boutique" secondary="Acheter ou vender vos eirbmons" />
+                        <ItemLayout page="unity" primary="Jeux" secondary="Eirbmon" icon={<SportsEsportsIcon />} />
+                        <ItemLayout page="profil" primary="Profil" secondary="Utilisateur" icon={<AccountCircle />} />
+                        <ItemLayout page="eirbdex" primary="Eirbdex" secondary="Eirbmons" icon={<ListAltIcon />} />
+                        <ItemLayout page="exchangeEirbmon" primary="Echange" secondary="Echanger vos eirbmons" icon={<SyncAltIcon />} />
+                        <ItemLayout page="eirbmonsStore" primary="Boutique" secondary="Acheter ou vender vos eirbmons" icon={<ShopIcon />} />
                     </List>
                 </div>
             </Drawer>

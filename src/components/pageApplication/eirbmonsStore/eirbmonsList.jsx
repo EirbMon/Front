@@ -153,7 +153,7 @@ function EirbmonsList({ eirbmonsList, action, putEirbmonOnSale, updateOneEirbmon
 
                                         <Card className={classes.card}>
                                             <Typography component="p" align="right" className={classes.level}>
-                                                {`Niveau 0`}
+                                                {`Niveau ${eirbmon.lvl}`}
                                             </Typography>
                                             <CardMedia
                                                 className={classes.media}

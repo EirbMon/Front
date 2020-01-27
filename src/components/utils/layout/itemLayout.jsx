@@ -1,13 +1,13 @@
 import { ListItemText, ListItemIcon, ListItem } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
+// import { AccountCircle } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-const ItemLayout = ({ page, primary, secondary, history }) => (
+const ItemLayout = ({ page, primary, secondary, history, icon }) => (
     <ListItem button onClick={() => { history.push(`/${page}`); }}>
         <ListItemIcon>
-            <AccountCircle />
+            {icon}
         </ListItemIcon>
         <ListItemText primary={primary} secondary={secondary} />
     </ListItem>
