@@ -11,6 +11,11 @@ import ChatPortal from '../../utils/chat/chatPortal';
 
 const styles = (theme) => ({
     tableWrapper: {
+        overflowX: 'visible',
+        overflowY: 'visible',
+        width: '100%',
+        //height: '94vh'
+        height: 'calc(100vh - 48px)'
     },
 });
 
