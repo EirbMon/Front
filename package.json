@@ -71,7 +71,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "truffle": "^5.0.43"
+    "truffle": "^5.8.4"
   },
   "browserslist": {
     "production": [
